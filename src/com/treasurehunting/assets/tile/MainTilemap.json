@@ -1,0 +1,26 @@
+{ "frames": [
+   {
+    "filename": "MainTilemap.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 1000, "h": 1000 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1000, "h": 1000 },
+    "sourceSize": { "w": 1000, "h": 1000 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.13-x64",
+  "format": "RGBA8888",
+  "size": { "w": 1000, "h": 1000 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "ScreenLayer", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
