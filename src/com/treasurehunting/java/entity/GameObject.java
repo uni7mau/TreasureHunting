@@ -207,7 +207,7 @@ public abstract class GameObject {
 
         // Upper name
         // TODO: Tách ra cho các enemy hiện riêng
-        g2d.setFont(GameStateManager.fontf.getFont("GravityBold8"));
+        g2d.setFont(GameStateManager.fontf.getFont("GravityBold8", 8));
         g2d.setColor(Color.CYAN);
         g2d.drawString(
                 name,
@@ -217,7 +217,7 @@ public abstract class GameObject {
 
         // Upper dmg taken
         if (dmgDisplaying && dmgTaken != 0) {
-            g2d.setFont(GameStateManager.fontf.getFont("GravityBold8"));
+            g2d.setFont(GameStateManager.fontf.getFont("GravityBold8", 8));
             g2d.setColor(Color.RED);
             String dmgStr = String.valueOf(dmgTaken);
             g2d.drawString(

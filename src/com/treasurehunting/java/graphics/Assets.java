@@ -48,13 +48,16 @@ public class Assets {
     public static String font = "com/treasurehunting/assets/fonts/font.png";
     public static String meatMadnessFont = "com/treasurehunting/assets/fonts/Stackedpixel.ttf";
     public static String gravityBoldFont = "com/treasurehunting/assets/fonts/GravityBold8.ttf";
+    public static String pixelCandyFont = "com/treasurehunting/assets/fonts/PixelCandy.ttf";
 
     public static String uiSS = "com/treasurehunting/assets/ui/ui.png";
-    public static String buttonSS = "com/treasurehunting/assets/ui/buttons.png";
+    public static String buttonSS = "com/treasurehunting/assets/ui/HumbleUI/PNG/SpriteSheet.png";
 
     public static SpriteSheet inventorySS = new SpriteSheet("com/treasurehunting/assets/ui/Inventory.png", 120, 172);
     public static SpriteSheet healthBarSS = new SpriteSheet("com/treasurehunting/assets/ui/HealthBar.png", 120, 30);
     public static SpriteSheet manaBarSS = new SpriteSheet("com/treasurehunting/assets/ui/ManaBar.png", 64, 21);
+
+    public static SpriteSheet backGroundImg = new SpriteSheet("com/treasurehunting/assets/ui/staticHUB.png", 1920, 1080);
 
     // Animation/state things
     public static final int IDLE = 0;

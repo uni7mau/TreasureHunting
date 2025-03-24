@@ -21,9 +21,9 @@ public class Bat extends Enemy {
     public Bat(SpriteSheet spriteSheet, Vector2f pos, int width, int height) {
         super(spriteSheet, pos, width, height, "Bat");
 
-        bounds.setWidth((float)width/2);
+        bounds.setWidth((float)width/4);
         bounds.setHeight((float)height/2 - (float)height/4);
-        bounds.setXOffset((float)width/2 - (float)width/4);
+        bounds.setXOffset((float)width/2 - (float)width/8);
         bounds.setYOffset((float) height / 4);
 
         sense.setRadius(700);
@@ -126,19 +126,19 @@ public class Bat extends Enemy {
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
         if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE) {
-            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + player.getBounds().getHeight() + 10) {
+            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + 5) {
                 up = true;
                 FLY_STATE = true;
             } else up = false;
-            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 < player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 - player.getBounds().getHeight() - 10) {
+            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 < player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 - 5) {
                 down = true;
                 FLY_STATE = true;
             } else down = false;
-            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 > player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 + player.getBounds().getWidth() + 10) {
+            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 > player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 + 5) {
                 left = true;
                 FLY_STATE = true;
             } else left = false;
-            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 < player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 - player.getBounds().getWidth() - 10) {
+            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 < player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 - 5) {
                 right = true;
                 FLY_STATE = true;
             } else right = false;

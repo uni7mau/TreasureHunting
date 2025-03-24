@@ -175,7 +175,7 @@ public class PlayState extends GameState {
             gameObjects.get(i).render(g2d);
         }
 
-        g2d.setFont(GameStateManager.fontf.getFont("MeatMadness"));
+        g2d.setFont(GameStateManager.fontf.getFont("MeatMadness", 32));
         g2d.setColor(Color.white);
         String fps = GamePanel.oldFrameCount + " FPS";
         g2d.drawString(fps, Preferences.GAME_WIDTH - 6*32, 32);

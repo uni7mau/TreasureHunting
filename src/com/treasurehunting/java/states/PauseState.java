@@ -18,17 +18,17 @@ public class PauseState extends GameState {
     public PauseState(GameStateManager gsm) {
         super(gsm);
 
-        BufferedImage imgButton = GameStateManager.button.getSubimage(0, 0, 121, 26);
-        BufferedImage imgHover = GameStateManager.button.getSubimage(0, 29, 122, 28);
+        BufferedImage imgButton = GameStateManager.button.getSubimage(35, 1621, 57, 22);
+        BufferedImage imgHover = GameStateManager.button.getSubimage(163, 1621, 57, 22);
 
-        font = new Font("MeatMadness", Font.PLAIN, 48);
+        font = new Font("Pixel Game", Font.PLAIN, 48);
         btnResume = new Button(
                 "RESUME",
                 imgButton,
                 font,
                 new Vector2f((float)Preferences.GAME_WIDTH / 2, (float)Preferences.GAME_HEIGHT / 2 - 48),
                 32,
-                16
+                20
         );
         btnExit = new Button(
                 "EXIT",
@@ -36,7 +36,7 @@ public class PauseState extends GameState {
                 font,
                 new Vector2f((float)Preferences.GAME_WIDTH / 2, (float)Preferences.GAME_HEIGHT / 2 + 48),
                 32,
-                16
+                20
         );
 
         btnResume.addHoverImage(
@@ -47,7 +47,7 @@ public class PauseState extends GameState {
                         btnResume.getWidth(),
                         btnResume.getHeight(),
                         32,
-                        20
+                        16
                 )
         );
         btnExit.addHoverImage(
@@ -58,7 +58,7 @@ public class PauseState extends GameState {
                         btnExit.getWidth(),
                         btnExit.getHeight(),
                         32,
-                        20
+                        16
                 )
         );
 

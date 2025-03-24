@@ -15,12 +15,13 @@ import java.awt.*;
 
 public class GameStateManager {
 
-    private static GameState[] states = new GameState[4];
+    private static GameState[] states = new GameState[5];
 
     public static final int PLAY = 0;
     public static final int MENU = 1;
     public static final int PAUSE = 2;
     public static final int GAMEOVER = 3;
+    public static final int HUB = 4;
 
     public static Font font;
     public static Fontf fontf;
@@ -38,13 +39,15 @@ public class GameStateManager {
         SpriteSheet.currentFont = font;
 
         fontf = new Fontf();
+        fontf.loadFont(Assets.pixelCandyFont, "Pixel Game", 128);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 140);
         fontf.loadFont(Assets.meatMadnessFont, "MeatMadness", 32);
         fontf.loadFont(Assets.gravityBoldFont, "GravityBold8", 8);
 
         ui = new SpriteSheet(Assets.uiSS, 64, 64);
-        button = new SpriteSheet(Assets.buttonSS, 122, 57);
+        button = new SpriteSheet(Assets.buttonSS, 704, 2160);
 
-        add(PLAY);
+        add(HUB);
     }
 
     public static boolean isStateActive(int state) {
@@ -69,6 +72,8 @@ public class GameStateManager {
             states[PAUSE] = new PauseState(this);
         } else if (state == GAMEOVER) {
             states[GAMEOVER] = new GameOverState(this);
+        } else if (state == HUB) {
+            states[HUB] = new HUBState(this);
         }
     }
 
