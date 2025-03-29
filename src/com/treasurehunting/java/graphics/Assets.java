@@ -1,5 +1,8 @@
 package com.treasurehunting.java.graphics;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class Assets {
 
     public static SpriteSheet playerSSGunIdle = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Idle/Gun/Idle8.png", 48, 64 );
@@ -9,6 +12,8 @@ public class Assets {
     public static SpriteSheet playerSSGunDash = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Dash/Gun/Dash8.png", 48, 64 );
     public static SpriteSheet playerSSGunReloading = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Reloading/Reloading8.png", 48, 64 );
     public static SpriteSheet playerSSGunDeath = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Death/Gun/Death8.png", 48, 64 );
+
+    public static SpriteSheet playerSkillIcon = new SpriteSheet("com/treasurehunting/assets/ui/PlayerSkillIcon.png", 20, 20);
 
     public static SpriteSheet batSSIdleSleep  = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-Sleep.png", 64, 64);
     public static SpriteSheet batSSWakeUp = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-WakeUp.png", 64, 64);
@@ -50,14 +55,19 @@ public class Assets {
     public static String gravityBoldFont = "com/treasurehunting/assets/fonts/GravityBold8.ttf";
     public static String pixelCandyFont = "com/treasurehunting/assets/fonts/PixelCandy.ttf";
 
-    public static String uiSS = "com/treasurehunting/assets/ui/ui.png";
-    public static String buttonSS = "com/treasurehunting/assets/ui/HumbleUI/PNG/SpriteSheet.png";
+    public static SpriteSheet buttonSS = new SpriteSheet("com/treasurehunting/assets/ui/HumbleUI/PNG/SpriteSheet.png", 704, 2160);
 
     public static SpriteSheet inventorySS = new SpriteSheet("com/treasurehunting/assets/ui/Inventory.png", 120, 172);
     public static SpriteSheet healthBarSS = new SpriteSheet("com/treasurehunting/assets/ui/HealthBar.png", 120, 30);
     public static SpriteSheet manaBarSS = new SpriteSheet("com/treasurehunting/assets/ui/ManaBar.png", 64, 21);
 
-    public static SpriteSheet backGroundImg = new SpriteSheet("com/treasurehunting/assets/ui/staticHUB.png", 1920, 1080);
+    public static SpriteSheet backGroundSS = new SpriteSheet("com/treasurehunting/assets/ui/staticHUB.png", 1920, 1080);
+
+    public static SpriteSheet pauseBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/PauseBoard.png", 183, 280);
+    public static SpriteSheet displayBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/DisplayBoard.png", 248, 280);
+    public static SpriteSheet audioBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/AudioBoard.png", 248, 280);
+    public static SpriteSheet videoBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/VideoBoard.png", 248, 280);
+    public static SpriteSheet controlsBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/ControlsBoard.png", 248, 280);
 
     // Animation/state things
     public static final int IDLE = 0;

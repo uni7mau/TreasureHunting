@@ -1,6 +1,7 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.bullets.CritBullet;
 import com.treasurehunting.java.obstacle.bullets.NormBullet;
@@ -10,10 +11,8 @@ import java.util.Random;
 
 public class Shooting extends SumonSkill {
 
-    private double ammo = 0;
-
     public Shooting(Entity owner) {
-        super(owner, "Shooting", 5, 1, 0, 100, 100, "SHOOTING");
+        super(owner, "Shooting", 5, 0, 100, 100, "SHOOTING", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
     }
 
     // TODO: do this
@@ -24,25 +23,29 @@ public class Shooting extends SumonSkill {
 
         int targetDirect = owner.getCurrDirection();
         if (targetDirect == 0) {
-
+            adjustX = 5;
+            adjustY = 25;
         } else if (targetDirect == 1) {
-            adjustX = -17;
-            adjustY = 17;
+            adjustX = -23;
+            adjustY = 5;
         } else if (targetDirect == 2) {
+            adjustX = -33;
             adjustY = -17;
         } else if (targetDirect == 3) {
             adjustX = -17;
-            adjustY = -17;
+            adjustY = -34;
         } else if (targetDirect == 4) {
             adjustX = 17;
+            adjustY = -50;
         } else if (targetDirect == 5) {
-            adjustX = 17;
-            adjustY = -17;
+            adjustX = 44;
+            adjustY = -30;
         } else if (targetDirect == 6) {
+            adjustX = owner.getBounds().getWidth() + 17;
             adjustY = -17;
         } else if (targetDirect == 7) {
-            adjustX = 17;
-            adjustY = 17;
+            adjustX = 43;
+            adjustY = 10;
         }
 
 
@@ -78,7 +81,6 @@ public class Shooting extends SumonSkill {
                     )
             );
         }
-        ammo--;
     }
 
 }

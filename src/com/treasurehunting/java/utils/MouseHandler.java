@@ -17,11 +17,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
         gamePanel.addMouseMotionListener(this);
     }
 
-    public int getX() { return mouseX; }
+    public static int getX() { return mouseX; }
 
-    public int getY() { return mouseY; }
+    public static int getY() { return mouseY; }
 
-    public int getButton() { return mouseB; }
+    public static int getButton() { return mouseB; }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -59,4 +59,5 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
 }

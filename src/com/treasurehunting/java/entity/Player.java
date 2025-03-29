@@ -12,6 +12,8 @@ import com.treasurehunting.java.utils.KeyHandler;
 import com.treasurehunting.java.utils.MouseHandler;
 import com.treasurehunting.java.math.Vector2f;
 
+import java.awt.event.KeyEvent;
+
 // Big brain time: Adventurer doesn't have Walk while Shooting, so I decided to give player an ability that make she moves superfast
 
 public class Player extends Entity {
@@ -44,10 +46,10 @@ public class Player extends Entity {
         health = 500;
         maxHealth = 500;
 
-        skills.put(0, new Dash(this));
-        skills.put(1, new Shooting(this));
-        skills.put(2, new BombShooting(this));
-        skills.put(3, new UltimateEnergyWave(this));
+        skills.put(KeyHandler.SKILL1, new Dash(this));
+        skills.put(KeyHandler.SKILL2, new Shooting(this));
+        skills.put(KeyHandler.SKILL3, new BombShooting(this));
+        skills.put(KeyHandler.SKILL4, new UltimateEnergyWave(this));
     }
 
     private void resetPosition() {
@@ -85,19 +87,19 @@ public class Player extends Entity {
 
     public void input(MouseHandler mouse, KeyHandler key) {
         if (!FALLEN_STATE) {
-            if (key.up.down) {
+            if (KeyHandler.keys.get(KeyHandler.UP).down) {
                 up = true;
                 RUN_STATE = true;
             } else up = false;
-            if (key.down.down) {
+            if (KeyHandler.keys.get(KeyHandler.DOWN).down) {
                 down = true;
                 RUN_STATE = true;
             } else down = false;
-            if (key.left.down) {
+            if (KeyHandler.keys.get(KeyHandler.LEFT).down) {
                 left = true;
                 RUN_STATE = true;
             } else left = false;
-            if (key.right.down) {
+            if (KeyHandler.keys.get(KeyHandler.RIGHT).down) {
                 right = true;
                 RUN_STATE = true;
             } else right = false;
@@ -109,33 +111,6 @@ public class Player extends Entity {
             if (right && left) {
                 right = false;
                 left = false;
-            }
-
-            if (key.dash.down && skills.get(0).isCanActive()) {
-                DASH_STATE = true;
-                skills.get(0).gainSignal();
-            } else {
-                if (anim.hasPlayedOnce()) {
-                    DASH_STATE = false;
-                    skills.get(0).stopSignal();
-                }
-            }
-            if (key.normAttack.down) {
-                SHOOTING_STATE = true;
-                skills.get(1).gainSignal();
-            } else {
-                SHOOTING_STATE = false;
-                skills.get(1).stopSignal();
-            }
-            if (key.elementSkill.down && skills.get(2).isCanActive()) {
-                skills.get(2).gainSignal();
-            } else {
-                skills.get(2).stopSignal();
-            }
-            if (key.ultimateSkill.down && skills.get(3).isCanActive()) {
-                skills.get(3).gainSignal();
-            } else {
-                skills.get(3).stopSignal();
             }
         } else {
             up = false;

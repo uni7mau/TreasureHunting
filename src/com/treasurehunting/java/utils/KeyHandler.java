@@ -5,16 +5,39 @@ import com.treasurehunting.java.GamePanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class KeyHandler implements KeyListener {
 
-    public static ArrayList<Key> keys = new ArrayList<>();
+    // TODO: move static element below to settings file
+    public static int UP = KeyEvent.VK_W;
+    public static int DOWN = KeyEvent.VK_S;
+    public static int LEFT = KeyEvent.VK_A;
+    public static int RIGHT = KeyEvent.VK_D;
+    public static int SKILL1 = KeyEvent.VK_SHIFT;
+    public static int SKILL2 = KeyEvent.VK_J;
+    public static int SKILL3 = KeyEvent.VK_K;
+    public static int SKILL4 = KeyEvent.VK_L;
+    public static int SKILL5 = KeyEvent.VK_I;
+    public static int ADDITION1 = KeyEvent.VK_R;
+    public static int ADDITION2 = KeyEvent.VK_CONTROL;
+//    public static int ADDITION3 = KeyEvent.;
+//    public static int ADDITION4 = KeyEvent.;
+//    public static int ADDITION5 = KeyEvent.;
+    public static int ESCAPE = KeyEvent.VK_ESCAPE;
+    public static int INVENTORY = KeyEvent.VK_E;
+    public static int MAP = KeyEvent.VK_M;
+    public static int CHARINFO = KeyEvent.VK_C;
+    public static int SPACE = KeyEvent.VK_SPACE;
 
-    public class Key {
+    public static HashMap<Integer, Key> keys = new HashMap<>();
+
+    public static class Key {
+
         public int presses, absorbs;
         public boolean down, clicked;
 
-        public Key() { keys.add(this); }
+        public Key() {  }
 
         public void toogle(boolean pressed) {
             if (pressed != down) {
@@ -35,20 +58,26 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public Key up = new Key();
-    public Key down = new Key();
-    public Key left = new Key();
-    public Key right = new Key();
-    public Key menu = new Key();
-    public Key escape = new Key();
-    public Key dash = new Key();
-    public Key speedy = new Key();
-    public Key normAttack = new Key();
-    public Key elementSkill = new Key();
-    public Key ultimateSkill = new Key();
-    public Key reload = new Key();
+    public KeyHandler(GamePanel gamePanel) {
+        gamePanel.addKeyListener(this);
 
-    public KeyHandler(GamePanel gamePanel) { gamePanel.addKeyListener(this); }
+        KeyHandler.keys.put(UP, new KeyHandler.Key());
+        KeyHandler.keys.put(DOWN, new KeyHandler.Key());
+        KeyHandler.keys.put(LEFT, new KeyHandler.Key());
+        KeyHandler.keys.put(RIGHT, new KeyHandler.Key());
+        KeyHandler.keys.put(SKILL1, new KeyHandler.Key());
+        KeyHandler.keys.put(SKILL2, new KeyHandler.Key());
+        KeyHandler.keys.put(SKILL3, new KeyHandler.Key());
+        KeyHandler.keys.put(SKILL4, new KeyHandler.Key());
+        KeyHandler.keys.put(SKILL5, new KeyHandler.Key());
+        KeyHandler.keys.put(ADDITION1, new KeyHandler.Key());
+        KeyHandler.keys.put(ADDITION2, new KeyHandler.Key());
+        KeyHandler.keys.put(ESCAPE, new KeyHandler.Key());
+        KeyHandler.keys.put(INVENTORY, new KeyHandler.Key());
+        KeyHandler.keys.put(MAP, new KeyHandler.Key());
+        KeyHandler.keys.put(CHARINFO, new KeyHandler.Key());
+        KeyHandler.keys.put(SPACE, new KeyHandler.Key());
+    }
 
     public void releaseAll() {
         for (int i = 0; i < keys.size(); i++) {
@@ -63,18 +92,9 @@ public class KeyHandler implements KeyListener {
     }
 
     public void toogleAll(KeyEvent e, boolean pressed) {
-        if (e.getKeyCode() == KeyEvent.VK_W) up.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_S) down.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_A) left.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_D) right.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_E) menu.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_CONTROL) speedy.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_SHIFT) dash.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_J) normAttack.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_K) elementSkill.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_L) ultimateSkill.toogle(pressed);
-        if (e.getKeyCode() == KeyEvent.VK_R) reload.toogle(pressed);
+        if (keys.get(e.getKeyCode()) != null) {
+            keys.get(e.getKeyCode()).toogle(pressed);
+        }
     }
 
     @Override

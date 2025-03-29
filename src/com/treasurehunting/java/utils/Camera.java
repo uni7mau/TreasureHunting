@@ -135,22 +135,22 @@ public class Camera {
 
     public void input(MouseHandler mouse, KeyHandler key) {
         if (e == null) {
-            if (key.up.down) {
+            if (KeyHandler.keys.get(KeyHandler.UP).down) {
                 up = true;
             } else {
                 up = false;
             }
-            if (key.down.down) {
+            if (KeyHandler.keys.get(KeyHandler.DOWN).down) {
                 down = true;
             } else {
                 down = false;
             }
-            if (key.left.down) {
+            if (KeyHandler.keys.get(KeyHandler.LEFT).down) {
                 left = true;
             } else {
                 left = false;
             }
-            if (key.right.down) {
+            if (KeyHandler.keys.get(KeyHandler.RIGHT).down) {
                 right = true;
             } else {
                 right = false;

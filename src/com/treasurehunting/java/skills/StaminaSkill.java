@@ -6,14 +6,15 @@ import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class StaminaSkill extends Skill {
 
     protected String counterEffect = "";
     protected AABB hitBound;
 
-    public StaminaSkill(Entity owner, String skillName, int dmg, int timeCast, int skillSpeed, int cooldown, String counterEffect) {
-        super(owner, skillName, dmg, timeCast, 0, skillSpeed, cooldown);
+    public StaminaSkill(Entity owner, String skillName, int dmg, int skillSpeed, int cooldown, String counterEffect, BufferedImage icon) {
+        super(owner, skillName, dmg, 0, skillSpeed, cooldown, icon);
 
         hitBound = new AABB(
                 new Vector2f(owner.getPos()),
@@ -64,7 +65,6 @@ public abstract class StaminaSkill extends Skill {
                 owner.setState(counterEffect, false);
             }
         }
-
         request = false;
     }
 

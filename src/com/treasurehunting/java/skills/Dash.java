@@ -10,7 +10,7 @@ public class Dash extends StaminaSkill {
     double camBuffDuration = 500;
 
     public Dash(Entity owner) {
-        super(owner, "Dash", 0, 1, 400, 1000, "DASH");
+        super(owner, "Dash", 0, 400, 1000, "DASH", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
     }
 
     @Override

@@ -7,11 +7,13 @@ import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.Obstacle;
 import com.treasurehunting.java.skills.Skill;
+import com.treasurehunting.java.ui.AbilityButton;
 import com.treasurehunting.java.utils.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Entity extends GameObject {
 
@@ -198,10 +200,9 @@ public abstract class Entity extends GameObject {
         if (!DIE_STATE) {
             move();
             if (!FALLEN_STATE) {
-                for (int i = 0; i < skills.size(); i++) {
-                    Skill skill = skills.get(i);
-                    if (skill != null) {
-                        skill.update(time);
+                for (Map.Entry<Integer, Skill> item : skills.entrySet()) {
+                    if (item.getValue() != null) {
+                        item.getValue().update(time);
                     }
                 }
             }
@@ -225,8 +226,8 @@ public abstract class Entity extends GameObject {
 //            anim.getImage().setEffect(Sprite.effect.NORMAL);
 //        }
 
-        for (int i = 0; i < skills.size(); i++) {
-            Skill skill = skills.get(i);
+        for (Map.Entry<Integer, Skill> item : skills.entrySet()) {
+            Skill skill = skills.get(item.getKey());
             if (skill.isActivating()) {
                 skill.render(g2d);
             }

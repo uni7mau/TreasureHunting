@@ -9,6 +9,7 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.bullets.Bomb;
 import com.treasurehunting.java.obstacle.bullets.Bullet;
+import com.treasurehunting.java.skills.Skill;
 import com.treasurehunting.java.tiles.TileManager;
 import com.treasurehunting.java.ui.PlayerUI;
 import com.treasurehunting.java.utils.*;
@@ -25,6 +26,7 @@ public class PlayState extends GameState {
     public static ArrayList<GameObject> gameObjects;
     public static TileManager tm;
     private static PlayerUI pui;
+    public static ArrayList<Skill> activatingSkill = new ArrayList<>(); // ??
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -108,8 +110,8 @@ public class PlayState extends GameState {
 
     @Override
     public void input(MouseHandler mouse, KeyHandler key) {
-        key.escape.tick();
-        key.menu.tick();
+        KeyHandler.keys.get(KeyHandler.ESCAPE).tick();
+        KeyHandler.keys.get(KeyHandler.INVENTORY).tick();
 
         if (!gsm.isStateActive(GameStateManager.PAUSE)) {
             if (GameStateManager.cam.getTarget() == player) {
@@ -119,7 +121,7 @@ public class PlayState extends GameState {
             pui.input(mouse, key);
         }
 
-        if (key.escape.clicked) {
+        if (KeyHandler.keys.get(KeyHandler.ESCAPE).clicked) {
             if (gsm.isStateActive(GameStateManager.PAUSE)) {
                 gsm.pop(GameStateManager.PAUSE);
             } else if (gsm.isStateActive(GameStateManager.MENU)) {
@@ -129,7 +131,7 @@ public class PlayState extends GameState {
             }
         }
 
-        if (key.menu.clicked) {
+        if (KeyHandler.keys.get(KeyHandler.INVENTORY).clicked) {
             if (gsm.isStateActive(GameStateManager.MENU)) {
                 gsm.pop(GameStateManager.MENU);
             } else {
@@ -164,6 +166,8 @@ public class PlayState extends GameState {
                     else bomb.update(time);
                 }
             }
+
+            for (int i = 0; i < activatingSkill.size(); i++) { activatingSkill.get(i).update(time); }
         }
     }
 
@@ -171,9 +175,8 @@ public class PlayState extends GameState {
     public void render(Graphics2D g2d) {
         tm.render(g2d);
 
-        for (int i = 0; i < gameObjects.size(); i++) {
-            gameObjects.get(i).render(g2d);
-        }
+        for (int i = 0; i < gameObjects.size(); i++) { gameObjects.get(i).render(g2d); }
+        for (int i = 0; i < activatingSkill.size(); i++) { activatingSkill.get(i).render(g2d); }
 
         g2d.setFont(GameStateManager.fontf.getFont("MeatMadness", 32));
         g2d.setColor(Color.white);

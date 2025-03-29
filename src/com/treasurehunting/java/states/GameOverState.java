@@ -1,5 +1,6 @@
 package com.treasurehunting.java.states;
 
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.ui.Button;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
@@ -22,8 +23,8 @@ public class GameOverState extends GameState {
     public GameOverState(GameStateManager gsm) {
         super(gsm);
 
-        imgButton = GameStateManager.button.getSubimage(0, 0, 121, 26);
-        imgHover = GameStateManager.button.getSubimage(0, 29, 122, 28);
+        imgButton = Assets.buttonSS.getSubimage(0, 0, 121, 26);
+        imgHover = Assets.buttonSS.getSubimage(0, 29, 122, 28);
 
         font = new Font("MeatMadness", Font.PLAIN, 48);
         btnReset = new Button(
@@ -77,12 +78,12 @@ public class GameOverState extends GameState {
 
     @Override
     public void input(MouseHandler mouse, KeyHandler key) {
-        key.escape.tick();
+        KeyHandler.keys.get(KeyHandler.ESCAPE).tick();
 
         btnReset.input(mouse, key);
         btnQuit.input(mouse, key);
 
-        if (key.escape.clicked) {
+        if (KeyHandler.keys.get(KeyHandler.ESCAPE).clicked) {
             System.exit(0);
         }
     }

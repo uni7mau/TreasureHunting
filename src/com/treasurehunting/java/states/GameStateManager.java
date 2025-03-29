@@ -25,8 +25,6 @@ public class GameStateManager {
 
     public static Font font;
     public static Fontf fontf;
-    public static SpriteSheet ui;
-    public static SpriteSheet button;
     public static Camera cam;
 
     public static Graphics2D g2d;
@@ -43,9 +41,6 @@ public class GameStateManager {
         fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 140);
         fontf.loadFont(Assets.meatMadnessFont, "MeatMadness", 32);
         fontf.loadFont(Assets.gravityBoldFont, "GravityBold8", 8);
-
-        ui = new SpriteSheet(Assets.uiSS, 64, 64);
-        button = new SpriteSheet(Assets.buttonSS, 704, 2160);
 
         add(HUB);
     }

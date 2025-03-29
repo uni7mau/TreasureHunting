@@ -1,24 +1,32 @@
 package com.treasurehunting.java.ui;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.utils.Preferences;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Inventory {
 
-    private BufferedImage img;
+    private HashMap<String, BufferedImage> imgComponent;
 
     private Entity owner;
 
     private Vector2f pos;
     private int scale;
 
-    public Inventory(Entity owner, BufferedImage img, Vector2f pos, int scale) {
+    public Inventory(Entity owner, Vector2f pos, int scale) {
         this.owner = owner;
-        this.img = img;
+        imgComponent = new HashMap<>();
+        imgComponent.put("MainBoard", Assets.buttonSS.getSubimage(32, 1120, 183, 280));
+        imgComponent.put("Pattern", Assets.buttonSS.getSubimage(256, 1120, 183, 280));
+        imgComponent.put("Box", Assets.buttonSS.getSubimage(256, 1120, 19, 21));
+        imgComponent.put("BoxPressed", Assets.buttonSS.getSubimage(195, 902, 19, 21));
+        imgComponent.put("SubBoard", Assets.buttonSS.getSubimage(282, 1463, 173, 49));
+
         this.pos = pos;
         this.scale = scale;
     }
@@ -28,7 +36,9 @@ public class Inventory {
     }
 
     public void render(Graphics2D g2d) {
-        g2d.drawImage(img, Preferences.GAME_WIDTH / 2 - img.getWidth()*scale / 2, Preferences.GAME_HEIGHT / 2 - img.getHeight()*scale / 2, (img.getWidth()*scale), img.getHeight() * scale, null);
+        g2d.drawImage(imgComponent.get("MainBoard"), Preferences.GAME_WIDTH / 2 - imgComponent.get("MainBoard").getWidth()*scale / 2, Preferences.GAME_HEIGHT / 2 - imgComponent.get("MainBoard").getHeight()*scale / 2, (imgComponent.get("MainBoard").getWidth()*scale), imgComponent.get("MainBoard").getHeight() * scale, null);
+        g2d.drawImage(imgComponent.get("Pattern"), Preferences.GAME_WIDTH / 2 - imgComponent.get("Pattern").getWidth()*scale / 2, Preferences.GAME_HEIGHT / 2 - imgComponent.get("Pattern").getHeight()*scale / 2, (imgComponent.get("Pattern").getWidth()*scale), imgComponent.get("Pattern").getHeight() * scale, null);
+        g2d.drawImage(imgComponent.get("SubBoard"), Preferences.GAME_WIDTH / 2 - (imgComponent.get("SubBoard").getWidth() - 35)*scale / 2, 140, (imgComponent.get("SubBoard").getWidth()*scale) - 70, imgComponent.get("SubBoard").getHeight() * scale - 30, null);
     }
 
 }

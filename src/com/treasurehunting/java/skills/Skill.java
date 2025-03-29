@@ -1,15 +1,17 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.ui.Button;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class Skill {
 
+    protected BufferedImage icon;
     protected String name;
     protected int dmg;
-    protected int timeCast;
     protected int manaCost;
     protected int cooldown;
 
@@ -22,11 +24,10 @@ public abstract class Skill {
     protected ArrayList<Entity> targets;
     protected Entity owner;
 
-    public Skill(Entity owner, String skillName, int dmg, int timeCast, int manaCost, int skillSpeed, int cooldown) {
+    public Skill(Entity owner, String skillName, int dmg, int manaCost, int skillSpeed, int cooldown, BufferedImage icon) {
         this.owner = owner;
         this.name = skillName;
         this.dmg = dmg;
-        this.timeCast = timeCast;
         this.manaCost = manaCost;
         this.cooldown = cooldown;
         this.skillSpeed = skillSpeed;
@@ -39,6 +40,9 @@ public abstract class Skill {
     }
 
     public String getName() { return name; }
+    public BufferedImage getIcon() { return icon; }
+    public int getDuration() { return skillSpeed; }
+    public int getCooldown() { return cooldown; }
 
     public void updateActivating(double time) {
         if ((activeTime / 1000000) < (time / 1000000) - skillSpeed) {

@@ -16,21 +16,19 @@ import java.awt.image.BufferedImage;
 
 public class HUBState extends GameState {
 
-    private BufferedImage imgButton;
-    private BufferedImage imgHover;
     private Button btnNewGame;
     private Button btnSettings;
     private Button btnExit;
     private Font font;
 
-    public Sprite backgroundImg = Assets.backGroundImg.getSprite(0, 0);
+    public Sprite backgroundImg = Assets.backGroundSS.getSprite(0, 0);
 
     public HUBState(GameStateManager gsm) {
         super(gsm);
 
-        imgButton = GameStateManager.button.getSubimage(35, 1621, 57, 22);
-        imgHover = GameStateManager.button.getSubimage(163, 1621, 57, 22);
-
+        BufferedImage imgButton = Assets.buttonSS.getSubimage(35, 1621, 57, 22);
+        BufferedImage imgHover = Assets.buttonSS.getSubimage(10, 1552, 108, 31);
+        BufferedImage imgPressing = Assets.buttonSS.getSubimage(163, 1621, 57, 22);
 
         font = new Font("Pixel Game", Font.PLAIN, 48);
         btnNewGame = new Button(
@@ -38,16 +36,16 @@ public class HUBState extends GameState {
                 imgButton,
                 font,
                 new Vector2f((float)Preferences.GAME_WIDTH / 2, (float)Preferences.GAME_HEIGHT / 2 + 20),
-                50,
-                20
+                57,
+                24
         );
         btnSettings = new Button(
                 "SETTINGS",
                 imgButton,
                 font,
                 new Vector2f((float)Preferences.GAME_WIDTH / 2, (float)Preferences.GAME_HEIGHT / 2 + 100 + 20),
-                50,
-                20
+                57,
+                24
         );
         btnExit = new Button(
                 "EXIT",
@@ -55,35 +53,69 @@ public class HUBState extends GameState {
                 font,
                 new Vector2f((float)Preferences.GAME_WIDTH / 2, (float)Preferences.GAME_HEIGHT / 2 + 200 + 20),
                 32,
-                20
+                24
         );
 
         btnNewGame.addHoverImage(
                 btnNewGame.createButton(
-                        "NEW GAME",
+                        "",
                         imgHover,
                         font,
-                        btnNewGame.getWidth(),
+                        btnNewGame.getWidth() + 120,
                         btnNewGame.getHeight(),
-                        50,
-                        16
+                        57,
+                        24
                 )
         );
         btnSettings.addHoverImage(
                 btnSettings.createButton(
-                        "SETTINGS",
+                        "",
                         imgHover,
                         font,
-                        btnSettings.getWidth(),
-                        btnSettings.getHeight(),
-                        50,
-                        16
+                        btnNewGame.getWidth() + 120,
+                        btnNewGame.getHeight(),
+                        57,
+                        24
                 )
         );
         btnExit.addHoverImage(
                 btnExit.createButton(
-                        "EXIT",
+                        "",
                         imgHover,
+                        font,
+                        btnNewGame.getWidth() + 120,
+                        btnNewGame.getHeight(),
+                        57,
+                        24
+                )
+        );
+
+        btnNewGame.addPressingImage(
+                btnNewGame.createButton(
+                        "NEW GAME",
+                        imgPressing,
+                        font,
+                        btnNewGame.getWidth(),
+                        btnNewGame.getHeight(),
+                        57,
+                        16
+                )
+        );
+        btnSettings.addPressingImage(
+                btnSettings.createButton(
+                        "SETTINGS",
+                        imgPressing,
+                        font,
+                        btnSettings.getWidth(),
+                        btnSettings.getHeight(),
+                        57,
+                        16
+                )
+        );
+        btnExit.addPressingImage(
+                btnExit.createButton(
+                        "EXIT",
+                        imgPressing,
                         font,
                         btnExit.getWidth(),
                         btnExit.getHeight(),
@@ -96,9 +128,9 @@ public class HUBState extends GameState {
             gsm.add(GameStateManager.PLAY);
             gsm.pop(GameStateManager.HUB);
         });
-        btnSettings.addEvent(e -> {
-
-        });
+//        btnSettings.addEvent(e -> {
+//
+//        });
         btnExit.addEvent(e -> {
             System.exit(0);
         });
@@ -106,7 +138,7 @@ public class HUBState extends GameState {
 
     @Override
     public void input(MouseHandler mouse, KeyHandler key) {
-        key.escape.tick();
+        KeyHandler.keys.get(KeyHandler.ESCAPE).tick();
 
         btnNewGame.input(mouse, key);
         btnSettings.input(mouse, key);

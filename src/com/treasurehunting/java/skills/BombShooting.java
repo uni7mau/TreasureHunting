@@ -1,6 +1,7 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.bullets.SkillBullet;
 import com.treasurehunting.java.states.PlayState;
@@ -8,7 +9,7 @@ import com.treasurehunting.java.states.PlayState;
 public class BombShooting extends SumonSkill {
 
     public BombShooting(Entity owner) {
-        super(owner, "Energy Bomb", 10, 1, 100, 500, 4000, "SHOOTING");
+        super(owner, "Energy Bomb", 10, 100, 500, 4000, "SHOOTING", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
     }
 
     @Override

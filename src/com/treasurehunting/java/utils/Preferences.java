@@ -1,5 +1,7 @@
 package com.treasurehunting.java.utils;
 
+import java.awt.event.KeyEvent;
+
 public class Preferences {
 
     public static final int GAME_WIDTH = 1280;
@@ -17,6 +19,5 @@ public class Preferences {
     public static final int BLOCK_PIXEL = 64;
 //    public static final int BLOCK_PIXEL = 48;
 //    public static final int BLOCK_PIXEL = 32;
-
 
 }

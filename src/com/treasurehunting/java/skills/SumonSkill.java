@@ -3,13 +3,14 @@ package com.treasurehunting.java.skills;
 import com.treasurehunting.java.entity.Entity;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class SumonSkill extends Skill {
 
     protected String counterEffect = "";
 
-    public SumonSkill(Entity owner, String skillName, int dmg, int timeCast, int manaCost, int skillSpeed, int cooldown, String counterEffect) {
-        super(owner, skillName, dmg, timeCast, manaCost, skillSpeed, cooldown);
+    public SumonSkill(Entity owner, String skillName, int dmg, int manaCost, int skillSpeed, int cooldown, String counterEffect, BufferedImage icon) {
+        super(owner, skillName, dmg, manaCost, skillSpeed, cooldown, icon);
 
         this.counterEffect = counterEffect;
     }
@@ -28,6 +29,7 @@ public abstract class SumonSkill extends Skill {
         } else if (owner.getAnimation().hasPlayedOnce()) {
             owner.setState(counterEffect, false);
         }
+        request = false;
     }
 
     @Override

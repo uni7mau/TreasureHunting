@@ -1,6 +1,7 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.bullets.UltimateBullet;
 import com.treasurehunting.java.states.PlayState;
@@ -8,7 +9,7 @@ import com.treasurehunting.java.states.PlayState;
 public class UltimateEnergyWave extends SumonSkill {
 
     public UltimateEnergyWave(Entity owner) {
-        super(owner, "Ultimate Energy Wave", 100, 1, 500, 500, 25000, "CASTMAGIC");
+        super(owner, "Ultimate Energy Wave", 100, 500, 1000, 25000, "CASTMAGIC", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
     }
 
     @Override
