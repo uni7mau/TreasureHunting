@@ -1,11 +1,8 @@
 package com.treasurehunting.java.math;
 
-import com.treasurehunting.java.entity.GameObject;
-
-import java.util.ArrayList;
-
 public class AABB {
 
+    private String type;
     private Vector2f pos;
     private float xOffset;
     private float yOffset;
@@ -21,6 +18,8 @@ public class AABB {
         this.w = w;
         this.h = h;
         this.surfaceArea = w * h;
+
+        type = "Rectangle";
     }
 
     // Circle AABB
@@ -28,6 +27,8 @@ public class AABB {
         this.pos = pos;
         this.r = r;
         this.surfaceArea = (float)Math.PI * (r * r);
+
+        type = "Circle";
     }
 
     public Vector2f getPos() { return pos; }
@@ -37,6 +38,7 @@ public class AABB {
     public int getHeight() { return (int) h; }
     public float getRadius() { return r; }
     public float getSurfaceArea() { return surfaceArea; }
+    public String getType() { return type; }
 
     public void setBox(Vector2f pos, int w, int h) {
         this.pos = pos;
@@ -59,7 +61,16 @@ public class AABB {
         r = f;
     }
 
-    public boolean collides(AABB bBox) { return collides(0, 0, bBox); }
+    public boolean collides(AABB bBox) {
+       if (type.equals("Rectangle") && bBox.getType().equals("Circle")) {
+            return bBox.colCircleBox(this); // big brain time
+       } else if (type.equals("Circle") && bBox.getType().equals("Circle")) {
+           return colCircle(bBox);
+       } else if (type.equals("Circle") && bBox.getType().equals("Rectangle")) {
+           return colCircleBox(bBox);
+       }
+       return collides(0, 0, bBox);
+    }
 
     // rect x rect
     public boolean collides(float dx, float dy, AABB bBox) {
@@ -77,7 +88,7 @@ public class AABB {
         return false;
     }
 
-    // rect in rect
+    // dot in rect
     public boolean inside(int xp, int yp) {
         if (xp == -1 || yp == - 1) return false;
 
@@ -95,7 +106,7 @@ public class AABB {
         return ((wTemp < x || wTemp > xp) && (hTemp < y || hTemp > yp));
     }
 
-    // round x round
+    // circle x circle
     public boolean colCircle(AABB circle) {
         float totalRadius = r + circle.getRadius();
         totalRadius *= totalRadius;
@@ -106,7 +117,7 @@ public class AABB {
         return totalRadius < (dx * dx) + (dy * dy);
     }
 
-    // round x rect
+    // circle x rect
     public boolean colCircleBox(AABB aBox) {
         float dx = Math.max(aBox.getPos().x + aBox.getXOffset(), Math.min(pos.x + (r/2), aBox.getPos().x + aBox.getXOffset() + aBox.getWidth()));
         float dy = Math.max(aBox.getPos().y + aBox.getYOffset(), Math.min(pos.y + (r/2), aBox.getPos().y + aBox.getYOffset() + aBox.getHeight()));
@@ -119,12 +130,6 @@ public class AABB {
         }
 
         return false;
-    }
-
-    public float distance(Vector2f other) {
-        float dx = pos.x - other.x;
-        float dy = pos.y - other.y;
-        return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
     public AABB merge(AABB other) {

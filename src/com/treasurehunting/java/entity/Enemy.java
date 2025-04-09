@@ -4,19 +4,15 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.Skill;
-import com.treasurehunting.java.states.GameStateManager;
-import com.treasurehunting.java.states.PlayState;
 
 import java.awt.*;
 
 public abstract class Enemy extends Entity {
 
-    public static Player player;
-
     public Enemy(SpriteSheet spriteSheet, Vector2f origin, int width, int height, String name) {
         super(spriteSheet, origin, width, height, name);
-
     }
 
     public AABB getSense() { return sense; }
@@ -32,15 +28,12 @@ public abstract class Enemy extends Entity {
         setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(Assets.RIGHT), 10);
     }
 
-    @Override
-    public void update(double time) {
+    public void update(double time, Player player) {
         super.update(time);
 
         if (!DIE_STATE) {
             chase(player);
-            if (!PlayState.tm.checkInFog(bounds)) {
-                attack(player);
-            }
+            attack(player);
 
             if (!FALLEN_STATE) {
                 if (!tileCollision.collisionTile(dx, 0)) {
@@ -81,7 +74,7 @@ public abstract class Enemy extends Entity {
 
     @Override
     public void render(Graphics2D g2d) {
-        if (!PlayState.tm.checkInFog(bounds)) {
+        if (!PlayScene.tm.checkInFog(bounds)) {
             super.render(g2d);
             for (int i = 0; i < skills.size(); i++) {
                 Skill skill = skills.get(i);
@@ -90,32 +83,30 @@ public abstract class Enemy extends Entity {
                 }
             }
 
-            if (GameStateManager.cam.getBounds().collides(this.bounds)) {
-                g2d.drawImage(
-                        anim.getImage().image,
-                        (int) pos.getWorldVar().x,
-                        (int) pos.getWorldVar().y,
-                        width,
-                        height,
-                        null
-                );
+            g2d.drawImage(
+                    anim.getImage().image,
+                    (int) pos.getWorldVar().x,
+                    (int) pos.getWorldVar().y,
+                    width,
+                    height,
+                    null
+            );
 
-                // Health Bar UI
-                g2d.setColor(Color.red);
-                g2d.fillRect(
-                        (int) (pos.getWorldVar().x + bounds.getXOffset()),
-                        (int) (pos.getWorldVar().y + height + 5),
-                        (int) bounds.getWidth(),
-                        5
-                );
-                g2d.setColor(Color.green);
-                g2d.fillRect(
-                        (int) (pos.getWorldVar().x + bounds.getXOffset()),
-                        (int) (pos.getWorldVar().y + height + 5),
-                        (int) (bounds.getWidth() * healthPercent),
-                        5
-                );
-            }
+            // Health Bar UI
+            g2d.setColor(Color.red);
+            g2d.fillRect(
+                    (int) (pos.getWorldVar().x + bounds.getXOffset()),
+                    (int) (pos.getWorldVar().y + height + 5),
+                    (int) bounds.getWidth(),
+                    5
+            );
+            g2d.setColor(Color.green);
+            g2d.fillRect(
+                    (int) (pos.getWorldVar().x + bounds.getXOffset()),
+                    (int) (pos.getWorldVar().y + height + 5),
+                    (int) (bounds.getWidth() * healthPercent),
+                    5
+            );
         }
     }
 

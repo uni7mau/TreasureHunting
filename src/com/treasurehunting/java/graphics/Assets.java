@@ -1,7 +1,10 @@
 package com.treasurehunting.java.graphics;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.entity.enemy.Bat;
+import com.treasurehunting.java.entity.enemy.BlueGolem;
+import com.treasurehunting.java.entity.enemy.Skeleton;
+import com.treasurehunting.java.entity.enemy.ToxicFruit;
 
 public class Assets {
 
@@ -13,7 +16,7 @@ public class Assets {
     public static SpriteSheet playerSSGunReloading = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Reloading/Reloading8.png", 48, 64 );
     public static SpriteSheet playerSSGunDeath = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Death/Gun/Death8.png", 48, 64 );
 
-    public static SpriteSheet playerSkillIcon = new SpriteSheet("com/treasurehunting/assets/ui/PlayerSkillIcon.png", 20, 20);
+    public static SpriteSheet playerSkillIcon = new SpriteSheet("com/treasurehunting/assets/ui/PlayerSkillIcon.png", 43, 44);
 
     public static SpriteSheet batSSIdleSleep  = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-Sleep.png", 64, 64);
     public static SpriteSheet batSSWakeUp = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-WakeUp.png", 64, 64);
@@ -49,11 +52,66 @@ public class Assets {
     public static SpriteSheet ultimateBullet = new SpriteSheet("com/treasurehunting/assets/objects/48x48UltimateEnergyBullet.png", 48, 48);
     public static SpriteSheet explodeBomb = new SpriteSheet("com/treasurehunting/assets/objects/16x16ExplodeBomb.png", 16, 16);
 
-    public static String beginTileMap = "com/treasurehunting/assets/tile/tilemap2.xml";
+    public static String dungeonMap = "com/treasurehunting/assets/tile/DungeonMap.xml";
+    public static String graveMap = "com/treasurehunting/assets/tile/GraveMaze.xml";
+    public static String floatingLandMap = "com/treasurehunting/assets/tile/FloatingLandMap.xml";
+    public static int normMapIndex = 3;
+
+    public static int takeMapID(String fileURL) {
+        if (fileURL.equals(dungeonMap)) {
+            return 0;
+        } else if (fileURL.equals(graveMap)) {
+            return 1;
+        } else if (fileURL.equals(floatingLandMap)) {
+            return 2;
+        }
+        return -1;
+    }
+
+    public static String takeMapURL(int mapID) {
+        if (mapID == 0) {
+            return "com/treasurehunting/assets/tile/DungeonMap.xml";
+        } else if (mapID == 1) {
+            return "com/treasurehunting/assets/tile/GraveMaze.xml";
+        } else if (mapID == 2) {
+            return "com/treasurehunting/assets/tile/FloatingLandMap.xml";
+        }
+        return "";
+    }
+
+    public static int takeGameObjectID(GameObject go) {
+        if (go instanceof BlueGolem) return 0;
+        else if (go instanceof Bat) return 1;
+        else if (go instanceof Skeleton) return 2;
+        else if (go instanceof ToxicFruit) return 3;
+        return -1;
+    }
+
+    public static int playerTileID = 203;
+    public static int blueGolemTileID = 201;
+    public static int batTileID = 202;
+    public static int skeletonTileID = 2;
+    public static int toxicFruitTileID = 3;
+    public static int explodeBombID = 100;
+    public static int bombBulletID = 101;
+    public static int normBulletID = 102;
+    public static int critBulletID = 103;
+    public static int ultimateBulletID = 104;
+
     public static String font = "com/treasurehunting/assets/fonts/font.png";
+    public static Fontf fontf;
     public static String meatMadnessFont = "com/treasurehunting/assets/fonts/Stackedpixel.ttf";
     public static String gravityBoldFont = "com/treasurehunting/assets/fonts/GravityBold8.ttf";
     public static String pixelCandyFont = "com/treasurehunting/assets/fonts/PixelCandy.ttf";
+    static {
+        fontf = new Fontf();
+        fontf.loadFont(Assets.pixelCandyFont, "Pixel Game", 128);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 140);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 48);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 32);
+        fontf.loadFont(Assets.meatMadnessFont, "MeatMadness", 32);
+        fontf.loadFont(Assets.gravityBoldFont, "GravityBold8", 8);
+    }
 
     public static SpriteSheet buttonSS = new SpriteSheet("com/treasurehunting/assets/ui/HumbleUI/PNG/SpriteSheet.png", 704, 2160);
 

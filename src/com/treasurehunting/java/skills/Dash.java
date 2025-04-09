@@ -3,14 +3,14 @@ package com.treasurehunting.java.skills;
 import com.treasurehunting.java.entity.Entity;
 import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
-import com.treasurehunting.java.states.GameStateManager;
+import com.treasurehunting.java.scene.PlayScene;
 
 public class Dash extends StaminaSkill {
 
     double camBuffDuration = 500;
 
     public Dash(Entity owner) {
-        super(owner, "Dash", 0, 400, 1000, "DASH", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
+        super(owner, "Dash", 0, 400, 1000, "DASH");
     }
 
     @Override
@@ -79,9 +79,9 @@ public class Dash extends StaminaSkill {
         }
 
         if ((activeTime / 1000000) < (time / 1000000) - camBuffDuration) {
-            GameStateManager.cam.setMaxSpeed(owner.getMaxSpeed());
+            PlayScene.cam.setMaxSpeed(owner.getMaxSpeed());
         } else {
-            GameStateManager.cam.setMaxSpeed(10f);
+            PlayScene.cam.setMaxSpeed(10f);
         }
     }
 

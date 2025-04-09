@@ -11,7 +11,7 @@ public class NormBlock extends Block {
     public NormBlock(Sprite sprite, Vector2f pos, int w, int h) {
         super(sprite, pos, w, h);
 
-        sprite.setEffect(Sprite.effect.DECAY);
+        sprite.setEffect(Sprite.effect.DARKNESS);
     }
 
     @Override

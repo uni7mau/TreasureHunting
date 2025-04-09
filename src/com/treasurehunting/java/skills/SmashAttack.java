@@ -1,12 +1,11 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
-import com.treasurehunting.java.graphics.Assets;
 
 public class SmashAttack extends StaminaSkill {
 
     public SmashAttack(Entity owner) {
-        super(owner, "Smash", owner.getAtk(), 1000, 3000, "SMASH", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
+        super(owner, "Smash", owner.getAtk(), 1000, 3000, "SMASH");
     }
 
     @Override

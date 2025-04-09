@@ -2,7 +2,6 @@ package com.treasurehunting.java.ui;
 
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.states.GameStateManager;
 import com.treasurehunting.java.utils.KeyHandler;
 import com.treasurehunting.java.utils.MouseHandler;
 
@@ -65,10 +64,13 @@ public class Button {
     // ******************************************** LABEL TTF CUSTOM MIDDLE POS *******************************************
 
     public Button(String label, BufferedImage image, Font font, Vector2f pos, int buttonWidth, int buttonHeight) {
-        GameStateManager.g2d.setFont(font);
-        FontMetrics met = GameStateManager.g2d.getFontMetrics(font);
+        Graphics g = image.getGraphics();
+        g.setFont(font);
+        FontMetrics met = g.getFontMetrics(font);
         int height = met.getHeight();
         int width = met.stringWidth(label);
+
+        g.dispose();
 
         this.image = createButton(label, image, font, width + buttonWidth, height + buttonHeight, buttonWidth, buttonHeight);
         this.iPos = new Vector2f(pos.x - this.image.getWidth() / 2, pos.y - this.image.getHeight() / 2);
@@ -87,6 +89,26 @@ public class Button {
 
         Graphics g = result.getGraphics();
         g.drawImage(image, 0, 0, width, height, null);
+
+        g.setFont(font);
+        g.drawString(label, buttonWidth / 2, (height - buttonHeight));
+
+        g.dispose();
+
+        return result;
+    }
+
+    public BufferedImage createPointerButton(String label, BufferedImage image, Font font, int width, int height, int buttonWidth, int buttonHeight) {
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        if (image.getWidth() != width || image.getHeight() != height) {
+            float scale = (float) height / image.getHeight();
+            image = resizeImage(image, (int)( image.getWidth()*scale ), height);
+        }
+
+        Graphics g = result.getGraphics();
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.drawImage(image, width, 0, -image.getWidth(), image.getHeight(), null); // Flip horizontal
 
         g.setFont(font);
         g.drawString(label, buttonWidth / 2, (height - buttonHeight));
@@ -125,6 +147,7 @@ public class Button {
     public int getWidth() { return (int) bounds.getWidth(); }
     public int getHeight() { return (int) bounds.getHeight(); }
     public Vector2f getPos() { return bounds.getPos(); }
+    public AABB getBounds() { return bounds; }
 
     public void input(MouseHandler mouse, KeyHandler key) {
         if (bounds.inside(mouse.getX(), mouse.getY())) {

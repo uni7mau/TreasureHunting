@@ -1,13 +1,10 @@
 package com.treasurehunting.java.entity;
 
-import com.treasurehunting.java.GamePanel;
 import com.treasurehunting.java.graphics.Assets;
-import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.Obstacle;
 import com.treasurehunting.java.skills.Skill;
-import com.treasurehunting.java.ui.AbilityButton;
 import com.treasurehunting.java.utils.*;
 
 import java.awt.*;
@@ -123,8 +120,8 @@ public abstract class Entity extends GameObject {
     public void addSkills(int i, Skill skill) { skills.put(i, skill); }
     public void removeSkill(int i) { skills.remove(i); }
     public void addEnemy(Entity target) {
-        for (int i = 0; i < skills.size(); i++) {
-            skills.get(i).setTargetEnemy(target);
+        for (Map.Entry<Integer, Skill> entry : skills.entrySet()) {
+            entry.getValue().setTargetEnemy(target);
         }
     }
 
@@ -191,19 +188,17 @@ public abstract class Entity extends GameObject {
         }
     }
 
+    @Override
     public void update(double time) {
         super.update(time);
 
         animate();
         anim.update();
-
-        if (!DIE_STATE) {
-            move();
-            if (!FALLEN_STATE) {
-                for (Map.Entry<Integer, Skill> item : skills.entrySet()) {
-                    if (item.getValue() != null) {
-                        item.getValue().update(time);
-                    }
+        move();
+        if (!FALLEN_STATE) {
+            for (Map.Entry<Integer, Skill> item : skills.entrySet()) {
+                if (item.getValue() != null) {
+                    item.getValue().update(time);
                 }
             }
         }
@@ -219,12 +214,6 @@ public abstract class Entity extends GameObject {
     @Override
     public void render(Graphics2D g2d) {
         super.render(g2d);
-
-//        if (INVINCIBLE_STATE && (GamePanel.tickCount == 0 || GamePanel.tickCount == 15 || GamePanel.tickCount == 30 || GamePanel.tickCount == 45 || GamePanel.tickCount == 60)) {
-//            anim.getImage().setEffect(Sprite.effect.REDISH);
-//        } else {
-//            anim.getImage().setEffect(Sprite.effect.NORMAL);
-//        }
 
         for (Map.Entry<Integer, Skill> item : skills.entrySet()) {
             Skill skill = skills.get(item.getKey());

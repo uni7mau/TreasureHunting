@@ -10,8 +10,6 @@ public class Ability {
 
     public AbilityCommand createCommand() { return new AbilityCommand(data); }
 
-    public Skill getData() {
-        return data;
-    }
+    public Skill getData() { return data; }
 
 }

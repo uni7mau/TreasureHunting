@@ -5,19 +5,23 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.bullets.CritBullet;
 import com.treasurehunting.java.obstacle.bullets.NormBullet;
-import com.treasurehunting.java.states.PlayState;
+import com.treasurehunting.java.scene.PlayScene;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Shooting extends SumonSkill {
 
     public Shooting(Entity owner) {
-        super(owner, "Shooting", 5, 0, 100, 100, "SHOOTING", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
+        super(owner, "Shooting", 5, 0, 50, 50, "SHOOTING");
     }
 
     // TODO: do this
     @Override
-    public void summItem() {
+    public void sumItem() {
+        if (!PlayScene.tobeAdded.containsKey(Assets.normBulletID)) PlayScene.tobeAdded.put(Assets.normBulletID, new ArrayList<>());
+        if (!PlayScene.tobeAdded.containsKey(Assets.critBulletID)) PlayScene.tobeAdded.put(Assets.critBulletID, new ArrayList<>());
+
         float adjustX = 0;
         float adjustY = 0;
 
@@ -53,7 +57,7 @@ public class Shooting extends SumonSkill {
         int value = random.nextInt(100);
         // Change by crit rate
         if (value < 50) { // 50% cho A
-            PlayState.gameObjects.add(
+            PlayScene.tobeAdded.get(Assets.normBulletID).add(
                     new NormBullet(
                             20, 20,
                             new Vector2f(
@@ -67,7 +71,7 @@ public class Shooting extends SumonSkill {
                     )
             );
         } else {
-            PlayState.gameObjects.add(
+            PlayScene.tobeAdded.get(Assets.critBulletID).add(
                     new CritBullet(
                             20, 20,
                             new Vector2f(

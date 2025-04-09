@@ -3,7 +3,7 @@ package com.treasurehunting.java.utils;
 import com.treasurehunting.java.entity.Entity;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.states.PlayState;
+import com.treasurehunting.java.scene.PlayScene;
 
 import java.awt.*;
 
@@ -23,8 +23,8 @@ public class Camera {
     private float acc = 3f;
     private float deacc = 0.3f;
 
-    private int widthLimit;
-    private int heightLimit;
+    private static int widthLimit;
+    private static int heightLimit;
 
     public Camera(AABB collisionCam) { this.collisionCam = collisionCam; }
 
@@ -42,25 +42,24 @@ public class Camera {
 
     public AABB getBounds() { return collisionCam; }
 
-    public void setLimit(int widthLimit, int heightLimit) {
-        this.widthLimit = widthLimit;
-        this.heightLimit = heightLimit;
+    public static void setLimit(int widthLimit, int heightLimit) {
+        Camera.widthLimit = widthLimit;
+        Camera.heightLimit = heightLimit;
     }
 
     public void update() {
         move();
         if (!e.blockedX) {
             if (collisionCam.getPos().x + dx > 0
-                    && collisionCam.getPos().getWorldVar().x + dx < Vector2f.getWorldVarX(widthLimit - collisionCam.getWidth()) - Preferences.BLOCK_PIXEL) {
-                PlayState.map.x += dx;
+                    && collisionCam.getPos().getWorldVar().x + dx < Vector2f.getWorldVarX(widthLimit - collisionCam.getWidth())) {
+                PlayScene.map.x += dx;
                 collisionCam.getPos().setX(collisionCam.getPos().x + dx);
-
             }
         }
         if (!e.blockedY) {
             if (collisionCam.getPos().y + dy > 0
-                    && collisionCam.getPos().getWorldVar().y + dy < Vector2f.getWorldVarY(heightLimit - collisionCam.getHeight()) - Preferences.BLOCK_PIXEL) {
-                PlayState.map.y += dy;
+                    && collisionCam.getPos().getWorldVar().y + dy < Vector2f.getWorldVarY(heightLimit - collisionCam.getHeight())) {
+                PlayScene.map.y += dy;
                 collisionCam.getPos().setY(collisionCam.getPos().y + dy);
             }
         }
@@ -135,22 +134,22 @@ public class Camera {
 
     public void input(MouseHandler mouse, KeyHandler key) {
         if (e == null) {
-            if (KeyHandler.keys.get(KeyHandler.UP).down) {
+            if (key.getKeys().get(GameSettings.UP).down) {
                 up = true;
             } else {
                 up = false;
             }
-            if (KeyHandler.keys.get(KeyHandler.DOWN).down) {
+            if (key.getKeys().get(GameSettings.DOWN).down) {
                 down = true;
             } else {
                 down = false;
             }
-            if (KeyHandler.keys.get(KeyHandler.LEFT).down) {
+            if (key.getKeys().get(GameSettings.LEFT).down) {
                 left = true;
             } else {
                 left = false;
             }
-            if (KeyHandler.keys.get(KeyHandler.RIGHT).down) {
+            if (key.getKeys().get(GameSettings.RIGHT).down) {
                 right = true;
             } else {
                 right = false;
@@ -191,8 +190,8 @@ public class Camera {
         g2d.setColor(Color.blue);
         g2d.drawRect((int) collisionCam.getPos().getWorldVar().x, (int) collisionCam.getPos().getWorldVar().y, collisionCam.getWidth(), collisionCam.getHeight());
 
-        g2d.drawLine(Preferences.GAME_WIDTH / 2, 0, Preferences.GAME_WIDTH / 2, Preferences.GAME_HEIGHT);
-        g2d.drawLine(0, Preferences.GAME_HEIGHT / 2, Preferences.GAME_WIDTH,Preferences.GAME_HEIGHT / 2);
+        g2d.drawLine(GameSettings.GAME_WIDTH / 2, 0, GameSettings.GAME_WIDTH / 2, GameSettings.GAME_HEIGHT);
+        g2d.drawLine(0, GameSettings.GAME_HEIGHT / 2, GameSettings.GAME_WIDTH,GameSettings.GAME_HEIGHT / 2);
     }
 
 }

@@ -6,7 +6,7 @@ import com.treasurehunting.java.graphics.Assets;
 public class RangeAttack extends StaminaSkill {
 
     public RangeAttack(Entity owner) {
-        super(owner, "Attack", 5, 300, 3000, "RANGEATTACK", Assets.playerSkillIcon.getSubimage(0, 0, 20, 20));
+        super(owner, "Attack", owner.getAtk(), 900, 3000, "RANGEATTACK");
     }
 
     @Override

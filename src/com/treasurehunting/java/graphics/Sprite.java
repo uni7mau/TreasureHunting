@@ -15,7 +15,7 @@ public class Sprite {
     private int w;
     private int h;
 
-    public static enum effect {NORMAL, SEPIA, REDISH, GRAYSCALE, NEGATIVE, DECAY};
+    public static enum effect {NORMAL, SEPIA, REDISH, GRAYSCALE, NEGATIVE, DECAY, DARKNESS};
 
     private float[][] id = {{1.0f, 0.0f, 0.0f},
                             {0.0f, 1.0f, 0.0f},
@@ -47,7 +47,20 @@ public class Sprite {
                                    {0.333f, 0.333f, 0.333f},
                                    {0.000f, 0.000f, 0.000f}};
 
+    private float[][] darkness = {
+            {0.2f, 0.0f, 0.0f},
+            {0.0f, 0.2f, 0.0f},
+            {0.0f, 0.0f, 0.2f},
+            {0.0f, 0.0f, 0.0f}
+    };
+
     private float[][] currentEffect = id;
+
+    public Sprite(int w, int h) {
+        this.w = w;
+        this. h = h;
+        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    }
 
     public Sprite(BufferedImage image) {
         this.image = image;
@@ -114,6 +127,8 @@ public class Sprite {
             case NEGATIVE: effect = negative;
                 break;
             case DECAY: effect = decay;
+                break;
+            case DARKNESS: effect = darkness;
                 break;
             default: effect = id;
         }

@@ -1,15 +1,18 @@
 package com.treasurehunting.java.obstacle.bullets;
 
 import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.obstacle.Obstacle;
-import com.treasurehunting.java.states.GameStateManager;
-import com.treasurehunting.java.states.PlayState;
+import com.treasurehunting.java.scene.PlayScene;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Bullet extends Obstacle {
 
@@ -96,14 +99,16 @@ public abstract class Bullet extends Obstacle {
         activeTime = time;
         double distAfterUpdate = (deltaT * overallDist) / bulletSpeed;
         setHitboxPosition(distAfterUpdate);
-        for (int i = 0; i < PlayState.gameObjects.size(); i++) {
-            if (PlayState.gameObjects.get(i) instanceof Entity target) {
-                if (bounds.collides(target.getBounds())) {
-                    target.healthDec(
-                            (int) (dmg),
-                            force * (1 - target.getRes()),
-                            direction
-                    );
+        for (Map.Entry<Integer, List<GameObject>> entry : PlayScene.gameObjects.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                if (entry.getValue().get(i) instanceof Entity target && !(target instanceof Player)) {
+                    if (bounds.collides(target.getBounds())) {
+                        target.healthDec(
+                                (int) (dmg),
+                                force * (1 - target.getRes()),
+                                direction
+                        );
+                    }
                 }
             }
         }
@@ -115,28 +120,26 @@ public abstract class Bullet extends Obstacle {
 
     @Override
     public void render(Graphics2D g2d) {
-        if (GameStateManager.cam.getBounds().collides(bounds)) {
-            g2d.setColor(Color.red);
-            g2d.drawRect((int) (pos.getWorldVar().x + bounds.getXOffset()), (int) (pos.getWorldVar().y + bounds.getYOffset()), bounds.getWidth(), bounds.getHeight());
+        g2d.setColor(Color.red);
+        g2d.drawRect((int) (pos.getWorldVar().x + bounds.getXOffset()), (int) (pos.getWorldVar().y + bounds.getYOffset()), bounds.getWidth(), bounds.getHeight());
 
-            //Make a backup so that we can reset our graphics object after using it.
-            AffineTransform backup = g2d.getTransform();
-            //rx is the x coordinate for rotation, ry is the y coordinate for rotation, and angle
-            //is the angle to rotate the image. If you want to rotate around the center of an image,
-            //use the image's center x and y coordinates for rx and ry.
-            AffineTransform a = AffineTransform.getRotateInstance(Math.toRadians((direction - 6) * 45), pos.getWorldVar().x + (double) width / 2, pos.getWorldVar().y + (double) height / 2);
-            //Set our Graphics2D object to the transform
-            g2d.setTransform(a);
-            //Draw our image like normal
-            g2d.drawImage(anim.getImage().image, (int) pos.getWorldVar().x, (int) pos.getWorldVar().y, width, height, null);
-            //Reset our graphics object so we can draw with it again.
-            g2d.setTransform(backup);
+        //Make a backup so that we can reset our graphics object after using it.
+        AffineTransform backup = g2d.getTransform();
+        //rx is the x coordinate for rotation, ry is the y coordinate for rotation, and angle
+        //is the angle to rotate the image. If you want to rotate around the center of an image,
+        //use the image's center x and y coordinates for rx and ry.
+        AffineTransform a = AffineTransform.getRotateInstance(Math.toRadians((direction - 6) * 45), pos.getWorldVar().x + (double) width / 2, pos.getWorldVar().y + (double) height / 2);
+        //Set our Graphics2D object to the transform
+        g2d.setTransform(a);
+        //Draw our image like normal
+        g2d.drawImage(anim.getImage().image, (int) pos.getWorldVar().x, (int) pos.getWorldVar().y, width, height, null);
+        //Reset our graphics object so we can draw with it again.
+        g2d.setTransform(backup);
 
 //        // Check midle bullet img:
 //        g2d.setColor(Color.PINK);
 //        g2d.drawLine(0, (int)pos.getWorldVar().y + height / 2, Preferences.GAME_WIDTH, (int)pos.getWorldVar().y + height / 2);
 //        g2d.drawLine((int)pos.getWorldVar().x + width / 2, 0, (int)pos.getWorldVar().x + width / 2, Preferences.GAME_HEIGHT);
-        }
     }
 
 }

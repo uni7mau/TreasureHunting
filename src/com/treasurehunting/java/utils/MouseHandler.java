@@ -8,20 +8,20 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
-    private static int mouseX = -1;
-    private static int mouseY = -1;
-    private static int mouseB = -1;
+    private int mouseX = -1;
+    private int mouseY = -1;
+    private int mouseB = -1;
 
     public MouseHandler(GamePanel gamePanel) {
         gamePanel.addMouseListener(this);
         gamePanel.addMouseMotionListener(this);
     }
 
-    public static int getX() { return mouseX; }
+    public int getX() { return mouseX; }
 
-    public static int getY() { return mouseY; }
+    public int getY() { return mouseY; }
 
-    public static int getButton() { return mouseB; }
+    public int getButton() { return mouseB; }
 
     @Override
     public void mouseDragged(MouseEvent e) {

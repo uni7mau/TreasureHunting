@@ -34,8 +34,8 @@ public class HoleBlock extends Block {
     public void render(Graphics2D g2d) {
         super.render(g2d);
 
-        g2d.setColor(Color.magenta);
-        g2d.drawRect((int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h);
+//        g2d.setColor(Color.magenta);
+//        g2d.drawRect((int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h);
     }
 
 }

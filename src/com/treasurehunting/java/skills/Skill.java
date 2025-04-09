@@ -24,7 +24,7 @@ public abstract class Skill {
     protected ArrayList<Entity> targets;
     protected Entity owner;
 
-    public Skill(Entity owner, String skillName, int dmg, int manaCost, int skillSpeed, int cooldown, BufferedImage icon) {
+    public Skill(Entity owner, String skillName, int dmg, int manaCost, int skillSpeed, int cooldown) {
         this.owner = owner;
         this.name = skillName;
         this.dmg = dmg;
@@ -53,7 +53,7 @@ public abstract class Skill {
     }
 
     public void updateCanActive(double time) {
-        if ((activeTime / 1000000) + cooldown > (time / 1000000)) {
+        if ((activeTime / 1000000) + cooldown > (time / 1000000) || owner.getMana() < manaCost) {
             canActive = false;
         } else {
             canActive = true;

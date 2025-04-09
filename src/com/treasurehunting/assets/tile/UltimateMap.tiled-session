@@ -1,0 +1,171 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "DungeonMap.xml",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "C:/Users/hoang/Documents/School Things/Treasure/K4/Công nghệ Java/BTL/Tiles/MainTilemap.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/hoang/TreasureHunting/IdeaProjects/SavingPrivateDan/res/tile/MainTileMap.png": {
+            "scaleInDock": 1
+        },
+        "DungeonMap.xml": {
+            "scale": 1.5,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 332.3333333333333,
+                "y": 406.33333333333337
+            }
+        },
+        "DungeonMap.xml#DungeonTileMap": {
+            "scaleInDock": 3
+        },
+        "DungeonMap.xml#MainTileMap": {
+            "scaleInDock": 2
+        },
+        "DungeonMap.xml#OverTileMap": {
+            "scaleInDock": 4
+        },
+        "FloatingLandMap.xml": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 480.5,
+                "y": 43.5
+            }
+        },
+        "FloatingLandMap.xml#MainTileMap": {
+            "scaleInDock": 1
+        },
+        "GraveMap.xml": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 403,
+                "y": 248.33333333333331
+            }
+        },
+        "GraveMap.xml#MainTileMap": {
+            "scaleInDock": 0.75
+        },
+        "GraveMaze.xml": {
+            "scale": 2,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 400.25,
+                "y": 400.25
+            }
+        },
+        "GraveMaze.xml#DungeonTileMap": {
+            "scaleInDock": 1
+        },
+        "GraveMaze.xml#OverTileMap": {
+            "scaleInDock": 2
+        },
+        "MainTileMap": {
+            "scaleInDock": 1
+        },
+        "MainTileMap.tmx": {
+            "scale": 0.629193899782135,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1184.849376731302,
+                "y": 661.958102493075
+            }
+        },
+        "MainTileMap.xml": {
+            "scale": 0.75,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1115.3333333333333,
+                "y": 628
+            }
+        },
+        "MainTileMap.xml#MainTileMap": {
+            "scaleInDock": 2
+        },
+        "MainTileMapCopy.xml": {
+            "scale": 3,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 756.8333333333333,
+                "y": 665.5
+            }
+        },
+        "MainTileMapCopy.xml#MainTileMap": {
+            "scaleInDock": 2
+        },
+        "MainTilemap": {
+            "scaleInDock": 1
+        },
+        "MainTilemap.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "OverMap.xml": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 270.3333333333333,
+                "y": 297
+            }
+        },
+        "OverMap.xml#DungeonTileMap": {
+            "scaleInDock": 1
+        },
+        "OverMap.xml#OverTileMap": {
+            "scaleInDock": 1.5
+        },
+        "UltimateMap.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1163,
+                "y": 599
+            }
+        },
+        "tilemap2.xml": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 800.5,
+                "y": 399.5
+            }
+        },
+        "tilemap2.xml#MainTileMap": {
+            "scaleInDock": 1
+        },
+        "tilemap2.xml#dungeon_tiles_formatted_v2": {
+            "scaleInDock": 3
+        }
+    },
+    "map.height": 50,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 50,
+    "openFiles": [
+        "DungeonMap.xml",
+        "GraveMaze.xml"
+    ],
+    "project": "UltimateMap.tiled-project",
+    "recentFiles": [
+        "GraveMaze.xml",
+        "DungeonMap.xml",
+        "GraveMap.xml",
+        "FloatingLandMap.xml",
+        "OverMap.xml",
+        "tilemap2.xml",
+        "MainTileMapCopy.xml",
+        "MainTileMap.xml",
+        "MainTileMap.tmx",
+        "MainTilemap.tsx",
+        "UltimateMap.tmx"
+    ]
+}

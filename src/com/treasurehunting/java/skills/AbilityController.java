@@ -10,8 +10,7 @@ public class AbilityController {
 
     private final AbilityModel model;
     private final AbilityView view;
-    private final Queue<AbilityCommand> abilityCommandQueue = new LinkedList<>(); // TODO: change 1 curr skill to execute
-//    private AbilityCommand currAbilityCommand = new AbilityCommand(null);
+    private final Queue<AbilityCommand> abilityCommandQueue = new LinkedList<>();
     private final CountdownTimer timer = new CountdownTimer(0);
 
     private AbilityController(AbilityView view, AbilityModel model) {
@@ -25,11 +24,8 @@ public class AbilityController {
     private void connectView() {
         for (Map.Entry<Integer, AbilityButton> entry : view.getButtons().entrySet()) {
             entry.getValue().setOnButtonPressedListener( (int key) -> {
-                if (timer.getProgress() < 0.25f || !timer.isRunning()) {
-                    if (model.getAbilities().get(key) != null &&
-                            model.getAbilities().get(key).createCommand() != null
-//                            model.getAbilities().get(key).getData().isCanActive()
-                    ) {
+                if (!timer.isRunning()) {
+                    if (model.getAbilities().get(key) != null && model.getAbilities().get(key).getData().isCanActive() && model.getAbilities().get(key).createCommand() != null) {
                         abilityCommandQueue.add(model.getAbilities().get(key).createCommand());
                     }
                 }
@@ -38,13 +34,14 @@ public class AbilityController {
     }
 
     private void connectModel() {
+
     }
 
-    public void input() { // TODO: put keyhandler, mousehandler here
+    public void input(MouseHandler mouse, KeyHandler key) {
         for (Map.Entry<Integer, AbilityButton> entry : view.getButtons().entrySet()) {
             if (
-                    MouseHandler.getButton() == 1 && entry.getValue().getBounds().inside(MouseHandler.getX(), MouseHandler.getY()) ||
-                    KeyHandler.keys.get(entry.getValue().keyCode).down
+                    mouse.getButton() == 1 && entry.getValue().getBounds().inside(mouse.getX(), mouse.getY()) ||
+                    key.getKeys().get(entry.getValue().keyCode).down
             ) {
                 entry.getValue().action();
             }
@@ -59,8 +56,8 @@ public class AbilityController {
             cmd.execute();
             timer.reset(cmd.getDuration());
             timer.start();
+            abilityCommandQueue.clear();
         }
-        abilityCommandQueue.clear();
     }
 
     public static class Builder {
@@ -81,4 +78,3 @@ public class AbilityController {
     }
 
 }
-

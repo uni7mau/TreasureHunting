@@ -1,9 +1,8 @@
 package com.treasurehunting.java;
 
-import com.treasurehunting.java.utils.Preferences;
+import com.treasurehunting.java.utils.GameSettings;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.net.URL;
 
@@ -31,7 +30,7 @@ public class DesktopLauncher extends JFrame {
 
         createBufferStrategy(2); //Double buffering
         bs = getBufferStrategy();
-        gp = new GamePanel(bs, Preferences.GAME_WIDTH, Preferences.GAME_HEIGHT);
+        gp = new GamePanel(bs, GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
         add(gp);
         setContentPane(gp);
     }

@@ -31,25 +31,25 @@ public abstract class Obstacle extends GameObject {
 
     public boolean getState(String state) {
         if (state.equals("IDLE")) { return IDLE_STATE; }
-        if (state.equals("MOVE")) { return MOVE_STATE; }
-        if (state.equals("FALLEN")) { return FALLEN_STATE; }
-        if (state.equals("ATTACK")) { return ATTACKING_STATE; }
-        if (state.equals("DEFENCE")) { return DEFENCE_STATE; }
-        if (state.equals("DESTROY")) { return DESTROY_STATE; }
-        if (state.equals("INVINCIBLE")) { return INVINCIBLE_STATE; }
-        if (state.equals("HIT")) { return BEINGHIT_STATE; }
-        return false;
+        else if (state.equals("MOVE")) { return MOVE_STATE; }
+        else if (state.equals("FALLEN")) { return FALLEN_STATE; }
+        else if (state.equals("ATTACK")) { return ATTACKING_STATE; }
+        else if (state.equals("DEFENCE")) { return DEFENCE_STATE; }
+        else if (state.equals("DESTROY")) { return DESTROY_STATE; }
+        else if (state.equals("INVINCIBLE")) { return INVINCIBLE_STATE; }
+        else if (state.equals("HIT")) { return BEINGHIT_STATE; }
+        else return false;
     }
 
     public void setState(String state, boolean b) {
         if (state.equals("IDLE")) { IDLE_STATE = b; }
-        if (state.equals("MOVE")) { MOVE_STATE = b; }
-        if (state.equals("FALLEN")) { FALLEN_STATE = b; }
-        if (state.equals("ATTACK")) { ATTACKING_STATE = b; }
-        if (state.equals("DEFENCE")) { DEFENCE_STATE = b; }
-        if (state.equals("DESTROY")) { DESTROY_STATE = b; }
-        if (state.equals("INVINCIBLE")) { INVINCIBLE_STATE = b; }
-        if (state.equals("HIT")) { BEINGHIT_STATE = b; }
+        else if (state.equals("MOVE")) { MOVE_STATE = b; }
+        else if (state.equals("FALLEN")) { FALLEN_STATE = b; }
+        else if (state.equals("ATTACK")) { ATTACKING_STATE = b; }
+        else if (state.equals("DEFENCE")) { DEFENCE_STATE = b; }
+        else if (state.equals("DESTROY")) { DESTROY_STATE = b; }
+        else if (state.equals("INVINCIBLE")) { INVINCIBLE_STATE = b; }
+        else if (state.equals("HIT")) { BEINGHIT_STATE = b; }
     }
 
     public abstract void animate();

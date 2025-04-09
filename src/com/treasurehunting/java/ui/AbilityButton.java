@@ -1,8 +1,8 @@
 package com.treasurehunting.java.ui;
 
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.utils.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +13,9 @@ public class AbilityButton {
     public JProgressBar radialImg;
     public BufferedImage abilityIcon;
     public AABB bounds;
+    public double time;
 
     public int keyCode;
-    public KeyHandler.Key key;
 
     private OnButtonPressedListener onButtonPressedListener;
 
@@ -33,13 +33,16 @@ public class AbilityButton {
 
         bounds = new AABB(pos, width, height);
         this.keyCode = keyCode;
-        key = KeyHandler.keys.get(keyCode);
     }
 
     public void updateRadialFill(double progress) {
         if (radialImg != null) {
             radialImg.setValue((int) (progress * 360));
         }
+    }
+
+    public void updateCooldownTime(double time) {
+
     }
 
     public void action() {
@@ -53,6 +56,14 @@ public class AbilityButton {
 
         g2d.setColor(new Color(155, 155, 155, 150));
         g2d.fillArc((int) bounds.getPos().x, (int) bounds.getPos().y, radialImg.getWidth(), radialImg.getHeight(), 90, radialImg.getValue());
+
+        if (time >= 0) {
+            g2d.setFont(Assets.fontf.getFont("Pixel Game", 48));
+            FontMetrics met = g2d.getFontMetrics(g2d.getFont());
+            int width = met.stringWidth((int) time+"");
+            int height = met.getHeight();
+            g2d.drawString((int) time+"", width, height);
+        }
     }
 
     public interface OnButtonPressedListener {

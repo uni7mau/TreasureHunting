@@ -1,10 +1,12 @@
 package com.treasurehunting.java.tiles;
 
+import com.treasurehunting.java.bundle.EntityBundle;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
-import com.treasurehunting.java.states.GameStateManager;
+import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.blocks.NormBlock;
-import com.treasurehunting.java.utils.Preferences;
+import com.treasurehunting.java.utils.GameSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,7 +16,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 public class TileManager {
 
@@ -26,26 +29,28 @@ public class TileManager {
     private int blockWidthQty;
     private int blockHeightQty;
 
-    private String file;
+    private int mapID;
     private int columns;
 
     public TileManager() {
         tm = new ArrayList<>();
     }
 
-    public TileManager(String path) {
+    public TileManager(int mapID) {
         this();
-        addTileMap(path, Preferences.BLOCK_PIXEL, Preferences.BLOCK_PIXEL);
+        this.mapID = mapID;
+        addTileMap(Assets.takeMapURL(mapID), GameSettings.TILE_SIZE, GameSettings.TILE_SIZE);
     }
 
-    public TileManager(String path, int blockWidth, int blockHeight) {
+    public TileManager(int mapID, int blockWidth, int blockHeight) {
         this();
-        addTileMap(path, blockWidth, blockHeight);
+        this.mapID = mapID;
+        addTileMap(Assets.takeMapURL(mapID), blockWidth, blockHeight);
     }
 
     public int getBlockWidth() { return blockWidth; }
     public int getBlockHeight() { return blockHeight; }
-    public String getFilename() { return file; }
+    public int getMapID() { return mapID; }
     public int getColumns() { return columns; }
 
     private void addTileMap(String path, int blockWidth, int blockHeight) {
@@ -76,7 +81,6 @@ public class TileManager {
             tileColumns =  Integer.parseInt(eElement.getAttribute("columns"));
 
             this.columns = tileColumns;
-            this.file = imagePath;
             spriteSheet = new SpriteSheet("com/treasurehunting/assets/tile/" + imagePath + ".png", tileWidth, tileHeight);
 
             list = doc.getElementsByTagName("layer");
@@ -96,15 +100,16 @@ public class TileManager {
                 //Mặc định layer đầu tiên là layer tương tác, các layer cao hơn thì xếp chồng để hiển thị
                 //Xếp layers từ thấp lên cao bằng cách hiển thị cao trước thấp sau, i càng lớn thì càng gần mắt người chơi
                 //Is there any ways to make the player can interact with varies block at different layer ?
-                if (i == 0) {
+                if (i == layers - 1) {
+                    EntityBundle.entityTileLoad(data[i], wQty, hQty, blockWidth, blockHeight, tileColumns);
+                } else if (i == 0) {
                     tm.add(new TileMapObj(data[i], spriteSheet, wQty, hQty, blockWidth, blockHeight, tileColumns));
                 } else {
                     tm.add(new TileMapNorm(data[i], spriteSheet, wQty, hQty, blockWidth, blockHeight, tileColumns));
                 }
             }
-
             //Giới hạn khung hình cho camera: "Sprite Block Qty" * "Display Size". Ex: camWidthLimit = 50 x 64 = 3200, ...
-            GameStateManager.cam.setLimit(wQty*Preferences.BLOCK_PIXEL, hQty*Preferences.BLOCK_PIXEL);
+            PlayScene.cam.setLimit(wQty*GameSettings.TILE_SIZE, hQty*GameSettings.TILE_SIZE);
         } catch(Exception e) {
             System.out.println("ERROR - TILEMANAGER: can not read tilemap:");
             e.printStackTrace();
@@ -115,35 +120,36 @@ public class TileManager {
         this.blockHeightQty = hQty;
     }
 
-    public NormBlock[] getNormalTile(int id) {
-        int normMap = 1;
+    public List<NormBlock> getNormalTile(int id) { // higher than surface layer + interact layer
+        int normMap = Assets.normMapIndex;
         if (tm.size() < 2) normMap = 0;
-        NormBlock[] block = new NormBlock[9];
 
-        int i = 0;
-        for (int x = 1; x >= -1; x--) {
-            for (int y = 1; y >= -1; y--) {
-                if (id + (y + x * blockWidthQty) < 0 || id + (y + x * blockHeightQty) > (blockWidthQty * blockHeightQty) - 2) continue;
-                block[i] = (NormBlock)tm.get(normMap).getBlocks()[id + (y + x * blockHeightQty)];
-                i++;
+        List<NormBlock> blocks = new ArrayList<>();
+
+        for (int k = normMap; k < tm.size(); k++) {
+            for (int x = 1; x >= -1; x--) {
+                for (int y = 1; y >= -1; y--) {
+                    if (id + (y + x * blockWidthQty) < 0 || id + (y + x * blockHeightQty) > (blockWidthQty * blockHeightQty) - 2) continue;
+                    blocks.add((NormBlock)tm.get(k).getBlocks()[id + (y + x * blockHeightQty)]);
+                }
             }
         }
 
-        return block;
+        return blocks;
     }
 
     public boolean checkInFog(AABB bounds) {
-        int normMap = 1;
+        int normMap = Assets.normMapIndex;
         if (tm.size() < 2) normMap = 0;
 
-        int xt1 = (int) ( bounds.getPos().x + bounds.getXOffset()) / Preferences.BLOCK_PIXEL;
-        int yt1 = (int) ( bounds.getPos().y + bounds.getYOffset()) / Preferences.BLOCK_PIXEL;
-        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / Preferences.BLOCK_PIXEL;
-        int yt2 = (int) ( bounds.getPos().y + bounds.getYOffset()) / Preferences.BLOCK_PIXEL;
-        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / Preferences.BLOCK_PIXEL;
-        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / Preferences.BLOCK_PIXEL;
-        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset()) / Preferences.BLOCK_PIXEL;
-        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / Preferences.BLOCK_PIXEL;
+        int xt1 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
+        int yt1 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
+        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / GameSettings.TILE_SIZE;
+        int yt2 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
+        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / GameSettings.TILE_SIZE;
+        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / GameSettings.TILE_SIZE;
+        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
+        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / GameSettings.TILE_SIZE;
 
         int idA = xt1 + yt1*blockWidthQty; // leftup
         int idB = xt2 + yt2*blockWidthQty; // rightup
@@ -152,7 +158,7 @@ public class TileManager {
 
         int cnt = 0;
         if (idA >= 0 && idA <= (blockWidthQty * blockHeightQty) - 2) {
-            cnt +=  tm.get(normMap).getBlocks()[idA] != null && tm.get(normMap).getBlocks()[idA].hasFog ? 1 : 0;
+            cnt += tm.get(normMap).getBlocks()[idA] != null && tm.get(normMap).getBlocks()[idA].hasFog ? 1 : 0;
         }
         if (idB >= 0 && idB <= (blockWidthQty * blockHeightQty) - 2) {
             cnt += tm.get(normMap).getBlocks()[idB] != null && tm.get(normMap).getBlocks()[idB].hasFog ? 1 : 0;

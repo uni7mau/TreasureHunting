@@ -6,15 +6,14 @@ import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public abstract class StaminaSkill extends Skill {
 
     protected String counterEffect = "";
     protected AABB hitBound;
 
-    public StaminaSkill(Entity owner, String skillName, int dmg, int skillSpeed, int cooldown, String counterEffect, BufferedImage icon) {
-        super(owner, skillName, dmg, 0, skillSpeed, cooldown, icon);
+    public StaminaSkill(Entity owner, String skillName, int dmg, int skillSpeed, int cooldown, String counterEffect) {
+        super(owner, skillName, dmg, 0, skillSpeed, cooldown);
 
         hitBound = new AABB(
                 new Vector2f(owner.getPos()),
@@ -37,25 +36,19 @@ public abstract class StaminaSkill extends Skill {
         updateActivating(time);
         updateHitBoxDirection();
 
-        for (int i = 0; i < targets.size(); i++) {
-            if (hitBound.collides(targets.get(i).getBounds()) && !targets.get(i).getState("INVINCIBLE")) {
-                request = true;
-            }
-        }
-
         if (request && canActive) {
             activeTime = time;
         }
 
         if (activating) {
             owner.setState(counterEffect, true);
-            for (int i = 0; i < targets.size(); i++) {
-                if (owner.getAnimation().getCurrFrame() == owner.getSpriteSheet(Assets.takeAnimId(counterEffect)).getSpriteRow(owner.getCurrDirection()).length / 2) {
+            if (owner.getAnimation().checkActiveFrame(Assets.takeAnimId(counterEffect))) {
+                for (int i = 0; i < targets.size(); i++) {
                     if (hitBound.collides(targets.get(i).getBounds())) {
                         targets.get(i).healthDec(
-                                (int) (dmg),
+                                owner.getAtk(),
                                 owner.getForce() * (1 - targets.get(i).getRes()),
-                                owner.getCurrDirection() // TODO: check x, y to the enemy
+                                owner.getCurrDirection()
                         );
                     }
                 }
@@ -70,8 +63,10 @@ public abstract class StaminaSkill extends Skill {
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.setColor(Color.red);
-        g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
+//        if (activating) {
+//            g2d.setColor(Color.red);
+//            g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
+//        }
     }
 
 }

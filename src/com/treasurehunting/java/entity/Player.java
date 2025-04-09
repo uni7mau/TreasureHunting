@@ -5,60 +5,62 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.skills.*;
-import com.treasurehunting.java.states.GameStateManager;
-import com.treasurehunting.java.states.PlayState;
+import com.treasurehunting.java.scene.PlayScene;
+import com.treasurehunting.java.tiles.TileMapObj;
 import com.treasurehunting.java.tiles.blocks.NormBlock;
+import com.treasurehunting.java.utils.GameSettings;
 import com.treasurehunting.java.utils.KeyHandler;
 import com.treasurehunting.java.utils.MouseHandler;
 import com.treasurehunting.java.math.Vector2f;
 
-import java.awt.event.KeyEvent;
+import java.util.List;
 
 // Big brain time: Adventurer doesn't have Walk while Shooting, so I decided to give player an ability that make she moves superfast
 
 public class Player extends Entity {
 
-    public static boolean RELOADING_STATE = false;
-    public static boolean DASH_STATE = false;
-    public static boolean RUN_STATE = false;
-    public static boolean SHOOTING_STATE = false;
-    public static boolean THROWBOMB_STATE = false;
-    public static boolean CASTMAGIC_STATE = false;
+    public boolean RELOADING_STATE = false;
+    public boolean DASH_STATE = false;
+    public boolean RUN_STATE = false;
+    public boolean SHOOTING_STATE = false;
+    public boolean THROWBOMB_STATE = false;
+    public boolean CASTMAGIC_STATE = false;
 
-    public Player(SpriteSheet spriteSheet, Vector2f origin, int width, int height) {
-        super(spriteSheet, origin, width, height, "Player");
+    // 48 x 64
+    public Player(Vector2f origin) {
+        super(Assets.playerSSGunIdle, origin, 2*GameSettings.TILE_SIZE*48 / 64, 2*GameSettings.TILE_SIZE, "Player");
 
-        bounds.setWidth(40);
+        addSpriteSheet(Assets.RUN, Assets.playerSSGunRun);
+        addSpriteSheet(Assets.STANDSHOOTING, Assets.playerSSGunStandShooting);
+        addSpriteSheet(Assets.RUNSHOOTING, Assets.playerSSGunRunShooting);
+        addSpriteSheet(Assets.DASH, Assets.playerSSGunDash);
+        addSpriteSheet(Assets.RELOADING, Assets.playerSSGunReloading);
+        addSpriteSheet(Assets.DIE, Assets.playerSSGunDeath);
+
+        bounds.setWidth(35);
         bounds.setHeight(20);
-        bounds.setXOffset(22);
+        bounds.setXOffset(30);
         bounds.setYOffset(70);
 
         sense.setRadius(700);
         sense.getPos().flag();
 
-        for (int i = 0; i < spriteSheet.getSpriteArray().length; i++) {
-            for (int j = 0; j < spriteSheet.getSpriteArray()[i].length; j++) {
-                spriteSheet.getSpriteArray()[i][j].setEffect(Sprite.effect.NEGATIVE);
-                spriteSheet.getSpriteArray()[i][j].saveColors();
-            }
-        }
-
         health = 500;
         maxHealth = 500;
 
-        skills.put(KeyHandler.SKILL1, new Dash(this));
-        skills.put(KeyHandler.SKILL2, new Shooting(this));
-        skills.put(KeyHandler.SKILL3, new BombShooting(this));
-        skills.put(KeyHandler.SKILL4, new UltimateEnergyWave(this));
+        skills.put(GameSettings.SKILL1, new Dash(this));
+        skills.put(GameSettings.SKILL2, new Shooting(this));
+        skills.put(GameSettings.SKILL3, new BombShooting(this));
+        skills.put(GameSettings.SKILL4, new UltimateEnergyWave(this));
     }
 
     private void resetPosition() {
-        PlayState.map.resetOri();
+        PlayScene.map.resetOri();
         pos.resetOri();
         bounds.getPos().resetOri();
         sense.getPos().resetOri();
 
-        GameStateManager.cam.getPos().resetOri();
+        PlayScene.cam.getPos().resetOri();
 
         setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(Assets.RIGHT), 10);
     }
@@ -87,19 +89,19 @@ public class Player extends Entity {
 
     public void input(MouseHandler mouse, KeyHandler key) {
         if (!FALLEN_STATE) {
-            if (KeyHandler.keys.get(KeyHandler.UP).down) {
+            if (key.getKeys().get(GameSettings.UP).down) {
                 up = true;
                 RUN_STATE = true;
             } else up = false;
-            if (KeyHandler.keys.get(KeyHandler.DOWN).down) {
+            if (key.getKeys().get(GameSettings.DOWN).down) {
                 down = true;
                 RUN_STATE = true;
             } else down = false;
-            if (KeyHandler.keys.get(KeyHandler.LEFT).down) {
+            if (key.getKeys().get(GameSettings.LEFT).down) {
                 left = true;
                 RUN_STATE = true;
             } else left = false;
-            if (KeyHandler.keys.get(KeyHandler.RIGHT).down) {
+            if (key.getKeys().get(GameSettings.RIGHT).down) {
                 right = true;
                 RUN_STATE = true;
             } else right = false;
@@ -123,9 +125,9 @@ public class Player extends Entity {
 
     @Override
     public void animate() {
-        if (DIE_STATE) {
+        if (health == 0) {
             if (currAnimation != Assets.DIE) {
-                setAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 7);
+                setAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
             }
         } else if (DASH_STATE) {
             if (currAnimation != Assets.DASH) {
@@ -228,23 +230,25 @@ public class Player extends Entity {
 
         if (dx == 0 && dy == 0) { RUN_STATE = false; }
 
-        if (!FALLEN_STATE && !RELOADING_STATE && !DIE_STATE) {
-            if (!tileCollision.collisionTile(dx, 0)) {
-                pos.x += dx;
-                bounds.getPos().x += dx;
-                sense.getPos().x += dx;
+        if (!FALLEN_STATE && !RELOADING_STATE) {
+            if (!tileCollision.collisionTile(dx + bonusDx, 0)) {
+                pos.x += dx + bonusDx;
+                bounds.getPos().x += dx + bonusDx;
+                sense.getPos().x += dx + bonusDx;
                 blockedX = false;
             } else {
                 blockedX = true;
             }
-            if (!tileCollision.collisionTile(0, dy)) {
-                pos.y += dy;
-                bounds.getPos().y += dy;
-                sense.getPos().y += dy;
+            if (!tileCollision.collisionTile(0, dy + bonusDy)) {
+                pos.y += dy + bonusDy;
+                bounds.getPos().y += dy + bonusDy;
+                sense.getPos().y += dy + bonusDy;
                 blockedY = false;
             } else {
                 blockedY = true;
             }
+            bonusDx = 0;
+            bonusDy = 0;
 
             tileCollision.normalTile(dx, 0);
             tileCollision.normalTile(0, dy);
@@ -259,16 +263,12 @@ public class Player extends Entity {
             }
         }
 
-        NormBlock[] block = PlayState.tm.getNormalTile(tileCollision.getTile());
-        for (int i = 0; i < block.length; i++) {
-            if (block[i] != null) {
-                block[i].getImage().restoreDefault();
-                block[i].hasFog = false;
+        List<NormBlock> blocks = PlayScene.tm.getNormalTile(tileCollision.getTile());
+        for (int i = 0; i < blocks.size(); i++) {
+            if (blocks.get(i) != null) {
+                blocks.get(i).getImage().restoreDefault();
+                blocks.get(i).hasFog = false;
             }
-        }
-
-        if (health == 0) {
-            DIE_STATE = true;
         }
     }
 

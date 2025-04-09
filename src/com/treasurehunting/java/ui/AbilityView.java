@@ -2,8 +2,7 @@ package com.treasurehunting.java.ui;
 
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.utils.KeyHandler;
-import com.treasurehunting.java.utils.Preferences;
+import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -14,40 +13,40 @@ public class AbilityView {
     private HashMap<Integer, AbilityButton> buttons = new HashMap<>();
 
     public AbilityView() {
-        buttons.put(KeyHandler.SKILL1, new AbilityButton(
-                Assets.playerSkillIcon.getSubimage(0, 0, 20, 20),
-                new Vector2f(Preferences.GAME_WIDTH / 2 - 25 - 10 - 50 - 10 - 50, Preferences.GAME_HEIGHT - 100),
+        buttons.put(GameSettings.SKILL1, new AbilityButton(
+                Assets.playerSkillIcon.getSubimage(43, 0, 43, 44),
+                new Vector2f(GameSettings.GAME_WIDTH / 2 - 25 - 10 - 50 - 10 - 50, GameSettings.GAME_HEIGHT - 100),
                 50,
                 50,
-                KeyHandler.SKILL1
+                GameSettings.SKILL1
         ));
-        buttons.put(KeyHandler.SKILL2, new AbilityButton(
-                Assets.playerSkillIcon.getSubimage(20, 0, 20, 20),
-                new Vector2f(Preferences.GAME_WIDTH / 2 - 25 - 10 - 50, Preferences.GAME_HEIGHT - 100),
+        buttons.put(GameSettings.SKILL2, new AbilityButton(
+                Assets.playerSkillIcon.getSubimage(129, 0, 43, 44),
+                new Vector2f(GameSettings.GAME_WIDTH / 2 - 25 - 10 - 50, GameSettings.GAME_HEIGHT - 100),
                 50,
                 50,
-                KeyHandler.SKILL2
+                GameSettings.SKILL2
         ));
-        buttons.put(KeyHandler.SKILL3, new AbilityButton(
-                Assets.playerSkillIcon.getSubimage(40, 0, 20, 20),
-                new Vector2f(Preferences.GAME_WIDTH / 2 - 25, Preferences.GAME_HEIGHT - 100),
+        buttons.put(GameSettings.SKILL3, new AbilityButton(
+                Assets.playerSkillIcon.getSubimage(172, 0, 43, 44),
+                new Vector2f(GameSettings.GAME_WIDTH / 2 - 25, GameSettings.GAME_HEIGHT - 100),
                 50,
                 50,
-                KeyHandler.SKILL3
+                GameSettings.SKILL3
         ));
-        buttons.put(KeyHandler.SKILL4, new AbilityButton(
-                Assets.playerSkillIcon.getSubimage(60, 0, 20, 20),
-                new Vector2f(Preferences.GAME_WIDTH / 2 + 25 + 10, Preferences.GAME_HEIGHT - 100),
+        buttons.put(GameSettings.SKILL4, new AbilityButton(
+                Assets.playerSkillIcon.getSubimage(0, 44, 43, 44),
+                new Vector2f(GameSettings.GAME_WIDTH / 2 + 25 + 10, GameSettings.GAME_HEIGHT - 100),
                 50,
                 50,
-                KeyHandler.SKILL4
+                GameSettings.SKILL4
         ));
-        buttons.put(KeyHandler.SKILL5, new AbilityButton(
-                Assets.playerSkillIcon.getSubimage(80, 0, 20, 20),
-                new Vector2f(Preferences.GAME_WIDTH / 2 + 25 + 10 + 50 + 10, Preferences.GAME_HEIGHT - 100),
+        buttons.put(GameSettings.SKILL5, new AbilityButton(
+                Assets.playerSkillIcon.getSubimage(0, 0, 43, 44),
+                new Vector2f(GameSettings.GAME_WIDTH / 2 + 25 + 10 + 50 + 10, GameSettings.GAME_HEIGHT - 100),
                 50,
                 50,
-                KeyHandler.SKILL5
+                GameSettings.SKILL5
         ));
     }
 

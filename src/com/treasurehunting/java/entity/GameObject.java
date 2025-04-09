@@ -6,9 +6,7 @@ import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.states.GameStateManager;
-import com.treasurehunting.java.states.PlayState;
-import com.treasurehunting.java.utils.Preferences;
+import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -36,6 +34,8 @@ public abstract class GameObject {
 
     protected float dx;
     protected float dy;
+    protected float bonusDx = 0;
+    protected float bonusDy = 0;
 
     // Display things
     protected int dmgTaken = 0;
@@ -62,7 +62,7 @@ public abstract class GameObject {
         this.pos = pos;
         this.width = width;
         this.height = height;
-        scale = Math.max(width, height) / Preferences.BLOCK_PIXEL;
+        scale = Math.max(width, height) / GameSettings.TILE_SIZE;
 
         bounds = new AABB(new Vector2f(pos.x, pos.y), width, height);
         sense = new AABB(new Vector2f(pos.x + width / 2 - 500 / 2, pos.y + height / 2 - 500 / 2), 500);
@@ -116,7 +116,13 @@ public abstract class GameObject {
         anim.setFrames(state, frames);
         anim.setDelay(delay);
     }
+    public void setAbsoluteAnimation(int state, Sprite[] frames, int delay) {
+        currAnimation = state;
+        anim.setAbsoluteFrames(state, frames);
+        anim.setDelay(delay);
+    }
     public void addSpriteSheet(int key, SpriteSheet spriteSheet) { spriteSheets.put(key, spriteSheet); }
+
     public void setPos(Vector2f pos) {
         this.pos.setVector(pos);
         this.bounds = new AABB(pos, width, height);
@@ -126,53 +132,32 @@ public abstract class GameObject {
 
     public void addForce(float force, int direct) {
         if (direct == Assets.DOWN) {  // down
-            pos.y += (float)force;
-            sense.getPos().y += (float) force;
-            bounds.getPos().y += (float) force;
+            bonusDy = (float) force;
         } else if (direct == Assets.LEFTDOWN) { // leftdown
-            pos.x -= (float)( Math.cos(45)*force );
-            pos.y += (float)( Math.cos(45)*force );
-            sense.getPos().x -= (float)( Math.cos(45)*force );
-            sense.getPos().y += (float)( Math.cos(45)*force );
-            bounds.getPos().x -= (float)( Math.cos(45)*force );
-            bounds.getPos().y += (float)( Math.cos(45)*force );
+            bonusDx = -(float)( Math.cos(45)*force );
+            bonusDy = (float)( Math.cos(45)*force );
         } else if (direct == Assets.LEFT) { // left
-            pos.x -= (float)force;
-            sense.getPos().x -= (float)force;
-            bounds.getPos().x -= (float)force;
+            bonusDx = -(float)force;
         } else if (direct == Assets.LEFTUP) { // leftup
-            pos.x -= (float)( Math.cos(45)*force );
-            pos.y -= (float)( Math.cos(45)*force );
-            sense.getPos().x -= (float)( Math.cos(45)*force );
-            sense.getPos().y -= (float)( Math.cos(45)*force );
-            bounds.getPos().x -= (float)( Math.cos(45)*force );
-            bounds.getPos().y -= (float)( Math.cos(45)*force );
+            bonusDx = -(float)( Math.cos(45)*force );
+            bonusDy = -(float)( Math.cos(45)*force );
         } else if (direct == Assets.UP) { // up
-            pos.y -= (float)force;
-            sense.getPos().y -= (float)force;
-            bounds.getPos().y -= (float)force;
+            bonusDy = -(float)force;
         } else if (direct == Assets.RIGHTUP) { // rightup
-            pos.x += (float)( Math.cos(45)*force );
-            pos.y -= (float)( Math.cos(45)*force );
-            sense.getPos().x += (float)( Math.cos(45)*force );
-            sense.getPos().y -= (float)( Math.cos(45)*force );
-            bounds.getPos().x += (float)( Math.cos(45)*force );
-            bounds.getPos().y -= (float)( Math.cos(45)*force );
+            bonusDx = (float)( Math.cos(45)*force );
+            bonusDy = -(float)( Math.cos(45)*force );
         } else if (direct == Assets.RIGHT) { // right
-            pos.x += (float)force;
-            sense.getPos().x += (float)force;
-            bounds.getPos().x += (float)force;
+            bonusDx = (float)force;
         } else if (direct == Assets.RIGHTDOWN) { // rightdown
-            pos.x += (float)( Math.cos(45)*force );
-            pos.y += (float)( Math.cos(45)*force );
-            sense.getPos().x += (float)( Math.cos(45)*force );
-            sense.getPos().y += (float)( Math.cos(45)*force );
-            bounds.getPos().x += (float)( Math.cos(45)*force );
-            bounds.getPos().y += (float)( Math.cos(45)*force );
+            bonusDx = (float)( Math.cos(45)*force );
+            bonusDy = (float)( Math.cos(45)*force );
         }
     }
 
     public void update(double time) {
+        if (health == 0 && anim.getCurrFrame() == spriteSheets.get(Assets.DIE).getSpriteRow(currDirection).length - 1) {
+            DIE_STATE = true;
+        }
         if (INVINCIBLE_STATE) {
             if ((invincibleTime / 1000000) + invincibleDuration < (time / 1000000)) {
                 INVINCIBLE_STATE = false;
@@ -207,17 +192,17 @@ public abstract class GameObject {
 
         // Upper name
         // TODO: Tách ra cho các enemy hiện riêng
-        g2d.setFont(GameStateManager.fontf.getFont("GravityBold8", 8));
+        g2d.setFont(Assets.fontf.getFont("GravityBold8", 8));
         g2d.setColor(Color.CYAN);
         g2d.drawString(
                 name,
                 (int)( pos.getWorldVar().x + (float)width / 2 - (float)((name.length()/2)*8) + 3 ),
-                (int)( pos.getWorldVar().y + bounds.getYOffset() + bounds.getHeight() - Preferences.BLOCK_PIXEL - 4)
+                (int)( pos.getWorldVar().y + bounds.getYOffset() + bounds.getHeight() - GameSettings.TILE_SIZE - 4)
         );
 
         // Upper dmg taken
         if (dmgDisplaying && dmgTaken != 0) {
-            g2d.setFont(GameStateManager.fontf.getFont("GravityBold8", 8));
+            g2d.setFont(Assets.fontf.getFont("GravityBold8", 8));
             g2d.setColor(Color.RED);
             String dmgStr = String.valueOf(dmgTaken);
             g2d.drawString(
@@ -229,9 +214,9 @@ public abstract class GameObject {
         }
 
 //      // World position
-        g2d.setColor(Color.WHITE);
-        g2d.drawLine(0, (int)pos.getWorldVar().y, Preferences.GAME_WIDTH, (int)pos.getWorldVar().y);
-        g2d.drawLine((int)pos.getWorldVar().x, 0, (int)pos.getWorldVar().x, Preferences.GAME_HEIGHT);
+//        g2d.setColor(Color.WHITE);
+//        g2d.drawLine(0, (int)pos.getWorldVar().y, GameSettings.GAME_WIDTH, (int)pos.getWorldVar().y);
+//        g2d.drawLine((int)pos.getWorldVar().x, 0, (int)pos.getWorldVar().x, GameSettings.GAME_HEIGHT);
 
 //        // Norm position
 //        g2d.setColor(Color.cyan);

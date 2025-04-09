@@ -6,20 +6,32 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
+import com.treasurehunting.java.utils.GameSettings;
 
 public class Bat extends Enemy {
 
-    public static boolean SLEEP_STATE = true;
-    public static boolean WAKEUP_STATE = false;
-    public static boolean FLY_STATE = false;
-    public static boolean RUN_STATE = false;
-    public static boolean RANGEATTACK_STATE = false;
-    public static boolean DASH_STATE = false;
+    public boolean SLEEP_STATE = true;
+    public boolean WAKEUP_STATE = false;
+    public boolean FLY_STATE = false;
+    public boolean RUN_STATE = false;
+    public boolean RANGEATTACK_STATE = false;
+    public boolean DASH_STATE = false;
 
-    public Bat(SpriteSheet spriteSheet, Vector2f pos, int width, int height) {
-        super(spriteSheet, pos, width, height, "Bat");
+    public Bat(Vector2f pos) {
+        super(Assets.batSSIdleSleep, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE, "BAT");
+
+        addSpriteSheet(Assets.FLY, Assets.batSSFly);
+        addSpriteSheet(Assets.WAKEUP, Assets.batSSWakeUp);
+        addSpriteSheet(Assets.RUN, Assets.batSSRun);
+        addSpriteSheet(Assets.RANGEATTACK, Assets.batSSSkill1);
+        addSpriteSheet(Assets.DASHSATTACK, Assets.batSSSkill2);
+        addSpriteSheet(Assets.INVINCIBLE, Assets.batSSHurt);
+        addSpriteSheet(Assets.DIE, Assets.batSSDie);
+
+        anim.setActiveFrame(5, Assets.RANGEATTACK);
 
         bounds.setWidth((float)width/4);
         bounds.setHeight((float)height/2 - (float)height/4);
@@ -34,8 +46,6 @@ public class Bat extends Enemy {
         deacc = 2f;
         maxSpeed = 1.5f;
 
-        right = true;
-
         skills.put(0, new RangeAttack(this));
     }
 
@@ -43,60 +53,60 @@ public class Bat extends Enemy {
     public void animate() {
         if (DIE_STATE) {
             if (currAnimation != Assets.DIE) {
-                setAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
+                setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
             }
         } else if (INVINCIBLE_STATE) {
             if (currAnimation != Assets.INVINCIBLE) {
-                setAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
+                setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
             }
         } else if (WAKEUP_STATE) {
             if (currAnimation != Assets.WAKEUP) {
-                setAnimation(Assets.WAKEUP, spriteSheets.get(Assets.WAKEUP).getSpriteRow(currDirection), 7);
+                setAbsoluteAnimation(Assets.WAKEUP, spriteSheets.get(Assets.WAKEUP).getSpriteRow(currDirection), 7);
             }
         } else if (RANGEATTACK_STATE) {
             if (currAnimation != Assets.RANGEATTACK) {
-                setAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 3);
+                setAbsoluteAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 3);
             }
         } else if (DASH_STATE && ATTACK_STATE) {
             if (currAnimation != Assets.DASHSATTACK) {
-                setAnimation(Assets.DASHSATTACK, spriteSheets.get(Assets.DASHSATTACK).getSpriteRow(currDirection), 5);
+                setAbsoluteAnimation(Assets.DASHSATTACK, spriteSheets.get(Assets.DASHSATTACK).getSpriteRow(currDirection), 5);
             }
         } else if (FLY_STATE) {
             if (right && up) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTUP)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTUP), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTUP), 5);
                 }
             } else if (right && down) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTDOWN)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTDOWN), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTDOWN), 5);
                 }
             } else if (left && down) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTDOWN)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTDOWN), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTDOWN), 5);
                 }
             } else if (left && up) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTUP)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTUP), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTUP), 5);
                 }
             } else if (down) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.DOWN)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.DOWN), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.DOWN), 5);
                 }
             } else if (left) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFT)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFT), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFT), 5);
                 }
             } else if (up) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.UP)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.UP), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.UP), 5);
                 }
             } else if (right) {
                 if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHT)) {
-                    setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHT), 5);
+                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHT), 5);
                 }
             }
         } else if (currAnimation != Assets.IDLE) {
-            setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
+            setAbsoluteAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
         }
     }
 
@@ -125,7 +135,7 @@ public class Bat extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE) {
+        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE && !PlayScene.tm.checkInFog(bounds)) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + 5) {
                 up = true;
                 FLY_STATE = true;
@@ -162,27 +172,30 @@ public class Bat extends Enemy {
 
     @Override
     public void attack(Player player) {
-        for (int i = 0; i < skills.size(); i++) {
-            if (skills.get(i) instanceof StaminaSkill staSkill) {
-                if (staSkill.getHitBound().colCircleBox(player.getBounds())) {
-                    staSkill.gainSignal();
-                } else {
-                    staSkill.stopSignal();
+        if (!PlayScene.tm.checkInFog(bounds)) {
+            for (int i = 0; i < skills.size(); i++) {
+                if (skills.get(i) instanceof StaminaSkill staSkill) {
+                    if (staSkill.getHitBound().collides(player.getBounds())) {
+                        staSkill.gainSignal();
+                    } else {
+                        staSkill.stopSignal();
+                    }
                 }
             }
         }
     }
 
     @Override
-    public void update(double time) {
-        super.update(time);
+    public void update(double time, Player player) {
+        super.update(time, player);
+
         if (WAKEUP_STATE && anim.hasPlayedOnce()) {
             WAKEUP_STATE = false;
         }
 
         if (SLEEP_STATE) {
-            if (sense.colCircleBox(player.getBounds()) && !player.getState("INVINCIBLE")) {
-                spriteSheets.replace(Assets.IDLE, spriteSheets.get(Assets.FLY));
+            if (sense.colCircleBox(player.getBounds()) && !player.getState("INVINCIBLE") && !PlayScene.tm.checkInFog(bounds)) {
+                spriteSheets.put(Assets.IDLE, spriteSheets.get(Assets.FLY));
                 SLEEP_STATE = false;
                 WAKEUP_STATE = true;
                 bounds.setYOffset(bounds.getYOffset() + 15);

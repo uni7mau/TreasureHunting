@@ -12,9 +12,11 @@ public class AbilityCommand implements ICommand {
         return data.getCooldown();
     }
 
-    public Boolean checkNull() { return data == null; }
-
     @Override
-    public void execute() { if (data != null) data.gainSignal(); }
+    public void execute() {
+        if (data != null) {
+            data.gainSignal();
+        }
+    }
 
 }

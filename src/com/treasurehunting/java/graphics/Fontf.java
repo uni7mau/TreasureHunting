@@ -10,6 +10,8 @@ public class Fontf {
 
     private Map<String, Map<Integer, Font>> fonts;
 
+    private Font currFont;
+
     public Fontf() {
         fonts = new HashMap<>();
     }
@@ -36,9 +38,13 @@ public class Fontf {
 
     public Font getFont(String name, int size) {
         if (fonts.containsKey(name) && fonts.get(name).containsKey(size)) {
-            return fonts.get(name).get(size);
+            currFont = fonts.get(name).get(size);
+            return currFont;
         }
         return null;
     }
+
+    public Font getCurrFont() { return currFont; }
+    public void setFont(String name, int size) { currFont = fonts.get(name).get(size); }
 
 }

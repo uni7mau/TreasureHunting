@@ -1,6 +1,6 @@
 package com.treasurehunting.java.graphics;
 
-import com.treasurehunting.java.utils.Preferences;
+import com.treasurehunting.java.utils.GameSettings;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,8 +16,8 @@ public class Font {
     private int hLetter;
 
     public Font(String file) {
-        w = Preferences.GAME_WIDTH;
-        h = Preferences.GAME_HEIGHT;
+        w = GameSettings.GAME_WIDTH;
+        h = GameSettings.GAME_HEIGHT;
 
         FONTSHEET = loadFont(file);
 
