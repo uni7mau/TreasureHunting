@@ -46,7 +46,7 @@ public abstract class StaminaSkill extends Skill {
                 for (int i = 0; i < targets.size(); i++) {
                     if (hitBound.collides(targets.get(i).getBounds())) {
                         targets.get(i).healthDec(
-                                owner.getAtk(),
+                                owner.getAtk() + dmg,
                                 owner.getForce() * (1 - targets.get(i).getRes()),
                                 owner.getCurrDirection()
                         );
@@ -58,15 +58,16 @@ public abstract class StaminaSkill extends Skill {
                 owner.setState(counterEffect, false);
             }
         }
+
         request = false;
     }
 
     @Override
     public void render(Graphics2D g2d) {
-//        if (activating) {
-//            g2d.setColor(Color.red);
-//            g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
-//        }
+        if (activating) {
+            g2d.setColor(Color.red);
+            g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
+        }
     }
 
 }

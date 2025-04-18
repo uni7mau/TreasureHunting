@@ -8,8 +8,10 @@ import java.awt.*;
 
 public class HoleBlock extends Block {
 
-    public HoleBlock(Sprite sprite, Vector2f pos, int w, int h) {
+    public HoleBlock(Sprite sprite, Vector2f pos, int w, int h, double deg) {
         super(sprite, pos, w, h);
+
+        sprite.setRotatedImage(deg);
     }
 
     @Override
@@ -34,8 +36,8 @@ public class HoleBlock extends Block {
     public void render(Graphics2D g2d) {
         super.render(g2d);
 
-//        g2d.setColor(Color.magenta);
-//        g2d.drawRect((int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h);
+        g2d.setColor(Color.magenta);
+        g2d.drawRect((int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h);
     }
 
 }

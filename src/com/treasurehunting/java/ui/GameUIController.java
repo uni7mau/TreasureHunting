@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class GameUIController {
 
-    private GameUIView view;
+    private GameUI view;
     private GameUIModel model;
 
-    public GameUIController(GameUIView view, GameUIModel model) {
+    public GameUIController(GameUI view, GameUIModel model) {
         this.view = view;
         this.model = model;
     }
@@ -30,6 +30,11 @@ public class GameUIController {
         }
         if (GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) {
             for (Map.Entry<Integer, Button> entry : view.gameOverUI.entrySet()) {
+                entry.getValue().input(mouse, key);
+            }
+        }
+        if (GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+            for (Map.Entry<Integer, Button> entry : view.winUI.entrySet()) {
                 entry.getValue().input(mouse, key);
             }
         }

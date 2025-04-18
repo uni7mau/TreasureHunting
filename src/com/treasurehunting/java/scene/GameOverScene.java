@@ -1,13 +1,16 @@
 package com.treasurehunting.java.scene;
 
+import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.utils.KeyHandler;
 import com.treasurehunting.java.utils.MouseHandler;
+import com.treasurehunting.java.utils.ScoreSave;
 
 import java.awt.*;
 
 public class GameOverScene extends GameScene {
 
-    // video the world being destroying bla bla idk
+    public GameOverScene() {
+    }
 
     @Override
     public void update(double time) {

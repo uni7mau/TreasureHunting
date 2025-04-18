@@ -21,8 +21,7 @@ public class ManaBar {
     public ManaBar(Entity owner, Vector2f pos, int scale) {
         barSprite = Assets.manaBarSS;
         energyAnim = new Animation();
-        energyAnim.setFrames(0, barSprite.getSpriteRow(5));
-        energyAnim.setDelay(10);
+        energyAnim.setFrames(0, barSprite.getSpriteRow(3), 10);
 
         this.owner = owner;
         this.pos = pos;
@@ -58,12 +57,13 @@ public class ManaBar {
                 energyAnim.getImage().image.getHeight()*scale,
                 null
         );
-        g2d.setColor(Color.blue);
+        g2d.setFont(Assets.fontf.getFont("MeatMadness", 16));
+        g2d.setColor(Color.WHITE);
         String mpIn4 = String.valueOf(owner.getMana() + "/" + owner.getMaxMana());
         g2d.drawString(
                 mpIn4,
                 pos.x + (float) (barSprite.getSprite(0, 0).image.getWidth() * scale) / 2 - ((float) mpIn4.length() / 2)*4,
-                pos.y + (float) (barSprite.getSprite(0, 0).image.getHeight() * scale) / 2 + 4
+                pos.y + (float) (barSprite.getSprite(0, 0).image.getHeight() * scale) / 2 + 5
         );
     }
 

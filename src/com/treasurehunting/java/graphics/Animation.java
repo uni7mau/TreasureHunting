@@ -22,12 +22,11 @@ public class Animation {
 
     public int getCurrFrame() { return currFrame; }
 
-    public void setFrames(int state, Sprite[] frames) {
+    public void setFrames(int state, Sprite[] frames, int delay) {
         if (currFrame > frames.length) currFrame = 0;
         this.frames = frames;
-        count = 0;
         timesPlayed = 0;
-        delay = 2;
+        this.delay = delay;
         if (frameLimit[state] == 0) {
             numFrames = frames.length;
         } else {
@@ -35,12 +34,12 @@ public class Animation {
         }
     }
 
-    public void setAbsoluteFrames(int state, Sprite[] frames) {
+    public void setAbsoluteFrames(int state, Sprite[] frames, int delay) {
         currFrame = 0;
         this.frames = frames;
         count = 0;
         timesPlayed = 0;
-        delay = 2;
+        this.delay = delay;
         if (frameLimit[state] == 0) {
             numFrames = frames.length;
         } else {
@@ -74,5 +73,7 @@ public class Animation {
     public Sprite getImage() { return frames[currFrame]; }
 
     public boolean hasPlayedOnce() { return timesPlayed > 0; }
+
+    public boolean isLastFrame() { return currFrame == frames.length - 1; }
 
 }

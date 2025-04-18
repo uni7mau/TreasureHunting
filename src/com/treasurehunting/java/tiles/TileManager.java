@@ -1,11 +1,18 @@
 package com.treasurehunting.java.tiles;
 
 import com.treasurehunting.java.bundle.EntityBundle;
+import com.treasurehunting.java.bundle.ObstacleBundle;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
+import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.obstacle.Obstacle;
 import com.treasurehunting.java.scene.PlayScene;
+import com.treasurehunting.java.tiles.blocks.Block;
+import com.treasurehunting.java.tiles.blocks.HoleBlock;
 import com.treasurehunting.java.tiles.blocks.NormBlock;
+import com.treasurehunting.java.tiles.blocks.ObjBlock;
+import com.treasurehunting.java.utils.Camera;
 import com.treasurehunting.java.utils.GameSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -97,19 +104,18 @@ public class TileManager {
 
                 data[i] = eElement.getElementsByTagName("data").item(0).getTextContent();
 
-                //Mặc định layer đầu tiên là layer tương tác, các layer cao hơn thì xếp chồng để hiển thị
-                //Xếp layers từ thấp lên cao bằng cách hiển thị cao trước thấp sau, i càng lớn thì càng gần mắt người chơi
-                //Is there any ways to make the player can interact with varies block at different layer ?
-                if (i == layers - 1) {
-                    EntityBundle.entityTileLoad(data[i], wQty, hQty, blockWidth, blockHeight, tileColumns);
-                } else if (i == 0) {
+                if (i == Assets.getObsLayerIndex()) {
+                    ObstacleBundle.obsTileLoad(data[i], wQty, hQty, blockWidth, blockHeight);
+                } else if (i == Assets.getEntityLayerIndex()) {
+                    EntityBundle.entityTileLoad(data[i], wQty, hQty, blockWidth, blockHeight);
+                } else if (i == Assets.getObjLayerIndex()) {
                     tm.add(new TileMapObj(data[i], spriteSheet, wQty, hQty, blockWidth, blockHeight, tileColumns));
                 } else {
                     tm.add(new TileMapNorm(data[i], spriteSheet, wQty, hQty, blockWidth, blockHeight, tileColumns));
                 }
             }
             //Giới hạn khung hình cho camera: "Sprite Block Qty" * "Display Size". Ex: camWidthLimit = 50 x 64 = 3200, ...
-            PlayScene.cam.setLimit(wQty*GameSettings.TILE_SIZE, hQty*GameSettings.TILE_SIZE);
+            Camera.setLimit(wQty*GameSettings.TILE_SIZE, hQty*GameSettings.TILE_SIZE);
         } catch(Exception e) {
             System.out.println("ERROR - TILEMANAGER: can not read tilemap:");
             e.printStackTrace();
@@ -121,12 +127,9 @@ public class TileManager {
     }
 
     public List<NormBlock> getNormalTile(int id) { // higher than surface layer + interact layer
-        int normMap = Assets.normMapIndex;
-        if (tm.size() < 2) normMap = 0;
-
         List<NormBlock> blocks = new ArrayList<>();
 
-        for (int k = normMap; k < tm.size(); k++) {
+        for (int k = Assets.getNormLayerIndex(); k < tm.size(); k++) {
             for (int x = 1; x >= -1; x--) {
                 for (int y = 1; y >= -1; y--) {
                     if (id + (y + x * blockWidthQty) < 0 || id + (y + x * blockHeightQty) > (blockWidthQty * blockHeightQty) - 2) continue;
@@ -139,17 +142,17 @@ public class TileManager {
     }
 
     public boolean checkInFog(AABB bounds) {
-        int normMap = Assets.normMapIndex;
+        int normMap = Assets.getNormLayerIndex();
         if (tm.size() < 2) normMap = 0;
 
         int xt1 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
         int yt1 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
-        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / GameSettings.TILE_SIZE;
+        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / GameSettings.TILE_SIZE;
         int yt2 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
-        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth() / 2) / GameSettings.TILE_SIZE;
-        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / GameSettings.TILE_SIZE;
-        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
-        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight() / 2) / GameSettings.TILE_SIZE;
+        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
+        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / GameSettings.TILE_SIZE;
+        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / GameSettings.TILE_SIZE;
+        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / GameSettings.TILE_SIZE;
 
         int idA = xt1 + yt1*blockWidthQty; // leftup
         int idB = xt2 + yt2*blockWidthQty; // rightup
@@ -171,6 +174,22 @@ public class TileManager {
         }
 
         return cnt >= 2;
+    }
+
+    public void destroyLink(int tileId) {
+        for (int k = 0; k < tm.size(); k++) {
+            if (k != Assets.getObjLayerIndex()) {
+                tm.get(k).getBlocks()[tileId] = null;
+            } else {
+                tm.get(Assets.getObjLayerIndex()).getBlocks()[tileId] = new HoleBlock(
+                        spriteSheet.getSprite((int) ((Assets.holeTileID - 1) % columns), (int) ((Assets.holeTileID - 1) / columns)),
+                        new Vector2f((int) (tileId % blockWidthQty) * blockWidth, (int) (tileId / blockHeightQty) * blockHeight),
+                        GameSettings.TILE_SIZE,
+                        GameSettings.TILE_SIZE,
+                        0 // Hole blocks doesn't rotate
+                );
+            }
+        }
     }
 
     public void render(Graphics2D g2d) {

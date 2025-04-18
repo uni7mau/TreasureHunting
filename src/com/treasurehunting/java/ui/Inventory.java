@@ -47,7 +47,7 @@ public class Inventory {
         if (isOpen) {
             g2d.drawImage(imgComponent.get("MainBoard"), GameSettings.GAME_WIDTH / 2 - imgComponent.get("MainBoard").getWidth() * scale / 2, GameSettings.GAME_HEIGHT / 2 - imgComponent.get("MainBoard").getHeight() * scale / 2, (imgComponent.get("MainBoard").getWidth() * scale), imgComponent.get("MainBoard").getHeight() * scale, null);
             g2d.drawImage(imgComponent.get("Pattern"), GameSettings.GAME_WIDTH / 2 - imgComponent.get("Pattern").getWidth() * scale / 2, GameSettings.GAME_HEIGHT / 2 - imgComponent.get("Pattern").getHeight() * scale / 2, (imgComponent.get("Pattern").getWidth() * scale), imgComponent.get("Pattern").getHeight() * scale, null);
-            g2d.drawImage(imgComponent.get("SubBoard"), GameSettings.GAME_WIDTH / 2 - (imgComponent.get("SubBoard").getWidth() - 35) * scale / 2, 140, (imgComponent.get("SubBoard").getWidth() * scale) - 70, imgComponent.get("SubBoard").getHeight() * scale - 30, null);
+            g2d.drawImage(imgComponent.get("SubBoard"), GameSettings.GAME_WIDTH / 2 - (imgComponent.get("SubBoard").getWidth() - 50) * scale / 2, 150, (imgComponent.get("SubBoard").getWidth() * scale) - 100, imgComponent.get("SubBoard").getHeight() * scale - 50, null);
         }
     }
 

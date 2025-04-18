@@ -15,67 +15,29 @@ public abstract class Enemy extends Entity {
         super(spriteSheet, origin, width, height, name);
     }
 
-    public AABB getSense() { return sense; }
-
     public abstract void chase(Player player);
     public abstract void attack(Player player);
-
-    private void resetPosition() {
-        pos.resetOri();
-        bounds.getPos().resetOri();
-        sense.getPos().resetOri();
-
-        setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(Assets.RIGHT), 10);
-    }
 
     public void update(double time, Player player) {
         super.update(time);
 
-        if (!DIE_STATE) {
+        if (!(health == 0)) {
             chase(player);
             attack(player);
-
-            if (!FALLEN_STATE) {
-                if (!tileCollision.collisionTile(dx, 0)) {
-                    pos.x += dx;
-                    bounds.getPos().x += dx;
-                    sense.getPos().x += dx;
-                    blockedX = false;
-                } else {
-                    blockedX = true;
-                }
-                if (!tileCollision.collisionTile(0, dy)) {
-                    pos.y += dy;
-                    bounds.getPos().y += dy;
-                    sense.getPos().y += dy;
-                    blockedY = false;
-                } else {
-                    blockedY = true;
-                }
-
-                tileCollision.normalTile(dx, 0);
-                tileCollision.normalTile(0, dy);
-            } else {
-                blockedX = true;
-                blockedY = true;
-                if (FALLEN_STATE) {
-                    resetPosition();
-                    dx = 0;
-                    dy = 0;
-                    FALLEN_STATE = false;
-                }
-            }
-
-            if (health == 0) {
-                DIE_STATE = true;
-            }
+            loadPos();
         }
+    }
+
+    @Override
+    public void freeze() {
+        // Eat the method
     }
 
     @Override
     public void render(Graphics2D g2d) {
         if (!PlayScene.tm.checkInFog(bounds)) {
             super.render(g2d);
+
             for (int i = 0; i < skills.size(); i++) {
                 Skill skill = skills.get(i);
                 if (skill != null) {

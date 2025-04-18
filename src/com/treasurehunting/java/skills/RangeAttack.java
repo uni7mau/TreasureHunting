@@ -2,11 +2,19 @@ package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
 import com.treasurehunting.java.graphics.Assets;
+import com.treasurehunting.java.utils.GameSettings;
 
 public class RangeAttack extends StaminaSkill {
 
-    public RangeAttack(Entity owner) {
-        super(owner, "Attack", owner.getAtk(), 900, 3000, "RANGEATTACK");
+    public RangeAttack(Entity owner, int delay) {
+        super(
+                owner,
+                "Attack",
+                10,
+                (owner.getSpriteSheet(Assets.RANGEATTACK).getSpriteRow(0).length - 1) * delay * (1000 / GameSettings.GAME_HERTZ),
+                3000,
+                "RANGEATTACK"
+        );
     }
 
     @Override

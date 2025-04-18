@@ -8,9 +8,10 @@ import java.awt.*;
 
 public class NormBlock extends Block {
 
-    public NormBlock(Sprite sprite, Vector2f pos, int w, int h) {
+    public NormBlock(Sprite sprite, Vector2f pos, int w, int h, double deg) {
         super(sprite, pos, w, h);
 
+        sprite.setRotatedImage(deg);
         sprite.setEffect(Sprite.effect.DARKNESS);
     }
 

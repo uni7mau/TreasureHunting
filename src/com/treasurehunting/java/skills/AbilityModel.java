@@ -1,11 +1,12 @@
 package com.treasurehunting.java.skills;
 
-import com.treasurehunting.java.utils.ObservableMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AbilityModel {
 
-    public ObservableMap<Ability> abilities = new ObservableMap<>();
+    public Map<Integer, Ability> abilities = new HashMap<>();
 
-    public ObservableMap<Ability> getAbilities() { return abilities; }
+    public Map<Integer, Ability> getAbilities() { return abilities; }
 
 }

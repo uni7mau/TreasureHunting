@@ -1,5 +1,10 @@
 package com.treasurehunting.java.math;
 
+import com.treasurehunting.java.entity.GameObject;
+
+import java.util.List;
+import java.util.Map;
+
 public class AABB {
 
     private String type;
@@ -70,6 +75,20 @@ public class AABB {
            return colCircleBox(bBox);
        }
        return collides(0, 0, bBox);
+    }
+
+    // rect * mrect
+    public boolean checkGoThrough(float dx, float dy, Map<Integer, List<GameObject>> gos) {
+        for (Map.Entry<Integer, List<GameObject>> entry : gos.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                GameObject go = entry.getValue().get(i);
+                if (go.isPhysicBody() && collides(dx, dy, go.getBounds())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     // rect x rect

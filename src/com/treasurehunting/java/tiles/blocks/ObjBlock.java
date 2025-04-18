@@ -28,6 +28,9 @@ public class ObjBlock extends Block {
     @Override
     public void render(Graphics2D g2d) {
         // Just don't render the obj block
+
+        g2d.setColor(Color.white);
+        g2d.drawRect((int)pos.getWorldVar().x, (int)pos.getWorldVar().y, w, h);
     }
 
 }

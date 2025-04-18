@@ -13,7 +13,7 @@ import java.util.Random;
 public class Shooting extends SumonSkill {
 
     public Shooting(Entity owner) {
-        super(owner, "Shooting", 5, 0, 50, 50, "SHOOTING");
+        super(owner, "Shooting", 5, 0, 25, 25, "SHOOTING");
     }
 
     // TODO: do this
@@ -52,19 +52,19 @@ public class Shooting extends SumonSkill {
             adjustY = 10;
         }
 
-
         Random random = new Random();
         int value = random.nextInt(100);
         // Change by crit rate
         if (value < 50) { // 50% cho A
             PlayScene.tobeAdded.get(Assets.normBulletID).add(
                     new NormBullet(
+                            owner,
                             20, 20,
                             new Vector2f(
                                     owner.getPos().x + owner.getBounds().getXOffset() + adjustX,
                                     owner.getPos().y + owner.getBounds().getYOffset() + adjustY
                             ),
-                            500,
+                            400,
                             targetDirect,
                             owner.getAtk(),
                             300
@@ -73,15 +73,16 @@ public class Shooting extends SumonSkill {
         } else {
             PlayScene.tobeAdded.get(Assets.critBulletID).add(
                     new CritBullet(
-                            20, 20,
+                            owner,
+                            25, 25,
                             new Vector2f(
                                     owner.getPos().x + owner.getBounds().getXOffset() + adjustX,
                                     owner.getPos().y + owner.getBounds().getYOffset() + adjustY
                             ),
-                            500,
+                            450,
                             targetDirect,
                             owner.getAtk() + dmg,
-                            300
+                            200
                     )
             );
         }

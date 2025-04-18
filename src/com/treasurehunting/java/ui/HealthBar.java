@@ -76,12 +76,13 @@ public class HealthBar {
     public void render(Graphics2D g2d) {
         g2d.drawImage(currBarSprite, (int)pos.x, (int)pos.y, currBarSprite.getWidth()*scale, currBarSprite.getHeight()*scale, null);
         g2d.drawImage(currHeartSprite, (int)pos.x , (int)pos.y, currHeartSprite.getWidth()*scale, currHeartSprite.getHeight()*scale, null);
+        g2d.setFont(Assets.fontf.getFont("MeatMadness", 16));
         g2d.setColor(Color.white);
         String hpIn4 = String.valueOf(owner.getHealth() + "/" + owner.getMaxHealth());
         g2d.drawString(
                  hpIn4,
                 pos.x + (float) (currBarSprite.getWidth() * scale) / 2 - ((float) hpIn4.length() / 2)*4,
-                pos.y + (float) (currBarSprite.getHeight() * scale) / 2 + 6
+                pos.y + (float) (currBarSprite.getHeight() * scale) / 2 + 8
         );
     }
 

@@ -34,7 +34,7 @@ public class GameSettings {
 //    public static final int GAME_HEIGHT = 925;
 
     public static final int GAME_HERTZ = 64;
-    public static final int GAME_MAX_FPS = 1000;
+    public static final int GAME_MAX_FPS = 80;
 
     public static final int TILE_SIZE = 64;
 //    public static final int TILE_SIZE = 48;

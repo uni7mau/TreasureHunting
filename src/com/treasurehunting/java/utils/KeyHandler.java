@@ -36,6 +36,7 @@ public class KeyHandler implements KeyListener {
                 clicked = false;
             }
         }
+
     }
 
     public KeyHandler(GamePanel gamePanel) {

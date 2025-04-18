@@ -1,22 +1,23 @@
 package com.treasurehunting.java.utils;
 
-import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.TileMapObj;
 import com.treasurehunting.java.tiles.blocks.Block;
 import com.treasurehunting.java.tiles.blocks.HoleBlock;
 
 public class TileCollision {
 
-    private Entity e;
+    private GameObject owner;
     private int tileId;
 
-    public TileCollision(Entity e) { this.e = e; }
+    public TileCollision(GameObject go) { owner = go; }
 
     public int getTile() { return tileId; }
 
     public boolean normalTile(float ax, float ay) {
-        int xt = (int) ( (e.getBounds().getPos().x + ax) + e.getBounds().getXOffset() + (float) e.getBounds().getWidth() / 2) / GameSettings.TILE_SIZE;
-        int yt = (int) ( (e.getBounds().getPos().y + ay) + e.getBounds().getYOffset() + (float) e.getBounds().getHeight() / 2) / GameSettings.TILE_SIZE;
+        int xt = (int) ( (owner.getBounds().getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() / 2) / GameSettings.TILE_SIZE;
+        int yt = (int) ( (owner.getBounds().getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() / 2) / GameSettings.TILE_SIZE;
 
         tileId = (xt + (yt * TileMapObj.hQty));
 
@@ -25,48 +26,96 @@ public class TileCollision {
         return false;
     }
 
-    public boolean collisionTile(float ax, float ay) {
-        if (TileMapObj.event_blocks != null) {
-            int nextXt1 = (int) (( (e.getPos().x + ax) + e.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
-            int nextYt1 = (int) (( (e.getPos().y + ay) + e.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
-            // Block RightDown
-            int nextXt2 = (int) (( (e.getPos().x + ax) + e.getBounds().getXOffset() + (float) e.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
-            int nextYt2 = (int) (( (e.getPos().y + ay) + e.getBounds().getYOffset() + (float) e.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
-            // Block Right
-            int nextXt3 = (int) (( (e.getPos().x + ax) + e.getBounds().getXOffset() + (float) e.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
-            int nextYt3 = (int) (( (e.getPos().y + ay) + e.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
-            // Block LeftDown
-            int nextXt4 = (int) (( (e.getPos().x + ax) + e.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
-            int nextYt4 = (int) (( (e.getPos().y + ay) + e.getBounds().getYOffset() + (float) e.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
+    public int destroyTile(float ax, float ay) {
+        // Lấy tọa độ bounds của owner
+        float left   = owner.getPos().x + ax + owner.getBounds().getXOffset();
+        float top    = owner.getPos().y + ay + owner.getBounds().getYOffset();
+        float right  = left + owner.getBounds().getWidth();
+        float bottom = top + owner.getBounds().getHeight();
 
-            if (nextXt1 <= 0 || nextYt1 <= 0 || nextXt2 <= 0 || nextYt2 <= 0 || nextXt3 <= 0 || nextYt3 <= 0 || nextXt4 <= 0 || nextYt4 <= 0 ||
-                    nextXt1 >= TileMapObj.wQty || nextYt1 >= TileMapObj.hQty || nextXt2 >= TileMapObj.wQty || nextYt2 >= TileMapObj.hQty || nextXt3 >= TileMapObj.wQty || nextYt3 >= TileMapObj.hQty || nextXt4 >= TileMapObj.wQty || nextYt4 >= TileMapObj.hQty) {
+        // Đổi thành tọa độ tile
+        int tileLeft   = (int) (left / GameSettings.TILE_SIZE);
+        int tileTop    = (int) (top / GameSettings.TILE_SIZE);
+        int tileRight  = (int) (right / GameSettings.TILE_SIZE);
+        int tileBottom = (int) (bottom / GameSettings.TILE_SIZE);
+
+        int destroyed = 0;
+
+        for (int ty = tileTop; ty <= tileBottom; ty++) {
+            for (int tx = tileLeft; tx <= tileRight; tx++) {
+                int index = tx + (ty * TileMapObj.hQty);
+
+                if (index < 0 || index >= TileMapObj.event_blocks.length) continue;
+
+                Block block = TileMapObj.event_blocks[index];
+
+                if (block == null || block instanceof HoleBlock) continue;
+
+                PlayScene.tm.destroyLink(index);
+                destroyed++;
+            }
+        }
+
+        return destroyed;
+    }
+
+
+    public boolean collisionTile(float ax, float ay) {
+        if (!(TileMapObj.event_blocks == null)) {
+            if (
+                    (owner.getPos().x + ax + owner.getBounds().getXOffset() < 0) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() < 0) ||
+                            (owner.getPos().x + ax + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() < 0) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() < 0) ||
+
+                            (owner.getPos().x + ax + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() > TileMapObj.wQty*GameSettings.TILE_SIZE) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() > TileMapObj.hQty*GameSettings.TILE_SIZE) ||
+                            (owner.getPos().x + ax + owner.getBounds().getXOffset() > TileMapObj.wQty*GameSettings.TILE_SIZE) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() > TileMapObj.hQty*GameSettings.TILE_SIZE)
+            ) {
                 return true;
             }
 
-            Block currBlock = TileMapObj.event_blocks[nextXt1 + (nextYt1 * TileMapObj.hQty)];
-            Block rightBlock = TileMapObj.event_blocks[nextXt2 + (nextYt2 * TileMapObj.hQty)];
-            Block rightDownBlock = TileMapObj.event_blocks[nextXt3 + (nextYt3 * TileMapObj.hQty)];
+            // Block Left
+            int nextXt1 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
+            int nextYt1 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
+            // Block RightDown
+            int nextXt2 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
+            int nextYt2 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
+            // Block Right
+            int nextXt3 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
+            int nextYt3 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
+            // Block LeftDown
+            int nextXt4 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
+            int nextYt4 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
+
+            // Vùng giao tại cạnh trái và cạnh trên là x = 0 hoặc y = 0, từ -48 -> 48 dù có chia cho 48 thì nó vẫn tính là 0
+            // => cách này không dùng được
+//            if (nextXt1 < 0 || nextYt1 < 0 || nextXt2 < 0 || nextYt2 < 0 || nextXt3 < 0 || nextYt3 < 0 || nextXt4 < 0 || nextYt4 < 0 ||
+//                    nextXt1 >= TileMapObj.wQty || nextYt1 >= TileMapObj.hQty || nextXt2 >= TileMapObj.wQty || nextYt2 >= TileMapObj.hQty || nextXt3 >= TileMapObj.wQty || nextYt3 >= TileMapObj.hQty || nextXt4 >= TileMapObj.wQty || nextYt4 >= TileMapObj.hQty) {
+//                return true;
+//            }
+
+            Block leftBlock = TileMapObj.event_blocks[nextXt1 + (nextYt1 * TileMapObj.hQty)];
+            Block rightDownBlock = TileMapObj.event_blocks[nextXt2 + (nextYt2 * TileMapObj.hQty)];
+            Block rightBlock = TileMapObj.event_blocks[nextXt3 + (nextYt3 * TileMapObj.hQty)];
             Block leftDownBlock = TileMapObj.event_blocks[nextXt4 + (nextYt4 * TileMapObj.hQty)];
 
-            if (currBlock instanceof HoleBlock && rightBlock instanceof HoleBlock && rightDownBlock instanceof HoleBlock && leftDownBlock instanceof HoleBlock) {
-                e.setState("FALLEN", true);
+            if (leftBlock instanceof HoleBlock && rightBlock instanceof HoleBlock && rightDownBlock instanceof HoleBlock && leftDownBlock instanceof HoleBlock) {
+                if (!owner.getState("FLY")) {
+                    owner.setState("FALLEN", true);
+                }
 
                 return false;
             }
 
-            if (currBlock != null ) {
-                return currBlock.update(e.getBounds());
-            }
-            if (rightBlock != null ) {
-                return rightBlock.update(e.getBounds());
-            }
-            if (leftDownBlock != null ) {
-                return leftDownBlock.update(e.getBounds());
-            }
-            if (rightDownBlock != null ) {
-                return rightDownBlock.update(e.getBounds());
-            }
+            boolean finalDecision = false;
+            if (leftBlock != null ) { finalDecision = leftBlock.update(owner.getBounds()) || finalDecision;  }
+            if (rightBlock != null ) { finalDecision = rightBlock.update(owner.getBounds()) || finalDecision; }
+            if (leftDownBlock != null ) { finalDecision = leftDownBlock.update(owner.getBounds()) || finalDecision; }
+            if (rightDownBlock != null ) { finalDecision = rightDownBlock.update(owner.getBounds()) || finalDecision; }
+
+            return finalDecision;
         }
 
         return false;

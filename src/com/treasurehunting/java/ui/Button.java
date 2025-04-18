@@ -1,5 +1,7 @@
 package com.treasurehunting.java.ui;
 
+import com.treasurehunting.java.graphics.Assets;
+import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.utils.KeyHandler;
@@ -8,6 +10,7 @@ import com.treasurehunting.java.utils.MouseHandler;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Button {
 
@@ -28,7 +31,7 @@ public class Button {
 
     // ******************************************** ICON CUSTOM POS *******************************************
 
-    public Button(BufferedImage icon, BufferedImage image, Vector2f pos, int width, int height, int iconSize) {
+    public Button(Sprite icon, Sprite image, Vector2f pos, int width, int height, int iconSize) {
         this.image = createIconButton(icon, image, width + iconSize, height + iconSize, iconSize);
         this.iPos = pos;
         this.bounds = new AABB(iPos, this.image.getWidth(), this.image.getHeight());
@@ -37,21 +40,21 @@ public class Button {
         this.canHover = false;
     }
 
-    private BufferedImage createIconButton(BufferedImage icon, BufferedImage image, int width, int height, int iconsize) {
+    private BufferedImage createIconButton(Sprite icon, Sprite image, int width, int height, int iconsize) {
         BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         if (image.getWidth() != width || image.getHeight() != height) {
-            image = resizeImage(image, width, height);
+            image.setResizeImage(width, height);
         }
 
         if (icon.getWidth() != width - iconsize || icon.getHeight() != height - iconsize) {
-            icon = resizeImage(icon, width - iconsize, height - iconsize);
+            icon.setResizeImage(width - iconsize, height - iconsize);
         }
 
         Graphics g = result.getGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
+        g.drawImage(image.image, 0, 0, width, height, null);
 
-        g.drawImage(icon,
+        g.drawImage(icon.image,
                 image.getWidth() / 2 - icon.getWidth() / 2,
                 image.getHeight() / 2 - icon.getHeight() / 2,
                 icon.getWidth(), icon.getHeight(), null);
@@ -63,8 +66,8 @@ public class Button {
 
     // ******************************************** LABEL TTF CUSTOM MIDDLE POS *******************************************
 
-    public Button(String label, BufferedImage image, Font font, Vector2f pos, int buttonWidth, int buttonHeight) {
-        Graphics g = image.getGraphics();
+    public Button(String label, Sprite image, Font font, Vector2f pos, int buttonWidth, int buttonHeight) {
+        Graphics g = image.image.getGraphics();
         g.setFont(font);
         FontMetrics met = g.getFontMetrics(font);
         int height = met.getHeight();
@@ -75,20 +78,19 @@ public class Button {
         this.image = createButton(label, image, font, width + buttonWidth, height + buttonHeight, buttonWidth, buttonHeight);
         this.iPos = new Vector2f(pos.x - this.image.getWidth() / 2, pos.y - this.image.getHeight() / 2);
         this.bounds = new AABB(iPos, this.image.getWidth(), this.image.getHeight());
-
         events = new ArrayList<ClickedEvent>();
         this.canHover = false;
     }
 
-    public BufferedImage createButton(String label, BufferedImage image, Font font, int width, int height, int buttonWidth, int buttonHeight) {
+    public BufferedImage createButton(String label, Sprite image, Font font, int width, int height, int buttonWidth, int buttonHeight) {
         BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         if (image.getWidth() != width || image.getHeight() != height) {
-            image = resizeImage(image, width, height);
+            image.setResizeImage(width, height);
         }
 
         Graphics g = result.getGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
+        g.drawImage(image.image, 0, 0, width, height, null);
 
         g.setFont(font);
         g.drawString(label, buttonWidth / 2, (height - buttonHeight));
@@ -98,32 +100,21 @@ public class Button {
         return result;
     }
 
-    public BufferedImage createPointerButton(String label, BufferedImage image, Font font, int width, int height, int buttonWidth, int buttonHeight) {
+    public BufferedImage createPointerButton(String label, Sprite image, Font font, int width, int height, int buttonWidth, int buttonHeight) {
         BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         if (image.getWidth() != width || image.getHeight() != height) {
             float scale = (float) height / image.getHeight();
-            image = resizeImage(image, (int)( image.getWidth()*scale ), height);
+            image.setResizeImage((int)( image.getWidth()*scale ), height);
         }
 
         Graphics g = result.getGraphics();
-        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
-        g.drawImage(image, width, 0, -image.getWidth(), image.getHeight(), null); // Flip horizontal
+        g.drawImage(image.image, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.drawImage(image.image, width, 0, -image.getWidth(), image.getHeight(), null); // Flip horizontal
 
         g.setFont(font);
         g.drawString(label, buttonWidth / 2, (height - buttonHeight));
 
-        g.dispose();
-
-        return result;
-    }
-
-    private BufferedImage resizeImage(BufferedImage image, int width, int height) {
-        Image temp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = result.createGraphics();
-
-        g.drawImage(temp, 0, 0, null);
         g.dispose();
 
         return result;
@@ -193,7 +184,8 @@ public class Button {
             }
         }
 
-//        g2d.drawRect((int) iPos.x + bounds.getWidth() / 2 - hoverImage.getWidth() / 2, (int) iPos.y + bounds.getHeight() / 2 - hoverImage.getHeight() / 2, hoverImage.getWidth(), hoverImage.getHeight());
+        g2d.setColor(Color.white);
+        g2d.drawRect((int) bounds.getPos().x, (int) bounds.getPos().y, bounds.getWidth(), bounds.getHeight());
     }
 
     public interface ClickedEvent {

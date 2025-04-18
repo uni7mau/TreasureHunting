@@ -3,6 +3,7 @@ package com.treasurehunting.java.graphics;
 import com.treasurehunting.java.math.Matrix;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Sprite {
@@ -11,6 +12,7 @@ public class Sprite {
 
     private int[] pixels;
     private int[] ogPixels;
+    private double rotatedDeg = 0;
 
     private int w;
     private int h;
@@ -167,6 +169,10 @@ public class Sprite {
         currentEffect = effect;
     }
 
+    public double getRotatedDeg() {
+        return rotatedDeg;
+    }
+
     public Sprite getSubimage(int x, int y, int w, int h) {
         return new Sprite(image.getSubimage(x, y, w, h));
     }
@@ -175,11 +181,43 @@ public class Sprite {
         BufferedImage temp = image.getSubimage(x, y, w, h);
         BufferedImage newImage = new BufferedImage(image.getColorModel(), image.getRaster().createCompatibleWritableRaster(w, h), image.isAlphaPremultiplied(), null);
         temp.copyData(newImage.getRaster());
+
         return new Sprite(newImage);
     }
 
     public Sprite getNewSubimage() {
         return getNewSubimage(0, 0, this.w, this.h);
+    }
+
+    public void setRotatedImage(double angleDegrees) {
+        double centerX = image.getWidth() / 2.0;
+        double centerY = image.getHeight() / 2.0;
+        AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(angleDegrees), centerX, centerY);
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+        Graphics2D g2d = (Graphics2D) result.getGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+        g2d.dispose();
+
+        image = result;
+        rotatedDeg = angleDegrees;
+
+        saveColors();
+    }
+
+    public void setResizeImage(int width, int height) {
+        Image temp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = result.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(temp, 0, 0, null);
+        g2d.dispose();
+
+        image = result;
+        w = result.getWidth();
+        h = result.getHeight();
     }
 
 }

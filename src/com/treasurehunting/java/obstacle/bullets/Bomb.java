@@ -6,12 +6,10 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.obstacle.Mana;
 import com.treasurehunting.java.obstacle.Obstacle;
-import com.treasurehunting.java.scene.PlayScene;
 
 import java.awt.*;
-import java.util.List;
-import java.util.Map;
 
 public class Bomb extends Obstacle {
 
@@ -23,8 +21,12 @@ public class Bomb extends Obstacle {
     protected int explodeSpeed = 300;
     protected float force = 5f;
 
-    public Bomb(SpriteSheet spriteSheet, int width, int height, Vector2f startPos, int dmg, int explodeSpeed) {
+    protected Entity owner;
+
+    public Bomb(Entity owner, SpriteSheet spriteSheet, int width, int height, Vector2f startPos, int dmg, int explodeSpeed) {
         super(spriteSheet, new Vector2f(startPos), width, height);
+
+        this.owner = owner;
 
         this.startPos = startPos;
         this.r = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2) / 2);
@@ -41,25 +43,24 @@ public class Bomb extends Obstacle {
     public void animate() {  }
 
     @Override
-    public void update(double time) {
-        super.update(time);
-
-        anim.update();
-        for (Map.Entry<Integer, List<GameObject>> entry : PlayScene.gameObjects.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                if (PlayScene.gameObjects.get(i) instanceof Entity target) {
-                    if (bounds.collides(target.getBounds())) {
-                        target.healthDec(
-                                (int) (dmg),
-                                force * (1 - target.getRes()),
-                                0 // TODO: check x, y to the enemy
-                        );
-                    }
-                }
+    public void activeEvent(GameObject go) {
+        if (!(go instanceof Bullet || go instanceof Mana) && !(go.getClass() == owner.getClass())) {
+            if (bounds.collides(go.getBounds())) {
+                go.healthDec(
+                        dmg,
+                        force * (1 - go.getRes()),
+                        0
+                );
             }
         }
+    }
+
+    @Override
+    public void update(double time) {
         if (anim.hasPlayedOnce()) {
-            DESTROY_STATE = true;
+            DIE_STATE = true;
+        } else {
+            super.update(time);
         }
     }
 

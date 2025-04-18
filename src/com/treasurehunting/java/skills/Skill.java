@@ -1,7 +1,6 @@
 package com.treasurehunting.java.skills;
 
 import com.treasurehunting.java.entity.Entity;
-import com.treasurehunting.java.ui.Button;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,14 +34,17 @@ public abstract class Skill {
         targets = new ArrayList<>();
     }
 
-    public void setTargetEnemy(Entity entity) {
-        targets.add(entity);
-    }
-
     public String getName() { return name; }
     public BufferedImage getIcon() { return icon; }
     public int getDuration() { return skillSpeed; }
     public int getCooldown() { return cooldown; }
+    public double getActiveTime() { return activeTime; }
+
+    public void setTargetEnemy(Entity entity) {
+        targets.add(entity);
+    }
+    public void setDuration(int skillSpeed) { this.skillSpeed = skillSpeed; }
+    public void setCooldown(int cooldown) { this.cooldown = cooldown; }
 
     public void updateActivating(double time) {
         if ((activeTime / 1000000) < (time / 1000000) - skillSpeed) {

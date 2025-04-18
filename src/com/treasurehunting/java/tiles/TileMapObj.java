@@ -1,5 +1,6 @@
 package com.treasurehunting.java.tiles;
 
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.blocks.*;
@@ -33,12 +34,18 @@ public class TileMapObj extends TileMap {
             long tileId = Long.parseLong(block[i].replaceAll("\\s+",""));
             Block tempBlock = null;
             if (tileId != 0) {
-                if (tileId == 8) {
+                int deg = 0;
+                if (tileId > wQty * hQty - 2) {
+                    deg = decode_gid_takeDEG(tileId).rotation;
+                    tileId = decode_gid_takeID(tileId);
+                }
+                if (tileId == Assets.holeTileID) {
                     tempBlock = new HoleBlock(
-                            sprite.getSprite((int) ((tileId - 1) % tileColumns), (int) ((tileId - 1) / tileColumns)),
+                            sprite.getNewSprite( (int) ((tileId - 1) % tileColumns), (int) ((tileId - 1) / tileColumns)),
                             new Vector2f((int) (i % wQty) * tileWidth, (int) (i / hQty) * tileHeight),
                             tileWidth,
-                            tileHeight
+                            tileHeight,
+                            deg
                     );
                 } else {
                     tempBlock = new ObjBlock(

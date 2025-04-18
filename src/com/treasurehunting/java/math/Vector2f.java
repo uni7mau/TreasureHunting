@@ -46,9 +46,19 @@ public class Vector2f {
 
     public void resetOri() { x = oriX; y = oriY; }
 
+    public void setOri(float x, float y) { this.oriX = x; this.oriY = y;  }
+
     public void setX(float i) { x = i; }
 
     public void setY(float i) { y = i; }
+
+    public void setAbsoluteVector(float x, float y) {
+        this.x = x;
+        this.y = y;
+
+        worldX = x;
+        worldY = y;
+    }
 
     public void setVector(Vector2f vect) {
         this.x = vect.x;

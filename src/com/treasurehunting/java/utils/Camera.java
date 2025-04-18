@@ -3,6 +3,7 @@ package com.treasurehunting.java.utils;
 import com.treasurehunting.java.entity.Entity;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.scene.GameSceneManager;
 import com.treasurehunting.java.scene.PlayScene;
 
 import java.awt.*;
@@ -48,19 +49,21 @@ public class Camera {
     }
 
     public void update() {
-        move();
-        if (!e.blockedX) {
-            if (collisionCam.getPos().x + dx > 0
-                    && collisionCam.getPos().getWorldVar().x + dx < Vector2f.getWorldVarX(widthLimit - collisionCam.getWidth())) {
-                PlayScene.map.x += dx;
-                collisionCam.getPos().setX(collisionCam.getPos().x + dx);
+        if (!GameSceneManager.isStateActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+            move();
+            if (!e.blockedX) {
+                if (collisionCam.getPos().x + dx > 0
+                        && collisionCam.getPos().getWorldVar().x + dx < Vector2f.getWorldVarX(widthLimit - collisionCam.getWidth())) {
+                    PlayScene.map.x += dx;
+                    collisionCam.getPos().setX(collisionCam.getPos().x + dx);
+                }
             }
-        }
-        if (!e.blockedY) {
-            if (collisionCam.getPos().y + dy > 0
-                    && collisionCam.getPos().getWorldVar().y + dy < Vector2f.getWorldVarY(heightLimit - collisionCam.getHeight())) {
-                PlayScene.map.y += dy;
-                collisionCam.getPos().setY(collisionCam.getPos().y + dy);
+            if (!e.blockedY) {
+                if (collisionCam.getPos().y + dy > 0
+                        && collisionCam.getPos().getWorldVar().y + dy < Vector2f.getWorldVarY(heightLimit - collisionCam.getHeight())) {
+                    PlayScene.map.y += dy;
+                    collisionCam.getPos().setY(collisionCam.getPos().y + dy);
+                }
             }
         }
     }
@@ -121,6 +124,16 @@ public class Camera {
                 }
             }
         }
+
+        // Normalize speed nếu đi chéo
+        float totalSpeed = (float) Math.sqrt(dx * dx + dy * dy);
+        float max = maxSpeed;
+
+        if (totalSpeed > max) {
+            float scale = max / totalSpeed;
+            dx *= scale;
+            dy *= scale;
+        }
     }
 
     public void target(Entity e) {
@@ -155,12 +168,13 @@ public class Camera {
                 right = false;
             }
         } else {
+            int protectedSpace = 30;
             // Căn 1 khoảng a x b pixel tại tâm để không bị rung camera nhưng gây lệch khi vừa di chuyển xong
             if (!e.blockedY) {
-                if (collisionCam.getPos().y + (float) collisionCam.getHeight() / 2 + dy > e.getPos().y + (float) e.getHeight() / 2 + e.getDy() + 10) {
+                if (collisionCam.getPos().y + (float) collisionCam.getHeight() / 2 + dy > e.getPos().y + (float) e.getHeight() / 2 + e.getDy() + protectedSpace) {
                     up = true;
                     down = false;
-                } else if (collisionCam.getPos().y + (float) collisionCam.getHeight() / 2 + dy < e.getPos().y + (float) e.getHeight() / 2 + e.getDy() - 10) {
+                } else if (collisionCam.getPos().y + (float) collisionCam.getHeight() / 2 + dy < e.getPos().y + (float) e.getHeight() / 2 + e.getDy() - protectedSpace) {
                     down = true;
                     up = false;
                 } else {
@@ -171,10 +185,10 @@ public class Camera {
             }
 
             if (!e.blockedX) {
-                if (collisionCam.getPos().x + (float) collisionCam.getWidth() / 2  + dx > e.getPos().x + (float) e.getWidth() / 2 + e.getDx() + 10) {
+                if (collisionCam.getPos().x + (float) collisionCam.getWidth() / 2  + dx > e.getPos().x + (float) e.getWidth() / 2 + e.getDx() + protectedSpace) {
                     left = true;
                     right = false;
-                } else if (collisionCam.getPos().x + (float) collisionCam.getWidth() / 2 + dx < e.getPos().x + (float) e.getWidth() / 2 + e.getDx() - 10) {
+                } else if (collisionCam.getPos().x + (float) collisionCam.getWidth() / 2 + dx < e.getPos().x + (float) e.getWidth() / 2 + e.getDx() - protectedSpace) {
                     right = true;
                     left = false;
                 } else {

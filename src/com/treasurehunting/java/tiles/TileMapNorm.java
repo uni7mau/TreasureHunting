@@ -31,11 +31,17 @@ public class TileMapNorm extends TileMap {
         for (int i = 0; i < (wQty * hQty); i++) {
             long tileId = Long.parseLong(block[i].replaceAll("\\s+",""));
             if (tileId != 0) {
+                int deg = 0;
+                if (tileId > wQty * hQty - 2) {
+                    deg = decode_gid_takeDEG(tileId).rotation;
+                    tileId = decode_gid_takeID(tileId);
+                }
                 blocks[i] = new NormBlock(
                         sprite.getNewSprite( (int)( (tileId-1)%tileColumns ), (int)( (tileId-1)/tileColumns ) ),
                         new Vector2f( (int)(i%wQty) * tileWidth, (int)(i/hQty) * tileHeight ),
                         tileWidth,
-                        tileHeight
+                        tileHeight,
+                        deg
                 );
             }
         }

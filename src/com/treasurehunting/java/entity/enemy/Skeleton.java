@@ -10,15 +10,19 @@ import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
 import com.treasurehunting.java.utils.GameSettings;
 
+import java.awt.*;
+
 // 90x64
 
 public class Skeleton extends Enemy {
 
     public boolean STRAIGHTATTACK_STATE = false;
     public boolean RANGEATTACK_STATE = false;
+
+    static float scale = 1.5f;
     
     public Skeleton(Vector2f pos) {
-        super(Assets.yellowSleketonSSIdle, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE*64 / 90, "Skeleton");
+        super(Assets.yellowSleketonSSIdle, pos, (int) (scale*GameSettings.TILE_SIZE), (int) (scale*GameSettings.TILE_SIZE*64 / 90), "Skeleton");
         addSpriteSheet(Assets.WALK, Assets.yellowSleketonSSWalk);
         addSpriteSheet(Assets.STRAIGHTATTACK, Assets.yellowSleketonSSSkill1);
         addSpriteSheet(Assets.RANGEATTACK, Assets.yellowSleketonSSSkill2);
@@ -35,68 +39,30 @@ public class Skeleton extends Enemy {
         sense.setRadius(350);
         sense.getPos().flag();
 
+        health = 100;
+        maxHealth = 100;
         atk = 50;
         acc = 1f;
         deacc = 2f;
         maxSpeed = 2f;
 
-        skills.put(0, new RangeAttack(this));
+        skills.put(0, new RangeAttack(this, 2));
     }
 
     @Override
     public void animate() {
-        if (DIE_STATE) {
-            if (currAnimation != Assets.DIE) {
-                setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
-            }
+        if (health == 0) {
+            setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
         } else if (INVINCIBLE_STATE) {
-            if (currAnimation != Assets.INVINCIBLE) {
-                setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
-            }
+            setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
         } else if (STRAIGHTATTACK_STATE) {
-            if (currAnimation != Assets.STRAIGHTATTACK) {
-                setAbsoluteAnimation(Assets.STRAIGHTATTACK, spriteSheets.get(Assets.STRAIGHTATTACK).getSpriteRow(currDirection), 5);
-            }
+            setAbsoluteAnimation(Assets.STRAIGHTATTACK, spriteSheets.get(Assets.STRAIGHTATTACK).getSpriteRow(currDirection), 5);
         } else if (RANGEATTACK_STATE) {
-            if (currAnimation != Assets.RANGEATTACK) {
-                setAbsoluteAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 2);
-            }
+            setAbsoluteAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 2);
         } else if (MOVE_STATE) {
-            if (right && up) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.RIGHTUP)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.RIGHTUP), 5);
-                }
-            } else if (right && down) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.RIGHTDOWN)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.RIGHTDOWN), 5);
-                }
-            } else if (left && down) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.LEFTDOWN)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.LEFTDOWN), 5);
-                }
-            } else if (left && up) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.LEFTUP)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.LEFTUP), 5);
-                }
-            } else if (down) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.DOWN)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.DOWN), 5);
-                }
-            } else if (left) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.LEFT)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.LEFT), 5);
-                }
-            } else if (up) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.UP)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.UP), 5);
-                }
-            } else if (right) {
-                if (currAnimation != Assets.WALK || anim.getDelay() == -1 || (currAnimation == Assets.WALK && currDirection != Assets.RIGHT)) {
-                    setAbsoluteAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(Assets.RIGHT), 5);
-                }
-            }
-        } else if (currAnimation != Assets.IDLE) {
-            setAbsoluteAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
+            setAnimation(Assets.WALK, spriteSheets.get(Assets.WALK).getSpriteRow(currDirection), 5);
+        } else {
+            setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
         }
     }
 
@@ -117,7 +83,7 @@ public class Skeleton extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !RANGEATTACK_STATE && !PlayScene.tm.checkInFog(bounds)) {
+        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !RANGEATTACK_STATE) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + player.getBounds().getHeight() + bounds.getHeight() / 2) {
                 up = true;
                 MOVE_STATE = true;
@@ -164,6 +130,15 @@ public class Skeleton extends Enemy {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void render(Graphics2D g2d) {
+        super.render(g2d);
+
+        if (!PlayScene.tm.checkInFog(bounds)) {
+            drawName(g2d, "Pixel Game", 16, "#FF9F3D");
         }
     }
 

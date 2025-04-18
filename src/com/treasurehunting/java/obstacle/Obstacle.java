@@ -1,71 +1,55 @@
 package com.treasurehunting.java.obstacle;
 
 import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.graphics.Assets;
+import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.scene.PlayScene;
 
-import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Obstacle extends GameObject {
 
     protected boolean IDLE_STATE = true;
-    protected boolean MOVE_STATE = false;
     protected boolean FALLEN_STATE = false;
-    protected boolean ATTACKING_STATE = false;
-    protected boolean DEFENCE_STATE = false;
-    protected boolean DESTROY_STATE = false;
-    protected boolean INVINCIBLE_STATE = false;
-    protected boolean BEINGHIT_STATE = false;
 
-    // Display things
-    protected int dmgTaken = 0;
-    protected boolean dmgDisplaying = false;
-    protected double dmgGainTime;
-    protected int dmgDisplayDuration = 1500;
-    protected int invincibleDuration = 1000;
-    protected double invincibleTime = 0;
+    public Obstacle(Sprite sprite, Vector2f origin, int width, int height) {
+        super(sprite, origin, width, height);
+    }
 
     public Obstacle(SpriteSheet spriteSheet, Vector2f origin, int width, int height) {
         super(spriteSheet, origin, width, height);
+
+        setAnimation(Assets.IDLE, spriteSheet.getSpriteRow(0), 20);
     }
 
     public boolean getState(String state) {
         if (state.equals("IDLE")) { return IDLE_STATE; }
-        else if (state.equals("MOVE")) { return MOVE_STATE; }
         else if (state.equals("FALLEN")) { return FALLEN_STATE; }
-        else if (state.equals("ATTACK")) { return ATTACKING_STATE; }
-        else if (state.equals("DEFENCE")) { return DEFENCE_STATE; }
-        else if (state.equals("DESTROY")) { return DESTROY_STATE; }
-        else if (state.equals("INVINCIBLE")) { return INVINCIBLE_STATE; }
-        else if (state.equals("HIT")) { return BEINGHIT_STATE; }
-        else return false;
+        else return super.getState(state);
     }
 
     public void setState(String state, boolean b) {
         if (state.equals("IDLE")) { IDLE_STATE = b; }
-        else if (state.equals("MOVE")) { MOVE_STATE = b; }
         else if (state.equals("FALLEN")) { FALLEN_STATE = b; }
-        else if (state.equals("ATTACK")) { ATTACKING_STATE = b; }
-        else if (state.equals("DEFENCE")) { DEFENCE_STATE = b; }
-        else if (state.equals("DESTROY")) { DESTROY_STATE = b; }
-        else if (state.equals("INVINCIBLE")) { INVINCIBLE_STATE = b; }
-        else if (state.equals("HIT")) { BEINGHIT_STATE = b; }
+        else super.setState(state, b);
     }
 
-    public abstract void animate();
+    public abstract void activeEvent(GameObject go);
 
     public void update(double time) {
-        animate();
-        anim.update();
+        super.update(time);
 
-        if (dmgDisplaying) {
-            if ((dmgGainTime / 1000000) + dmgDisplayDuration < (time / 1000000)) {
-                dmgDisplaying = false;
-                dmgTaken = 0;
+        for (Map.Entry<Integer, List<GameObject>> entry : PlayScene.gameObjects.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                GameObject target = entry.getValue().get(i);
+                if (bounds.collides(target.getBounds())) {
+                    activeEvent(target);
+                }
             }
         }
     }
-
-    public abstract void render(Graphics2D g2d);
 
 }

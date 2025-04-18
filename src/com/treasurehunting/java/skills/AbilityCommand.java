@@ -1,5 +1,7 @@
 package com.treasurehunting.java.skills;
 
+import com.treasurehunting.java.utils.ICommand;
+
 public class AbilityCommand implements ICommand {
 
     private final Skill data;

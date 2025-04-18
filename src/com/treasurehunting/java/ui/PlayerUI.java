@@ -1,8 +1,8 @@
 package com.treasurehunting.java.ui;
 
 import com.treasurehunting.java.entity.Player;
-import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.obstacle.Obstacle;
 import com.treasurehunting.java.skills.AbilityController;
 import com.treasurehunting.java.scene.GameSceneManager;
 import com.treasurehunting.java.utils.GameSettings;
@@ -16,18 +16,23 @@ public class PlayerUI {
     private final HealthBar healthBar;
     private final ManaBar manaBar;
     private final Inventory inventory;
-    private final AbilityView abilityBar;
 
+    private final AbilityBar abilityBar;
     private final AbilityController abilityController;
 
     public PlayerUI(Player p) {
         healthBar = new HealthBar(p, new Vector2f(10, 10), 3);
         manaBar = new ManaBar(p, new Vector2f(10, 80), 4);
-        inventory = new Inventory(p, new Vector2f(GameSettings.GAME_WIDTH / 2 - Assets.inventorySS.getWidth() / 2, GameSettings.GAME_HEIGHT / 2 - Assets.inventorySS.getHeight()/2), 2);
-        abilityBar = new AbilityView();
+        inventory = new Inventory(p, new Vector2f(GameSettings.GAME_WIDTH / 2 - 183 / 2, 280 / 2), 2);
+        abilityBar = new AbilityBar();
         abilityController = new AbilityController.Builder()
                 .withAbilities(p.getSkills())
                 .build(abilityBar);
+    }
+
+    public void showInfor(Obstacle obs) {
+        // Overview
+        // It's too many things to do now...
     }
 
     public void input(MouseHandler mouse, KeyHandler key) {
@@ -46,14 +51,14 @@ public class PlayerUI {
     public void update(double time) {
         healthBar.update(time);
         manaBar.update(time);
-        abilityController.update((double) 1000 / GameSettings.GAME_HERTZ);
+        abilityController.update(time);
     }
 
     public void render(Graphics2D g2d) {
         healthBar.render(g2d);
         manaBar.render(g2d);
-        if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) { inventory.render(g2d); }
         abilityBar.render(g2d);
+        if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) { inventory.render(g2d); }
     }
 
 }

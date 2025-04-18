@@ -5,7 +5,6 @@ import com.treasurehunting.java.math.Vector2f;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class SpriteSheet {
 
@@ -116,25 +115,15 @@ public class SpriteSheet {
         return SPRITESHEET.image.getSubimage(x, y, w, h);
     }
 
+    public Sprite getSpriteImage(int x, int y, int w, int h) {
+        return SPRITESHEET.getNewSubimage(x, y, w, h);
+    }
+
     public Sprite[] getSpriteRow(int i) {
         return spriteArray[i];
     }
 
     public Sprite[][] getSpriteArray() { return spriteArray; }
-
-    public static void drawArray(Graphics2D g2d, ArrayList<Sprite> img, Vector2f pos, int width, int height, int xOffset, int yOffset) {
-        float x = pos.x;
-        float y = pos.y;
-
-        for (int i = 0; i < img.size(); i++) {
-            if (img.get(i) != null) {
-                g2d.drawImage(img.get(i).image, (int)x, (int)y, width, height, null);
-            }
-
-            x += xOffset;
-            y += yOffset;
-        }
-    }
 
     public static void drawArray(Graphics2D g2d, String word, Vector2f pos, int size) {
         drawArray(g2d, currentFont, word, pos, size, size, size, 0);

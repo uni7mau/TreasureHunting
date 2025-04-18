@@ -3,13 +3,14 @@ package com.treasurehunting.java.entity.enemy;
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
-import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
 import com.treasurehunting.java.utils.GameSettings;
+
+import java.awt.*;
 
 public class Bat extends Enemy {
 
@@ -41,72 +42,32 @@ public class Bat extends Enemy {
         sense.setRadius(700);
         sense.getPos().flag();
 
+        health = 100;
+        maxHealth = 100;
         atk = 50;
         acc = 1f;
         deacc = 2f;
-        maxSpeed = 1.5f;
+        maxSpeed = 3f;
 
-        skills.put(0, new RangeAttack(this));
+        skills.put(0, new RangeAttack(this, 3));
     }
 
     @Override
     public void animate() {
-        if (DIE_STATE) {
-            if (currAnimation != Assets.DIE) {
-                setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
-            }
+        if (health == 0) {
+            setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
         } else if (INVINCIBLE_STATE) {
-            if (currAnimation != Assets.INVINCIBLE) {
-                setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
-            }
+            setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
         } else if (WAKEUP_STATE) {
-            if (currAnimation != Assets.WAKEUP) {
-                setAbsoluteAnimation(Assets.WAKEUP, spriteSheets.get(Assets.WAKEUP).getSpriteRow(currDirection), 7);
-            }
+            setAbsoluteAnimation(Assets.WAKEUP, spriteSheets.get(Assets.WAKEUP).getSpriteRow(currDirection), 7);
         } else if (RANGEATTACK_STATE) {
-            if (currAnimation != Assets.RANGEATTACK) {
-                setAbsoluteAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 3);
-            }
+            setAbsoluteAnimation(Assets.RANGEATTACK, spriteSheets.get(Assets.RANGEATTACK).getSpriteRow(currDirection), 3);
         } else if (DASH_STATE && ATTACK_STATE) {
-            if (currAnimation != Assets.DASHSATTACK) {
-                setAbsoluteAnimation(Assets.DASHSATTACK, spriteSheets.get(Assets.DASHSATTACK).getSpriteRow(currDirection), 5);
-            }
+            setAbsoluteAnimation(Assets.DASHSATTACK, spriteSheets.get(Assets.DASHSATTACK).getSpriteRow(currDirection), 5);
         } else if (FLY_STATE) {
-            if (right && up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTUP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTUP), 5);
-                }
-            } else if (right && down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTDOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTDOWN), 5);
-                }
-            } else if (left && down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTDOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTDOWN), 5);
-                }
-            } else if (left && up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTUP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTUP), 5);
-                }
-            } else if (down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.DOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.DOWN), 5);
-                }
-            } else if (left) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFT)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFT), 5);
-                }
-            } else if (up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.UP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.UP), 5);
-                }
-            } else if (right) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHT)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHT), 5);
-                }
-            }
-        } else if (currAnimation != Assets.IDLE) {
-            setAbsoluteAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
+            setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(currDirection), 5);
+        } else {
+            setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
         }
     }
 
@@ -135,20 +96,20 @@ public class Bat extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE && !PlayScene.tm.checkInFog(bounds)) {
-            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + 5) {
+        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE && !INVINCIBLE_STATE) {
+            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + 30) {
                 up = true;
                 FLY_STATE = true;
             } else up = false;
-            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 < player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 - 5) {
+            if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 < player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 - 30) {
                 down = true;
                 FLY_STATE = true;
             } else down = false;
-            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 > player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 + 5) {
+            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 > player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 + 30) {
                 left = true;
                 FLY_STATE = true;
             } else left = false;
-            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 < player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 - 5) {
+            if (pos.x + bounds.getXOffset() + (float) bounds.getWidth() / 2 < player.getPos().x + player.getBounds().getXOffset() + (float) player.getBounds().getWidth() / 2 - 30) {
                 right = true;
                 FLY_STATE = true;
             } else right = false;
@@ -198,8 +159,17 @@ public class Bat extends Enemy {
                 spriteSheets.put(Assets.IDLE, spriteSheets.get(Assets.FLY));
                 SLEEP_STATE = false;
                 WAKEUP_STATE = true;
-                bounds.setYOffset(bounds.getYOffset() + 15);
+                bounds.setYOffset(bounds.getYOffset() + 10);
             }
+        }
+    }
+
+    @Override
+    public void render(Graphics2D g2d) {
+        super.render(g2d);
+
+        if (!PlayScene.tm.checkInFog(bounds)) {
+            drawName(g2d, "Pixel Game", 16, "#FFF700");
         }
     }
 

@@ -5,6 +5,10 @@ import com.treasurehunting.java.entity.enemy.Bat;
 import com.treasurehunting.java.entity.enemy.BlueGolem;
 import com.treasurehunting.java.entity.enemy.Skeleton;
 import com.treasurehunting.java.entity.enemy.ToxicFruit;
+import com.treasurehunting.java.obstacle.Trap;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Assets {
 
@@ -13,10 +17,7 @@ public class Assets {
     public static SpriteSheet playerSSGunStandShooting = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Attack/Gun/StandShooting8.png", 48, 64 );
     public static SpriteSheet playerSSGunRunShooting = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Run_while_shooting/RunWhileShooting8.png", 48, 64 );
     public static SpriteSheet playerSSGunDash = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Dash/Gun/Dash8.png", 48, 64 );
-    public static SpriteSheet playerSSGunReloading = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Reloading/Reloading8.png", 48, 64 );
     public static SpriteSheet playerSSGunDeath = new SpriteSheet( "com/treasurehunting/assets/entities/adventurer/Death/Gun/Death8.png", 48, 64 );
-
-    public static SpriteSheet playerSkillIcon = new SpriteSheet("com/treasurehunting/assets/ui/PlayerSkillIcon.png", 43, 44);
 
     public static SpriteSheet batSSIdleSleep  = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-Sleep.png", 64, 64);
     public static SpriteSheet batSSWakeUp = new SpriteSheet("com/treasurehunting/assets/entities/enemies/Bat/Bat-WakeUp.png", 64, 64);
@@ -49,22 +50,83 @@ public class Assets {
     public static SpriteSheet normBullet = new SpriteSheet("com/treasurehunting/assets/objects/16x16NormBullet.png", 16, 16);
     public static SpriteSheet critBullet = new SpriteSheet("com/treasurehunting/assets/objects/16x16CritBullet.png", 16, 16);
     public static SpriteSheet skillBullet = new SpriteSheet("com/treasurehunting/assets/objects/32x32SkillBullet.png", 32, 32);
-    public static SpriteSheet ultimateBullet = new SpriteSheet("com/treasurehunting/assets/objects/48x48UltimateEnergyBullet.png", 48, 48);
-    public static SpriteSheet explodeBomb = new SpriteSheet("com/treasurehunting/assets/objects/16x16ExplodeBomb.png", 16, 16);
+    public static SpriteSheet ultimateBullet = new SpriteSheet("com/treasurehunting/assets/effects/72x72ElectroThorn.png", 72, 72);
+    public static SpriteSheet explodeBomb = new SpriteSheet("com/treasurehunting/assets/effects/32x32Explode.png", 32, 32);
+    public static SpriteSheet chestSS = new SpriteSheet("com/treasurehunting/assets/objects/16x16Chest.png", 16, 16);
+    public static SpriteSheet boxSS = new SpriteSheet("com/treasurehunting/assets/objects/16x16Box.png", 16, 16);
+    public static SpriteSheet manaSS = new SpriteSheet("com/treasurehunting/assets/objects/16x16Mana.png", 16, 16);
+    public static SpriteSheet portalSS = new SpriteSheet("com/treasurehunting/assets/objects/32x32Portal.png", 32, 32);
+    public static SpriteSheet spiderNestSS = new SpriteSheet("com/treasurehunting/assets/objects/16x32SpiderNest.png", 16, 32);
+    public static SpriteSheet trapSS = new SpriteSheet("com/treasurehunting/assets/objects/16x16Trap.png", 16, 16);
+
+    public static SpriteSheet playerSkillIcon = new SpriteSheet("com/treasurehunting/assets/ui/PlayerSkillIcon.png", 43, 44);
 
     public static String dungeonMap = "com/treasurehunting/assets/tile/DungeonMap.xml";
     public static String graveMap = "com/treasurehunting/assets/tile/GraveMaze.xml";
-    public static String floatingLandMap = "com/treasurehunting/assets/tile/FloatingLandMap.xml";
-    public static int normMapIndex = 3;
+
+    public static int getNormLayerIndex() {
+        if (currMapID == takeMapID(dungeonMap)) {
+            return 3;
+        } else if (currMapID == takeMapID(graveMap)) {
+            return 1;
+        }
+
+        return -1;
+    }
+
+    public static int getObjLayerIndex() {
+        if (currMapID == takeMapID(dungeonMap)) {
+            return 0;
+        } else if (currMapID == takeMapID(graveMap)) {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    public static int getEntityLayerIndex() {
+        if (currMapID == takeMapID(dungeonMap)) {
+            return 5;
+        } else if (currMapID == takeMapID(graveMap)) {
+            return 4;
+        }
+
+        return -1;
+    }
+
+    public static int getObsLayerIndex() {
+        if (currMapID == takeMapID(dungeonMap)) {
+            return 6;
+        } else if (currMapID == takeMapID(graveMap)) {
+            return 5;
+        }
+
+        return -1;
+    }
+
+    public static int mapQty = 2;
+    public static int currMapID = takeMapID(dungeonMap);
+    public static int firstMapID = takeMapID(dungeonMap);
+
+    public static boolean switchNextMap() {
+        if (currMapID++ == mapQty) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void returnFirstMap() {
+        currMapID = firstMapID;
+    }
 
     public static int takeMapID(String fileURL) {
         if (fileURL.equals(dungeonMap)) {
             return 0;
         } else if (fileURL.equals(graveMap)) {
             return 1;
-        } else if (fileURL.equals(floatingLandMap)) {
-            return 2;
         }
+
         return -1;
     }
 
@@ -73,25 +135,23 @@ public class Assets {
             return "com/treasurehunting/assets/tile/DungeonMap.xml";
         } else if (mapID == 1) {
             return "com/treasurehunting/assets/tile/GraveMaze.xml";
-        } else if (mapID == 2) {
-            return "com/treasurehunting/assets/tile/FloatingLandMap.xml";
         }
         return "";
     }
 
-    public static int takeGameObjectID(GameObject go) {
-        if (go instanceof BlueGolem) return 0;
-        else if (go instanceof Bat) return 1;
-        else if (go instanceof Skeleton) return 2;
-        else if (go instanceof ToxicFruit) return 3;
-        return -1;
-    }
+    public static int holeTileID = 8;
+    public static int chestTileID = 288;
+    public static int boxTileID = 206;
+    public static int manaTileID = 543;
+    public static int portalTileID = 247;
+    public static int spiderNestTileID = 260;
+    public static int trapTileID = 296;
 
     public static int playerTileID = 203;
     public static int blueGolemTileID = 201;
     public static int batTileID = 202;
-    public static int skeletonTileID = 2;
-    public static int toxicFruitTileID = 3;
+    public static int skeletonTileID = 106;
+    public static int toxicFruitTileID = 107;
     public static int explodeBombID = 100;
     public static int bombBulletID = 101;
     public static int normBulletID = 102;
@@ -109,23 +169,24 @@ public class Assets {
         fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 140);
         fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 48);
         fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 32);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 16);
+        fontf.addSize("Pixel Game", java.awt.Font.PLAIN, 8);
         fontf.loadFont(Assets.meatMadnessFont, "MeatMadness", 32);
+        fontf.addSize("MeatMadness", java.awt.Font.PLAIN, 16);
+        fontf.addSize("MeatMadness", java.awt.Font.PLAIN, 8);
         fontf.loadFont(Assets.gravityBoldFont, "GravityBold8", 8);
     }
 
     public static SpriteSheet buttonSS = new SpriteSheet("com/treasurehunting/assets/ui/HumbleUI/PNG/SpriteSheet.png", 704, 2160);
-
-    public static SpriteSheet inventorySS = new SpriteSheet("com/treasurehunting/assets/ui/Inventory.png", 120, 172);
     public static SpriteSheet healthBarSS = new SpriteSheet("com/treasurehunting/assets/ui/HealthBar.png", 120, 30);
     public static SpriteSheet manaBarSS = new SpriteSheet("com/treasurehunting/assets/ui/ManaBar.png", 64, 21);
-
-    public static SpriteSheet backGroundSS = new SpriteSheet("com/treasurehunting/assets/ui/staticHUB.png", 1920, 1080);
-
+    public static SpriteSheet backGroundSS = new SpriteSheet("com/treasurehunting/assets/ui/StaticHub.png", 1920, 1080);
     public static SpriteSheet pauseBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/PauseBoard.png", 183, 280);
     public static SpriteSheet displayBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/DisplayBoard.png", 248, 280);
     public static SpriteSheet audioBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/AudioBoard.png", 248, 280);
     public static SpriteSheet videoBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/VideoBoard.png", 248, 280);
     public static SpriteSheet controlsBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/ControlsBoard.png", 248, 280);
+    public static SpriteSheet abilityBoardSS = new SpriteSheet("com/treasurehunting/assets/ui/AbilityBar.png", 256, 64);
 
     // Animation/state things
     public static final int IDLE = 0;

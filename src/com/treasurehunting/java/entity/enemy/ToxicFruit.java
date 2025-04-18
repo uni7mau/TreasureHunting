@@ -3,13 +3,14 @@ package com.treasurehunting.java.entity.enemy;
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
-import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.SmashAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
 import com.treasurehunting.java.utils.GameSettings;
+
+import java.awt.*;
 
 public class ToxicFruit extends Enemy {
     
@@ -34,64 +35,28 @@ public class ToxicFruit extends Enemy {
         sense.setRadius(500);
         sense.getPos().flag();
 
+        health = 50;
+        maxHealth = 50;
         atk = 200;
         acc = 1f;
         deacc = 2f;
-        maxSpeed = 2f;
+        maxSpeed = 3f;
 
         skills.put(0, new SmashAttack(this));
     }
 
     @Override
     public void animate() {
-        if (DIE_STATE) {
-            if (currAnimation != Assets.DIE) {
-                setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
-            }
+        if (health == 0) {
+            setAbsoluteAnimation(Assets.DIE, spriteSheets.get(Assets.DIE).getSpriteRow(currDirection), 5);
         } else if (INVINCIBLE_STATE) {
-            if (currAnimation != Assets.INVINCIBLE) {
-                setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
-            }
+            setAbsoluteAnimation(Assets.INVINCIBLE, spriteSheets.get(Assets.INVINCIBLE).getSpriteRow(currDirection), 3);
         } else if (SMASH_STATE) {
-            if (currAnimation != Assets.SMASH) {
-                setAbsoluteAnimation(Assets.SMASH, spriteSheets.get(Assets.SMASH).getSpriteRow(currDirection), 5);
-            }
+            setAbsoluteAnimation(Assets.SMASH, spriteSheets.get(Assets.SMASH).getSpriteRow(currDirection), 5);
         } else if (FLY_STATE) {
-            if (right && up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTUP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTUP), 5);
-                }
-            } else if (right && down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHTDOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHTDOWN), 5);
-                }
-            } else if (left && down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTDOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTDOWN), 5);
-                }
-            } else if (left && up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFTUP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFTUP), 5);
-                }
-            } else if (down) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.DOWN)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.DOWN), 5);
-                }
-            } else if (left) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.LEFT)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.LEFT), 5);
-                }
-            } else if (up) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.UP)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.UP), 5);
-                }
-            } else if (right) {
-                if (currAnimation != Assets.FLY || anim.getDelay() == -1 || (currAnimation == Assets.FLY && currDirection != Assets.RIGHT)) {
-                    setAbsoluteAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(Assets.RIGHT), 5);
-                }
-            }
+            setAnimation(Assets.FLY, spriteSheets.get(Assets.FLY).getSpriteRow(currDirection), 5);
         } else if (currAnimation != Assets.IDLE) {
-            setAbsoluteAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
+            setAnimation(Assets.IDLE, spriteSheets.get(Assets.IDLE).getSpriteRow(currDirection), 5);
         }
     }
 
@@ -112,7 +77,7 @@ public class ToxicFruit extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !SMASH_STATE && !PlayScene.tm.checkInFog(bounds)) {
+        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !SMASH_STATE) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + player.getBounds().getHeight()) {
                 up = true;
                 FLY_STATE = true;
@@ -159,6 +124,15 @@ public class ToxicFruit extends Enemy {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void render(Graphics2D g2d) {
+        super.render(g2d);
+
+        if (!PlayScene.tm.checkInFog(bounds)) {
+            drawName(g2d, "Pixel Game", 16, "#65D73A");
         }
     }
 

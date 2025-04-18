@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "DungeonMap.xml",
+    "activeFile": "",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -17,11 +17,11 @@
             "scaleInDock": 1
         },
         "DungeonMap.xml": {
-            "scale": 1.5,
-            "selectedLayer": 5,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 332.3333333333333,
-                "y": 406.33333333333337
+                "x": 400.5,
+                "y": 309.75
             }
         },
         "DungeonMap.xml#DungeonTileMap": {
@@ -31,7 +31,7 @@
             "scaleInDock": 2
         },
         "DungeonMap.xml#OverTileMap": {
-            "scaleInDock": 4
+            "scaleInDock": 3
         },
         "FloatingLandMap.xml": {
             "scale": 1,
@@ -56,18 +56,18 @@
             "scaleInDock": 0.75
         },
         "GraveMaze.xml": {
-            "scale": 2,
-            "selectedLayer": -1,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 400.25,
-                "y": 400.25
+                "x": 438.66666666666663,
+                "y": 416.99999999999994
             }
         },
         "GraveMaze.xml#DungeonTileMap": {
             "scaleInDock": 1
         },
         "GraveMaze.xml#OverTileMap": {
-            "scaleInDock": 2
+            "scaleInDock": 4
         },
         "MainTileMap": {
             "scaleInDock": 1
@@ -151,8 +151,6 @@
     "map.tileWidth": 16,
     "map.width": 50,
     "openFiles": [
-        "DungeonMap.xml",
-        "GraveMaze.xml"
     ],
     "project": "UltimateMap.tiled-project",
     "recentFiles": [
