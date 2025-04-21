@@ -47,7 +47,7 @@ public class ObstacleBundle {
                     }
                 }
             }
-        } else if (mapID == Assets.takeMapID(Assets.graveMap)) {
+        } else if (mapID == Assets.takeMapID(Assets.graveMazeMap)) {
             for (Map.Entry<Integer, List<Vector2f>> entry : obsPos.entrySet()) {
                 for (int i = 0; i < entry.getValue().size(); i++) {
                     if (entry.getKey() == Assets.chestTileID) {

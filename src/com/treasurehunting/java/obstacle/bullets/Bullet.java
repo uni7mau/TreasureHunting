@@ -5,11 +5,11 @@ import com.treasurehunting.java.entity.GameObject;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
+import com.treasurehunting.java.obstacle.Chest;
 import com.treasurehunting.java.obstacle.Mana;
 import com.treasurehunting.java.obstacle.Obstacle;
 import com.treasurehunting.java.obstacle.Portal;
 
-import javax.sound.sampled.Port;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
@@ -21,11 +21,11 @@ public abstract class Bullet extends Obstacle {
 
     protected Vector2f startPos;
     protected double overallDist;
-    protected int direct = 6;
+    protected int direct;
     protected double activeTime;
 
-    protected int dmg = 0;
-    protected int bulletSpeed = 300;
+    protected int dmg;
+    protected int bulletSpeed;
     protected float force = 5f;
 
     protected Entity owner;
@@ -68,7 +68,7 @@ public abstract class Bullet extends Obstacle {
 
     @Override
     public void activeEvent(GameObject go) {
-        if ( !(go instanceof Bullet || go instanceof Mana || go instanceof Portal || go.getClass() == owner.getClass()) ) {
+        if ( !(go instanceof Bullet || go instanceof Mana || go instanceof Portal || go instanceof Chest || go.getClass() == owner.getClass()) ) {
             if (bounds.collides(go.getBounds())) {
                 go.healthDec(
                         dmg,

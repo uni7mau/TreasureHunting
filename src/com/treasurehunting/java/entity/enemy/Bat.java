@@ -8,7 +8,6 @@ import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
@@ -22,7 +21,7 @@ public class Bat extends Enemy {
     public boolean DASH_STATE = false;
 
     public Bat(Vector2f pos) {
-        super(Assets.batSSIdleSleep, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE, "BAT");
+        super(Assets.batSSIdleSleep, pos, Assets.TILE_SIZE, Assets.TILE_SIZE, "BAT");
 
         addSpriteSheet(Assets.FLY, Assets.batSSFly);
         addSpriteSheet(Assets.WAKEUP, Assets.batSSWakeUp);

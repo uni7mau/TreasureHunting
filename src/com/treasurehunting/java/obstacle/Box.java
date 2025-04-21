@@ -5,15 +5,13 @@ import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
-import com.treasurehunting.java.ui.PlayerUI;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
 public class Box extends Obstacle {
 
     public Box(Vector2f pos) {
-        super(Assets.boxSS.getSprite(0, 0), pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE);
+        super(Assets.boxSS.getSprite(0, 0), pos, Assets.TILE_SIZE - 1, Assets.TILE_SIZE - 1);
 
         bounds.setWidth(4*width / 5);
 

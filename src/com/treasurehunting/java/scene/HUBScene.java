@@ -8,9 +8,9 @@ import com.treasurehunting.java.utils.MouseHandler;
 
 import java.awt.*;
 
-public class HomeScene extends GameScene {
+public class HUBScene extends GameScene {
 
-    public Sprite backgroundImg = Assets.backGroundSS.getSprite(0, 0);
+    public static Sprite backgroundImg = Assets.backGroundSS.getSprite(0, 0);
 
     @Override
     public void update(double time) {

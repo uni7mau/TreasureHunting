@@ -67,8 +67,8 @@ public class TileMapObj extends TileMap {
         int x = (int)( (PlayScene.cam.getPos().x) / tileWidth );
         int y = (int)( (PlayScene.cam.getPos().y) / tileHeight );
 
-        for (int i = x; i <= 1 + x + (int)(GameSettings.GAME_WIDTH / GameSettings.TILE_SIZE); i++) {
-            for (int j = y; j <= 1 + y + (int)(GameSettings.GAME_HEIGHT / GameSettings.TILE_SIZE); j++) {
+        for (int i = x; i <= 1 + x + (int)(GameSettings.GAME_WIDTH / Assets.TILE_SIZE); i++) {
+            for (int j = y; j <= 1 + y + (int)(GameSettings.GAME_HEIGHT / Assets.TILE_SIZE); j++) {
                 if (i + (j * hQty) > -1 && i + (j * hQty) < event_blocks.length && event_blocks[i + (j * hQty)] != null) {
                     event_blocks[i + (j * hQty)].render(g2d);
                 }

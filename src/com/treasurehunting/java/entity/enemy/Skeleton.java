@@ -8,7 +8,6 @@ import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
@@ -22,7 +21,7 @@ public class Skeleton extends Enemy {
     static float scale = 1.5f;
     
     public Skeleton(Vector2f pos) {
-        super(Assets.yellowSleketonSSIdle, pos, (int) (scale*GameSettings.TILE_SIZE), (int) (scale*GameSettings.TILE_SIZE*64 / 90), "Skeleton");
+        super(Assets.yellowSleketonSSIdle, pos, (int) (scale* Assets.TILE_SIZE), (int) (scale* Assets.TILE_SIZE*64 / 90), "Skeleton");
         addSpriteSheet(Assets.WALK, Assets.yellowSleketonSSWalk);
         addSpriteSheet(Assets.STRAIGHTATTACK, Assets.yellowSleketonSSSkill1);
         addSpriteSheet(Assets.RANGEATTACK, Assets.yellowSleketonSSSkill2);

@@ -54,4 +54,5 @@ public class ScoreSave {
     public static int getHighScore() {
         return highScore;
     }
+
 }

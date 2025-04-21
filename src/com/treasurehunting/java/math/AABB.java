@@ -3,7 +3,6 @@ package com.treasurehunting.java.math;
 import com.treasurehunting.java.entity.GameObject;
 
 import java.util.List;
-import java.util.Map;
 
 public class AABB {
 
@@ -15,14 +14,11 @@ public class AABB {
     private float h;
     private float r;
 
-    private float surfaceArea;
-
     // Rectangle AABB
     public AABB(Vector2f pos, int w, int h) {
         this.pos = pos;
         this.w = w;
         this.h = h;
-        this.surfaceArea = w * h;
 
         type = "Rectangle";
     }
@@ -31,7 +27,6 @@ public class AABB {
     public AABB(Vector2f pos, int r) {
         this.pos = pos;
         this.r = r;
-        this.surfaceArea = (float)Math.PI * (r * r);
 
         type = "Circle";
     }
@@ -42,7 +37,6 @@ public class AABB {
     public int getWidth() { return (int) w; }
     public int getHeight() { return (int) h; }
     public float getRadius() { return r; }
-    public float getSurfaceArea() { return surfaceArea; }
     public String getType() { return type; }
 
     public void setBox(Vector2f pos, int w, int h) {
@@ -78,13 +72,11 @@ public class AABB {
     }
 
     // rect * mrect
-    public boolean checkGoThrough(float dx, float dy, Map<Integer, List<GameObject>> gos) {
-        for (Map.Entry<Integer, List<GameObject>> entry : gos.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                GameObject go = entry.getValue().get(i);
-                if (go.isPhysicBody() && collides(dx, dy, go.getBounds())) {
-                    return false;
-                }
+    public boolean checkGoThrough(float dx, float dy, List<GameObject> gos) {
+        for (int i = 0; i < gos.size(); i++) {
+            GameObject go = gos.get(i);
+            if (go.isPhysicBody() && collides(dx, dy, go.getBounds())) {
+                return false;
             }
         }
 

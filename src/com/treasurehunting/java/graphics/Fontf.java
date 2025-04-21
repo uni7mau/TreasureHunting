@@ -9,7 +9,6 @@ import java.util.Map;
 public class Fontf {
 
     private Map<String, Map<Integer, Font>> fonts;
-
     private Font currFont;
 
     public Fontf() {
@@ -22,7 +21,7 @@ public class Fontf {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
 
-            fonts.putIfAbsent(name, new HashMap<>());
+            fonts.put(name, new HashMap<>());
             fonts.get(name).put(size, new Font(name, Font.PLAIN, size));
         } catch (IOException | FontFormatException e) {
             System.out.println("ERROR: ttfFont - can't load font " + path + "...");
@@ -45,6 +44,7 @@ public class Fontf {
     }
 
     public Font getCurrFont() { return currFont; }
+
     public void setFont(String name, int size) { currFont = fonts.get(name).get(size); }
 
 }

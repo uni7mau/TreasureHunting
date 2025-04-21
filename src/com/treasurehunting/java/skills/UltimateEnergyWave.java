@@ -20,8 +20,8 @@ public class UltimateEnergyWave extends SumonSkill {
         PlayScene.tobeAdded.get(Assets.ultimateBulletID).add(
                 new UltimateBullet(
                         owner,
-                        200, 200,
-                        new Vector2f(owner.getPos().x + owner.getBounds().getXOffset() - (200 / 2), owner.getPos().y + owner.getBounds().getYOffset() - (200 / 2)),
+                        3* Assets.TILE_SIZE, 3* Assets.TILE_SIZE,
+                        new Vector2f(owner.getPos().x + owner.getBounds().getXOffset() - (3* Assets.TILE_SIZE / 2), owner.getPos().y + owner.getBounds().getYOffset() - (3* Assets.TILE_SIZE / 2)),
                         1000,
                         owner.getCurrDirection(),
                         500,

@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class Mana extends Obstacle {
 
-    public static int w = 60;
-    public static int h = 60;
+    public static int w = 4 * Assets.TILE_SIZE / 5;
+    public static int h = 4 * Assets.TILE_SIZE / 5;
 
     public Mana(Vector2f pos) {
         super(Assets.manaSS, pos, w, h);
@@ -22,7 +22,7 @@ public class Mana extends Obstacle {
 
     @Override
     public void activeEvent(GameObject go) {
-        if (go instanceof Entity target) {
+        if (go instanceof Entity target && target.getHealth() != 0) {
             target.manaDec(-120);
             DIE_STATE = true;
         }

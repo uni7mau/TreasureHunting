@@ -3,7 +3,6 @@ package com.treasurehunting.java.ui;
 import com.treasurehunting.java.GamePanel;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.Sprite;
-import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.GameSceneManager;
 import com.treasurehunting.java.utils.GameSettings;
@@ -38,8 +37,6 @@ public class GameUI {
 
         xOffset = 25;
         yOffset = GameSettings.GAME_HEIGHT / 2 - h / 2 + 50;
-
-        SpriteSheet.currentFont = new com.treasurehunting.java.graphics.Font(Assets.font, 10, 10);
 
         Sprite imgButton = Assets.buttonSS.getSpriteImage(35, 1621, 57, 22);
         Sprite imgHover = Assets.buttonSS.getSpriteImage(57, 1496, 17, 31);
@@ -416,8 +413,8 @@ public class GameUI {
         );
 
         btnNewGame.addEvent(e -> {
-            GameSceneManager.add(GameSceneManager.PLAY);
             GameSceneManager.pop(GameSceneManager.HUB);
+            GameSceneManager.add(GameSceneManager.PLAY);
         });
         btnHUBSettings.addEvent(e -> {
 
@@ -477,7 +474,7 @@ public class GameUI {
     }
 
     public void render(Graphics2D g2d) {
-        if (GameSceneManager.isStateActive(GameSceneManager.PLAY)) {
+        if (GameSceneManager.isSceneActive(GameSceneManager.PLAY)) {
             g2d.setFont(Assets.fontf.getFont("Pixel Game", 32));
             g2d.setColor(Color.white);
             String fps = GamePanel.oldFrameCount + " FPS";
@@ -485,29 +482,73 @@ public class GameUI {
             String tps = GamePanel.oldTickCount + " TPS";
             g2d.drawString(tps, GameSettings.GAME_WIDTH - 3*32, 64);
         }
-        if (GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             String score = "SCORE: " + ScoreSave.getScore();
-            SpriteSheet.drawArray(g2d, score, new Vector2f((float)GameSettings.GAME_WIDTH / 2 - score.length() / 2 * 48, (float)GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150), 64,  64, 48);
             String highestStr = "HIGHEST SCORE: " + ScoreSave.getHighScore();
-            SpriteSheet.drawArray(g2d, highestStr, new Vector2f((float)GameSettings.GAME_WIDTH / 2 - highestStr.length() / 2 * 32, (float)GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150 + 64 + 20), 32,  32, 32);
-            for (Map.Entry<Integer, Button> entry : winUI.entrySet()) { entry.getValue().render(g2d); }
-        } else if (GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) {
-            SpriteSheet.drawArray(g2d, "GAME OVER", new Vector2f((float) GameSettings.GAME_WIDTH / 2 - "GAME OVER".length() * (48 / 2), (float) GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150), 64, 64, 48);
-            for (Map.Entry<Integer, Button> entry : gameOverUI.entrySet()) { entry.getValue().render(g2d); }
-        } else if (GameSceneManager.isStateActive(GameSceneManager.HUB)) {
-            for (Map.Entry<Integer, Button> entry : hubUI.entrySet()) { entry.getValue().render(g2d); }
-
+            g2d.setColor(new Color(253, 253, 253));
             g2d.setFont(Assets.fontf.getFont("Pixel Game", 128));
-            g2d.setColor(new Color(76, 0, 0));
+            FontMetrics met = g2d.getFontMetrics(Assets.fontf.getFont("Pixel Game", 128));
+            int w = met.stringWidth(highestStr);
+            int h = met.getHeight();
+            g2d.drawString(
+                    highestStr,
+                    (float) GameSettings.GAME_WIDTH / 2 - w / 2,
+                    (float)GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150 + h - 10
+            );
+            w = met.stringWidth(score);
+            g2d.drawString(
+                    score,
+                    (float) GameSettings.GAME_WIDTH / 2 - w / 2,
+                    (float)GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150
+            );
+            for (Map.Entry<Integer, Button> entry : winUI.entrySet()) { entry.getValue().render(g2d); }
+        } else if (GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER)) {
+            String lastWord = "GAME OVER";
+            g2d.setColor(new Color(135, 0, 0));
+            g2d.setFont(Assets.fontf.getFont("Pixel Game", 128));
+            FontMetrics met = g2d.getFontMetrics(Assets.fontf.getFont("Pixel Game", 128));
+            int w = met.stringWidth(lastWord);
+            g2d.drawString(
+                    lastWord,
+                    (float) GameSettings.GAME_WIDTH / 2 - w / 2,
+                    (float) GameSettings.GAME_HEIGHT / 2 - (48 / 2) - 150
+            );
+            for (Map.Entry<Integer, Button> entry : gameOverUI.entrySet()) { entry.getValue().render(g2d); }
+        } else if (GameSceneManager.isSceneActive(GameSceneManager.HUB)) {
             String logo = "TREASURE";
             String logoBelow = "HUNTING";
-            g2d.drawString(logo, GameSettings.GAME_WIDTH / 2 - (logo.length() / 2)*55, 200);
-            g2d.drawString(logoBelow, GameSettings.GAME_WIDTH / 2 - (logoBelow.length() / 2)*55 - 12, 300);
+            g2d.setColor(new Color(76, 0, 0));
+            g2d.setFont(Assets.fontf.getFont("Pixel Game", 128));
+            FontMetrics met = g2d.getFontMetrics(Assets.fontf.getFont("Pixel Game", 128));
+
+            int w = met.stringWidth(logo);
+            int h = 110;
+            g2d.drawString(
+                    logo,
+                    GameSettings.GAME_WIDTH / 2 - w / 2,
+                    200
+            );
+            g2d.drawString(
+                    logoBelow,
+                    GameSettings.GAME_WIDTH / 2 - w / 2 + 20,
+                    200 + h
+            );
             g2d.setColor(new Color(255, 246, 246));
-            g2d.drawString(logo, GameSettings.GAME_WIDTH / 2 - (logo.length() / 2)*53, 200 - 10);
-            g2d.drawString(logoBelow, GameSettings.GAME_WIDTH / 2 - (logoBelow.length() / 2)*53 - 12, 300 - 10);
+            w = met.stringWidth(logoBelow);
+            g2d.drawString(
+                    logo,
+                    GameSettings.GAME_WIDTH / 2 - w / 2 - 15,
+                    200 - 10
+            );
+            g2d.drawString(
+                    logoBelow,
+                    GameSettings.GAME_WIDTH / 2 - w / 2 + 5,
+                    200 + h - 10
+            );
+
+            for (Map.Entry<Integer, Button> entry : hubUI.entrySet()) { entry.getValue().render(g2d); }
         }
-        if (GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (GameSceneManager.isSceneActive(GameSceneManager.PAUSE) && !GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             g2d.drawImage(pauseBoardBg.image, xOffset, yOffset, w, h, null);
             for (Map.Entry<Integer, Button> entry : pauseUI.entrySet()) { entry.getValue().render(g2d); }
         }

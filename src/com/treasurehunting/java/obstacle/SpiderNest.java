@@ -5,14 +5,13 @@ import com.treasurehunting.java.entity.GameObject;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
 public class SpiderNest extends Obstacle {
 
     public SpiderNest(Vector2f pos) {
-        super(Assets.spiderNestSS.getSprite(0, 0), pos, GameSettings.TILE_SIZE, 2*GameSettings.TILE_SIZE);
+        super(Assets.spiderNestSS.getSprite(0, 0), pos, Assets.TILE_SIZE, 2* Assets.TILE_SIZE);
 
         bounds.setHeight(height / 2);
         bounds.setYOffset(height / 2);

@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
         running = true;
 
         img = new BufferedImage(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        g2d = (Graphics2D)img.getGraphics();
+        g2d = (Graphics2D) img.getGraphics();
 
         mouse = new MouseHandler(this);
         key = new KeyHandler(this);
@@ -56,18 +56,16 @@ public class GamePanel extends JPanel implements Runnable {
         gsm = new GameSceneManager();
     }
 
-    public void update(double time) {
-        gsm.update(time);
-    }
-
     public void input(MouseHandler mouse, KeyHandler key) {
         gsm.input(mouse, key);
     }
 
+    public void update(double time) {
+        gsm.update(time);
+    }
+
     public void render() {
-        if (g2d != null) {
-            gsm.render(g2d);
-        }
+        gsm.render(g2d);
     }
 
     public void draw() {
@@ -85,8 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         init();
 
-        final double GAME_HERTZ = GameSettings.GAME_HERTZ;
-        final double TBU = 1000000000 / GAME_HERTZ; //Time between updates 1/64 = 0.015625 or 15_625_000
+        final double TBU = 1000000000 / GameSettings.GAME_HERTZ; //Time between updates 1/64 = 0.015625 or 15_625_000
 
         // Có 2 loại set cho MUBR là 1 hoặc 3, nếu để là 1 thì có vài trường hợp gây input lag
         // và chỉ set cao hơn khi FPS thấp hơn HERTZ
@@ -123,7 +120,7 @@ public class GamePanel extends JPanel implements Runnable {
                 nextRenderTime = now + TTBR;
             }
 
-            int thisSecond = (int)(lastUpdateTime / 1000000000);
+            int thisSecond = (int)( lastUpdateTime / 1000000000 );
             if (thisSecond > lastSecondTime) { // chênh 1s
                 oldFrameCount = frameCount;
                 oldTickCount = tickCount;
@@ -133,13 +130,15 @@ public class GamePanel extends JPanel implements Runnable {
                 lastSecondTime = thisSecond;
             }
 
-            while (System.nanoTime() < nextRenderTime && System.nanoTime() - lastUpdateTime < TBU) {
+            while (System.nanoTime() < nextRenderTime) {
                 Thread.yield(); //Nhường cpu cho tiến trình khác
 
-                try {
-                    Thread.sleep(1); //Tạm dừng luồng trong 1 milli sec
-                } catch (Exception e) {
-                    System.out.println("ERROR: yielding thread");
+                if (lastUpdateTime + TBU - System.nanoTime() > 1000000) {
+                    try {
+                        Thread.sleep(1); //Tạm dừng luồng trong 1 milli sec
+                    } catch (Exception e) {
+                        System.out.println("ERROR: yielding thread");
+                    }
                 }
             }
         }

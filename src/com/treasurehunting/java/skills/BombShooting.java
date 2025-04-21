@@ -21,8 +21,8 @@ public class BombShooting extends SumonSkill {
         PlayScene.tobeAdded.get(Assets.bombBulletID).add(
                 new SkillBullet(
                         owner,
-                        100, 100,
-                        new Vector2f(owner.getPos().x + owner.getBounds().getXOffset() - (100/2), owner.getPos().y + owner.getBounds().getYOffset() - (100/2)),
+                        Assets.TILE_SIZE, Assets.TILE_SIZE,
+                        new Vector2f(owner.getPos().x + owner.getBounds().getXOffset() + owner.getBounds().getWidth() / 2 - (Assets.TILE_SIZE / 2), owner.getPos().y + owner.getBounds().getYOffset() + owner.getBounds().getHeight() / 2  - (Assets.TILE_SIZE / 2)),
                         600,
                         owner.getCurrDirection(),
                         owner.getAtk() + dmg,

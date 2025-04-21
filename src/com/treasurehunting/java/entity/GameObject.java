@@ -8,7 +8,6 @@ import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.GameSceneManager;
-import com.treasurehunting.java.utils.GameSettings;
 import com.treasurehunting.java.utils.TileCollision;
 
 import java.awt.*;
@@ -22,11 +21,9 @@ public abstract class GameObject {
 
     protected AABB bounds;
     protected AABB sense;
-    protected AABB hitBox;
     protected Vector2f pos;
     protected int width;
     protected int height;
-    protected int scale;
 
     protected boolean INVINCIBLE_STATE = false;
     protected boolean DIE_STATE = false;
@@ -84,12 +81,9 @@ public abstract class GameObject {
         this.pos = pos;
         this.width = width;
         this.height = height;
-        scale = Math.max(width, height) / GameSettings.TILE_SIZE;
 
         bounds = new AABB(new Vector2f(pos.x, pos.y), width, height);
         sense = new AABB(new Vector2f(pos.x + width / 2 - 500 / 2, pos.y + height / 2 - 500 / 2), 500);
-        hitBox = new AABB(new Vector2f(pos.x, pos.y), 600);
-        hitBox.setRadius((float) (Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2));
         anim = new Animation();
         tileCollision = new TileCollision(this);
     }
@@ -104,8 +98,6 @@ public abstract class GameObject {
 
         bounds = new AABB(new Vector2f(pos.x, pos.y), width, height);
         sense = new AABB(new Vector2f(pos.x + width / 2 - 500 / 2, pos.y + height / 2 - 500 / 2), 500);
-        hitBox = new AABB(new Vector2f(pos.x, pos.y), 600);
-        hitBox.setRadius((float) (Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2));
         anim = new Animation();
         tileCollision = new TileCollision(this);
     }
@@ -314,7 +306,7 @@ public abstract class GameObject {
     }
 
     public void update(double time) {
-        if (!GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (!GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             if (hasAnim) {
                 move();
                 animate();

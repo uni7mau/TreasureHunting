@@ -8,7 +8,6 @@ import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.RangeAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
@@ -18,7 +17,7 @@ public class BlueGolem extends Enemy {
 
     // Size: 90 x 64 = <~tilesize>/x
     public BlueGolem(Vector2f pos) {
-        super(Assets.blueGolemSSIdle, pos, 4*GameSettings.TILE_SIZE, 4*GameSettings.TILE_SIZE*64 / 90, "BLUE GOLEM");
+        super(Assets.blueGolemSSIdle, pos, 4* Assets.TILE_SIZE, 4* Assets.TILE_SIZE*64 / 90, "BLUE GOLEM");
 
         addSpriteSheet(Assets.WALK, Assets.blueGolemSSWalk);
         addSpriteSheet(Assets.RANGEATTACK, Assets.blueGolemSSSkill1);

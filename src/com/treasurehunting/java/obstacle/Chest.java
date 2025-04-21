@@ -6,14 +6,13 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.GameSceneManager;
 import com.treasurehunting.java.scene.PlayScene;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
 public class Chest extends Obstacle {
 
     public Chest(Vector2f pos) {
-        super(Assets.chestSS, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE);
+        super(Assets.chestSS, pos, Assets.TILE_SIZE - 1, Assets.TILE_SIZE - 1);
     }
 
     @Override

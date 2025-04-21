@@ -1,6 +1,7 @@
 package com.treasurehunting.java.utils;
 
 import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.TileMapObj;
 import com.treasurehunting.java.tiles.blocks.Block;
@@ -16,8 +17,8 @@ public class TileCollision {
     public int getTile() { return tileId; }
 
     public boolean normalTile(float ax, float ay) {
-        int xt = (int) ( (owner.getBounds().getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() / 2) / GameSettings.TILE_SIZE;
-        int yt = (int) ( (owner.getBounds().getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() / 2) / GameSettings.TILE_SIZE;
+        int xt = (int) ( (owner.getBounds().getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() / 2) / Assets.TILE_SIZE;
+        int yt = (int) ( (owner.getBounds().getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() / 2) / Assets.TILE_SIZE;
 
         tileId = (xt + (yt * TileMapObj.hQty));
 
@@ -34,10 +35,10 @@ public class TileCollision {
         float bottom = top + owner.getBounds().getHeight();
 
         // Đổi thành tọa độ tile
-        int tileLeft   = (int) (left / GameSettings.TILE_SIZE);
-        int tileTop    = (int) (top / GameSettings.TILE_SIZE);
-        int tileRight  = (int) (right / GameSettings.TILE_SIZE);
-        int tileBottom = (int) (bottom / GameSettings.TILE_SIZE);
+        int tileLeft   = (int) (left / Assets.TILE_SIZE);
+        int tileTop    = (int) (top / Assets.TILE_SIZE);
+        int tileRight  = (int) (right / Assets.TILE_SIZE);
+        int tileBottom = (int) (bottom / Assets.TILE_SIZE);
 
         int destroyed = 0;
 
@@ -68,26 +69,26 @@ public class TileCollision {
                             (owner.getPos().x + ax + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() < 0) ||
                             (owner.getPos().y + ay + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() < 0) ||
 
-                            (owner.getPos().x + ax + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() > TileMapObj.wQty*GameSettings.TILE_SIZE) ||
-                            (owner.getPos().y + ay + owner.getBounds().getYOffset() > TileMapObj.hQty*GameSettings.TILE_SIZE) ||
-                            (owner.getPos().x + ax + owner.getBounds().getXOffset() > TileMapObj.wQty*GameSettings.TILE_SIZE) ||
-                            (owner.getPos().y + ay + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() > TileMapObj.hQty*GameSettings.TILE_SIZE)
+                            (owner.getPos().x + ax + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() > TileMapObj.wQty* Assets.TILE_SIZE) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() > TileMapObj.hQty* Assets.TILE_SIZE) ||
+                            (owner.getPos().x + ax + owner.getBounds().getXOffset() > TileMapObj.wQty* Assets.TILE_SIZE) ||
+                            (owner.getPos().y + ay + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() > TileMapObj.hQty* Assets.TILE_SIZE)
             ) {
                 return true;
             }
 
             // Block Left
-            int nextXt1 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
-            int nextYt1 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
+            int nextXt1 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / Assets.TILE_SIZE);
+            int nextYt1 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / Assets.TILE_SIZE);
             // Block RightDown
-            int nextXt2 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
-            int nextYt2 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
+            int nextXt2 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / Assets.TILE_SIZE);
+            int nextYt2 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / Assets.TILE_SIZE);
             // Block Right
-            int nextXt3 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / GameSettings.TILE_SIZE);
-            int nextYt3 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / GameSettings.TILE_SIZE);
+            int nextXt3 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset() + (float) owner.getBounds().getWidth() ) / Assets.TILE_SIZE);
+            int nextYt3 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset()) / Assets.TILE_SIZE);
             // Block LeftDown
-            int nextXt4 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / GameSettings.TILE_SIZE);
-            int nextYt4 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / GameSettings.TILE_SIZE);
+            int nextXt4 = (int) (( (owner.getPos().x + ax) + owner.getBounds().getXOffset()) / Assets.TILE_SIZE);
+            int nextYt4 = (int) (( (owner.getPos().y + ay) + owner.getBounds().getYOffset() + (float) owner.getBounds().getHeight() ) / Assets.TILE_SIZE);
 
             // Vùng giao tại cạnh trái và cạnh trên là x = 0 hoặc y = 0, từ -48 -> 48 dù có chia cho 48 thì nó vẫn tính là 0
             // => cách này không dùng được

@@ -26,8 +26,8 @@ public class SkillBullet extends Bullet {
             PlayScene.tobeAdded.get(Assets.explodeBombID).add(
                     new ExplodeBomb(
                             owner,
-                            100, 100,
-                            new Vector2f(pos.x - (float)width / 2, pos.y - (float)height / 2),
+                            2* Assets.TILE_SIZE, 2* Assets.TILE_SIZE,
+                            new Vector2f(bounds.getPos().x + bounds.getXOffset() + bounds.getWidth() / 2 - 2* Assets.TILE_SIZE, bounds.getPos().y + bounds.getYOffset() + bounds.getHeight() / 2 - 2* Assets.TILE_SIZE),
                             dmg*2,
                             3000
                     )

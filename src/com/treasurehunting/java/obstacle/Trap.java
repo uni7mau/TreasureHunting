@@ -5,14 +5,13 @@ import com.treasurehunting.java.entity.GameObject;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
 public class Trap extends Obstacle {
 
     public Trap(Vector2f pos) {
-        super(Assets.trapSS, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE);
+        super(Assets.trapSS, pos, Assets.TILE_SIZE, Assets.TILE_SIZE);
 
         anim.setDelay(10);
     }

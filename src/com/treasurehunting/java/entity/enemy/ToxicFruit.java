@@ -8,7 +8,6 @@ import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.SmashAttack;
 import com.treasurehunting.java.skills.StaminaSkill;
-import com.treasurehunting.java.utils.GameSettings;
 
 import java.awt.*;
 
@@ -18,7 +17,7 @@ public class ToxicFruit extends Enemy {
     public boolean SMASH_STATE = false;
 
     public ToxicFruit(Vector2f pos) {
-        super(Assets.toxicFruitSSIdle, pos, GameSettings.TILE_SIZE, GameSettings.TILE_SIZE, "Toxic Fruit");
+        super(Assets.toxicFruitSSIdle, pos, Assets.TILE_SIZE, Assets.TILE_SIZE, "Toxic Fruit");
 
         addSpriteSheet(Assets.FLY, Assets.toxicFruitSSFly);
         addSpriteSheet(Assets.SMASH, Assets.toxicFruitSSSkill1);

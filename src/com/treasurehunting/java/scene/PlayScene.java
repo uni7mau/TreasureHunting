@@ -21,9 +21,10 @@ import java.util.List;
 
 public class PlayScene extends GameScene {
 
+    public static TileManager tm;
     public static Vector2f map;
     public static Camera cam;
-    public static TileManager tm;
+    public static QuadTree quadTree;
     public static Map<Integer, List<GameObject>> gameObjects;
     public static Map<Integer, List<GameObject>> tobeAdded;
     public static PlayerUI pui;
@@ -42,6 +43,7 @@ public class PlayScene extends GameScene {
                 )
         );
 
+        quadTree = new QuadTree(0, new AABB(new Vector2f(map.x, map.y), Camera.widthLimit, Camera.heightLimit));
         gameObjects = new HashMap<>();
         tobeAdded = new HashMap<>();
 
@@ -61,8 +63,8 @@ public class PlayScene extends GameScene {
         gameObjects.putAll(ObstacleBundle.initialize(tm.getMapID()));
 
         map.setOri(
-                Math.max(0, player.getPos().x + player.getBounds().getXOffset() + player.getBounds().getWidth() / 2 - GameSettings.GAME_WIDTH / 2),
-                Math.max(0, player.getPos().y + player.getBounds().getYOffset() + player.getBounds().getHeight() / 2 - GameSettings.GAME_HEIGHT / 2)
+                Math.min(Camera.widthLimit - GameSettings.GAME_WIDTH, Math.max(0, player.getPos().x + player.getBounds().getXOffset() + player.getBounds().getWidth() / 2 - GameSettings.GAME_WIDTH / 2)),
+                Math.min(Camera.heightLimit - GameSettings.GAME_HEIGHT, Math.max(0, player.getPos().y + player.getBounds().getYOffset() + player.getBounds().getHeight() / 2 - GameSettings.GAME_HEIGHT / 2))
         );
         cam.getPos().setOri(map.oriX, map.oriY);
 
@@ -75,7 +77,7 @@ public class PlayScene extends GameScene {
 
     @Override
     public void input(MouseHandler mouse, KeyHandler key) {
-        if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE) && !GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             Player player = (Player) gameObjects.get(Assets.playerTileID).get(currPlayer);
             player.input(mouse, key);
             cam.input(mouse, key);
@@ -85,7 +87,7 @@ public class PlayScene extends GameScene {
 
     @Override
     public void update(double time) {
-        if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE)) {
+        if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE)) {
             for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
                 for (int i = 0; i < entry.getValue().size(); i++) {
                     if (entry.getValue().get(i) instanceof Enemy enemy) {
@@ -117,11 +119,16 @@ public class PlayScene extends GameScene {
                         if (obj instanceof Enemy) {
                             enemyCount--;
                             if (enemyCount == 0) {
-                                GameSceneManager.add(GameSceneManager.WIN);
+                                if (tm.getMapID() == Assets.lastMapID) {
+                                    GameSceneManager.add(GameSceneManager.WIN);
+                                } else {
+                                    Assets.switchNextMap();
+                                    GameSceneManager.add(GameSceneManager.PLAY);
+                                }
                             }
                         }
                         if (obj instanceof Player) {
-                            if (!GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) {
+                            if (!GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER)) {
                                 GameSceneManager.add(GameSceneManager.GAMEOVER);
                             }
                         }
@@ -152,6 +159,13 @@ public class PlayScene extends GameScene {
             }
             tobeAdded.clear();
         }
+
+        quadTree.clear();
+        for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                quadTree.insert(entry.getValue().get(i));
+            }
+        }
     }
 
     @Override
@@ -160,20 +174,8 @@ public class PlayScene extends GameScene {
 
         for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
             for (int i = 0; i < entry.getValue().size(); i++) {
-                if (entry.getValue().get(i) instanceof Obstacle) {
-                    if (cam.getBounds().collides(entry.getValue().get(i).getBounds())) {
-                        entry.getValue().get(i).render(g2d);
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                if (entry.getValue().get(i) instanceof Entity) {
-                    if (cam.getBounds().collides(entry.getValue().get(i).getBounds())) {
-                        entry.getValue().get(i).render(g2d);
-                    }
+                if (cam.getBounds().collides(entry.getValue().get(i).getBounds())) {
+                    entry.getValue().get(i).render(g2d);
                 }
             }
         }
@@ -181,9 +183,9 @@ public class PlayScene extends GameScene {
         pui.render(g2d);
         cam.render(g2d);
 
-        g2d.setColor(Color.cyan);
+        g2d.setColor(Color.CYAN);
         g2d.setFont(Assets.fontf.getFont("Pixel Game", 32));
-        g2d.drawString(enemyCount + "", 50, GameSettings.GAME_HEIGHT / 2);
+        g2d.drawString("Enemies left: " + enemyCount, 50, GameSettings.GAME_HEIGHT / 2);
     }
 
 }

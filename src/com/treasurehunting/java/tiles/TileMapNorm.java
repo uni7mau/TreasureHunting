@@ -1,5 +1,6 @@
 package com.treasurehunting.java.tiles;
 
+import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.blocks.Block;
@@ -64,8 +65,8 @@ public class TileMapNorm extends TileMap {
         // Ví dụ: camera-pos: 1,5 -> 5.7, camera-size: 4,2 với map-width là 8, block-size là 1 thì render block 1-2, 2-3, 3-4, 4-5, 5-6
         // tổng là 5 block, tức render theo vị trí như sau: [1 -> 5]
         // Công thức hóa: [(int)camera-pos/block-size -> (int)camera-size/block-size + 1]
-        for (int i = x; i <= 1 + x + (int)(GameSettings.GAME_WIDTH / GameSettings.TILE_SIZE); i++) {
-            for (int j = y; j <= 1 + y + (int)(GameSettings.GAME_HEIGHT / GameSettings.TILE_SIZE); j++) {
+        for (int i = x; i <= 1 + x + (int)(GameSettings.GAME_WIDTH / Assets.TILE_SIZE); i++) {
+            for (int j = y; j <= 1 + y + (int)(GameSettings.GAME_HEIGHT / Assets.TILE_SIZE); j++) {
                 if (i + (j * hQty) > -1 && i + (j * hQty) < blocks.length && blocks[i + (j * hQty)] != null) {
                     blocks[i + (j * hQty)].render(g2d);
                 }

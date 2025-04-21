@@ -27,7 +27,6 @@ public class EntityBundle {
                 entityPos.get(tileID).add(new Vector2f((int) (i % wQty) * tileWidth, (int) (i / hQty) * tileHeight));
             }
         }
-
     }
 
     public static Map<Integer, List<GameObject>> initialize(int mapID) {
@@ -48,7 +47,7 @@ public class EntityBundle {
                     }
                 }
             }
-        } else if (mapID == Assets.takeMapID(Assets.graveMap)) {
+        } else if (mapID == Assets.takeMapID(Assets.graveMazeMap)) {
             for (Map.Entry<Integer, List<Vector2f>> entry : entityPos.entrySet()) {
                 for (int i = 0; i < entry.getValue().size(); i++) {
                     if (entry.getKey() == Assets.playerTileID) {

@@ -29,7 +29,7 @@ public class Bomb extends Obstacle {
         this.owner = owner;
 
         this.startPos = startPos;
-        this.r = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2) / 2);
+        this.r = width;
         this.dmg = dmg;
         this.explodeSpeed = explodeSpeed;
         activeTime = System.nanoTime();

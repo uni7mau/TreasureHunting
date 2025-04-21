@@ -23,7 +23,6 @@ public class GameSettings {
     public static int SPACE = KeyEvent.VK_SPACE;
 
     // ------------------------------------- VIDEO SETTING ------------------------------------
-
 //    public static final int GAME_WIDTH = 1280;
 //    public static final int GAME_HEIGHT = 720;
 
@@ -34,10 +33,10 @@ public class GameSettings {
 //    public static final int GAME_HEIGHT = 925;
 
     public static final int GAME_HERTZ = 64;
-    public static final int GAME_MAX_FPS = 80;
+    public static final int GAME_MAX_FPS = 75;
 
-    public static final int TILE_SIZE = 64;
-//    public static final int TILE_SIZE = 48;
-//    public static final int TILE_SIZE = 32;
+    // ------------------------------------- VIDEO SETTING ------------------------------------
+//    public static final boolean sfx = ;
+//    public static final int volume = ;
 
 }

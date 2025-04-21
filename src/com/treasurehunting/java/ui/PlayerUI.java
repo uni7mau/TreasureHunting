@@ -42,7 +42,7 @@ public class PlayerUI {
 
         key.getKeys().get(GameSettings.INVENTORY).tick();
         if (key.getKeys().get(GameSettings.INVENTORY).clicked) {
-            if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) {
+            if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE) && !GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER)) {
                 inventory.input(mouse, key);
             }
         }
@@ -58,7 +58,7 @@ public class PlayerUI {
         healthBar.render(g2d);
         manaBar.render(g2d);
         abilityBar.render(g2d);
-        if (!GameSceneManager.isStateActive(GameSceneManager.PAUSE) && !GameSceneManager.isStateActive(GameSceneManager.GAMEOVER)) { inventory.render(g2d); }
+        if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE) && !GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER)) { inventory.render(g2d); }
     }
 
 }

@@ -24,7 +24,7 @@ public class Player extends Entity {
 
     // 48 x 64
     public Player(Vector2f origin) {
-        super(Assets.playerSSGunIdle, origin, 2*GameSettings.TILE_SIZE*48 / 64, 2*GameSettings.TILE_SIZE, "Player");
+        super(Assets.playerSSGunIdle, origin, 2* Assets.TILE_SIZE*48 / 64, 2* Assets.TILE_SIZE, "Player");
 
         addSpriteSheet(Assets.RUN, Assets.playerSSGunRun);
         addSpriteSheet(Assets.STANDSHOOTING, Assets.playerSSGunStandShooting);
@@ -32,10 +32,10 @@ public class Player extends Entity {
         addSpriteSheet(Assets.DASH, Assets.playerSSGunDash);
         addSpriteSheet(Assets.DIE, Assets.playerSSGunDeath);
 
-        bounds.setWidth(35);
-        bounds.setHeight(20);
-        bounds.setXOffset(30);
-        bounds.setYOffset(70);
+        bounds.setWidth((float)width/3);
+        bounds.setHeight((float)height/5);
+        bounds.setXOffset((float)width/2 - (float)width/5 + 2);
+        bounds.setYOffset((float)height/2);
 
         sense.setRadius(700);
         sense.getPos().flag();
@@ -167,7 +167,7 @@ public class Player extends Entity {
 
         if (dx == 0 && dy == 0) { RUN_STATE = false; }
 
-        if (!GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (!GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             loadPos();
         }
 

@@ -6,14 +6,9 @@ import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.obstacle.Obstacle;
-import com.treasurehunting.java.scene.PlayScene;
-import com.treasurehunting.java.tiles.blocks.Block;
 import com.treasurehunting.java.tiles.blocks.HoleBlock;
 import com.treasurehunting.java.tiles.blocks.NormBlock;
-import com.treasurehunting.java.tiles.blocks.ObjBlock;
 import com.treasurehunting.java.utils.Camera;
-import com.treasurehunting.java.utils.GameSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,8 +28,8 @@ public class TileManager {
     private SpriteSheet spriteSheet;
     private int blockWidth;
     private int blockHeight;
-    private int blockWidthQty;
-    private int blockHeightQty;
+    public int blockWidthQty;
+    public int blockHeightQty;
 
     private int mapID;
     private int columns;
@@ -46,7 +41,7 @@ public class TileManager {
     public TileManager(int mapID) {
         this();
         this.mapID = mapID;
-        addTileMap(Assets.takeMapURL(mapID), GameSettings.TILE_SIZE, GameSettings.TILE_SIZE);
+        addTileMap(Assets.takeMapURL(mapID), Assets.TILE_SIZE, Assets.TILE_SIZE);
     }
 
     public TileManager(int mapID, int blockWidth, int blockHeight) {
@@ -115,7 +110,7 @@ public class TileManager {
                 }
             }
             //Giới hạn khung hình cho camera: "Sprite Block Qty" * "Display Size". Ex: camWidthLimit = 50 x 64 = 3200, ...
-            Camera.setLimit(wQty*GameSettings.TILE_SIZE, hQty*GameSettings.TILE_SIZE);
+            Camera.setLimit(wQty* Assets.TILE_SIZE, hQty* Assets.TILE_SIZE);
         } catch(Exception e) {
             System.out.println("ERROR - TILEMANAGER: can not read tilemap:");
             e.printStackTrace();
@@ -145,14 +140,14 @@ public class TileManager {
         int normMap = Assets.getNormLayerIndex();
         if (tm.size() < 2) normMap = 0;
 
-        int xt1 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
-        int yt1 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
-        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / GameSettings.TILE_SIZE;
-        int yt2 = (int) ( bounds.getPos().y + bounds.getYOffset()) / GameSettings.TILE_SIZE;
-        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset()) / GameSettings.TILE_SIZE;
-        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / GameSettings.TILE_SIZE;
-        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / GameSettings.TILE_SIZE;
-        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / GameSettings.TILE_SIZE;
+        int xt1 = (int) ( bounds.getPos().x + bounds.getXOffset()) / Assets.TILE_SIZE;
+        int yt1 = (int) ( bounds.getPos().y + bounds.getYOffset()) / Assets.TILE_SIZE;
+        int xt2 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / Assets.TILE_SIZE;
+        int yt2 = (int) ( bounds.getPos().y + bounds.getYOffset()) / Assets.TILE_SIZE;
+        int xt3 = (int) ( bounds.getPos().x + bounds.getXOffset()) / Assets.TILE_SIZE;
+        int yt3 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / Assets.TILE_SIZE;
+        int xt4 = (int) ( bounds.getPos().x + bounds.getXOffset() + (float) bounds.getWidth()) / Assets.TILE_SIZE;
+        int yt4 = (int) ( bounds.getPos().y + bounds.getYOffset() + (float) bounds.getHeight()) / Assets.TILE_SIZE;
 
         int idA = xt1 + yt1*blockWidthQty; // leftup
         int idB = xt2 + yt2*blockWidthQty; // rightup
@@ -184,8 +179,8 @@ public class TileManager {
                 tm.get(Assets.getObjLayerIndex()).getBlocks()[tileId] = new HoleBlock(
                         spriteSheet.getSprite((int) ((Assets.holeTileID - 1) % columns), (int) ((Assets.holeTileID - 1) / columns)),
                         new Vector2f((int) (tileId % blockWidthQty) * blockWidth, (int) (tileId / blockHeightQty) * blockHeight),
-                        GameSettings.TILE_SIZE,
-                        GameSettings.TILE_SIZE,
+                        Assets.TILE_SIZE,
+                        Assets.TILE_SIZE,
                         0 // Hole blocks doesn't rotate
                 );
             }

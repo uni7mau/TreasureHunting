@@ -24,8 +24,8 @@ public class Camera {
     private float acc = 3f;
     private float deacc = 0.3f;
 
-    private static int widthLimit;
-    private static int heightLimit;
+    public static int widthLimit;
+    public static int heightLimit;
 
     public Camera(AABB collisionCam) { this.collisionCam = collisionCam; }
 
@@ -49,7 +49,7 @@ public class Camera {
     }
 
     public void update() {
-        if (!GameSceneManager.isStateActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isStateActive(GameSceneManager.WIN)) {
+        if (!GameSceneManager.isSceneActive(GameSceneManager.GAMEOVER) && !GameSceneManager.isSceneActive(GameSceneManager.WIN)) {
             move();
             if (!e.blockedX) {
                 if (collisionCam.getPos().x + dx > 0

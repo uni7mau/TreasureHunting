@@ -6,7 +6,9 @@ import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.skills.Skill;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Entity extends GameObject {
@@ -20,13 +22,9 @@ public abstract class Entity extends GameObject {
     protected int mana = 0;
     protected int atk = 10;
     protected int def = 5;
-    protected float elemDmgBonus = 0f;
-    protected float elemResBonus = 0f;
     protected int maxMana = 0;
     protected int maxAtk = 10;
     protected int maxDef = 5;
-    protected float maxElemDmgBonus = 0f;
-    protected float maxElemResBonus = 0f;
     protected double manaPercent = 1;
 
     protected HashMap<Integer, Skill> skills;
@@ -52,13 +50,9 @@ public abstract class Entity extends GameObject {
     public int getMana() { return mana; }
     public int getAtk() { return atk; }
     public int getDef() { return def; }
-    public float getElemDmgBonus() { return elemDmgBonus; }
-    public float getElemResBonus() { return elemResBonus; }
     public int getMaxMana() { return maxMana; }
     public int getMaxAtk() { return maxAtk; }
     public int getMaxDef() { return maxDef; }
-    public float getMaxElemDmgBonus() { return maxElemDmgBonus; }
-    public float getMaxElemResBonus() { return maxElemResBonus; }
     public double getHealthPercent() { return healthPercent; }
     public double getManaPercent() { return manaPercent; }
 
@@ -90,7 +84,8 @@ public abstract class Entity extends GameObject {
 
     protected void loadPos() {
         if (!FALLEN_STATE) {
-            if (!tileCollision.collisionTile(dx + bonusDx, 0) && bounds.checkGoThrough(dx + bonusDx, 0, PlayScene.gameObjects)) {
+            List<GameObject> eList = PlayScene.quadTree.retrieve(new ArrayList<>(), this);
+            if (!tileCollision.collisionTile(dx + bonusDx, 0) && bounds.checkGoThrough(dx + bonusDx, 0, eList)) {
                 pos.x += dx + bonusDx;
                 bounds.getPos().x += dx + bonusDx;
                 sense.getPos().x += dx + bonusDx;
@@ -98,7 +93,7 @@ public abstract class Entity extends GameObject {
             } else {
                 blockedX = true;
             }
-            if (!tileCollision.collisionTile(0, dy + bonusDy) && bounds.checkGoThrough(0, dy + bonusDy, PlayScene.gameObjects)) {
+            if (!tileCollision.collisionTile(0, dy + bonusDy) && bounds.checkGoThrough(0, dy + bonusDy, eList)) {
                 pos.y += dy + bonusDy;
                 bounds.getPos().y += dy + bonusDy;
                 sense.getPos().y += dy + bonusDy;

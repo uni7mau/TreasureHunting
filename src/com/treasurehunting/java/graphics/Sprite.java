@@ -17,7 +17,7 @@ public class Sprite {
     private int w;
     private int h;
 
-    public static enum effect {NORMAL, SEPIA, REDISH, GRAYSCALE, NEGATIVE, DECAY, DARKNESS};
+    public enum effect {NORMAL, SEPIA, REDISH, GRAYSCALE, NEGATIVE, DECAY, DARKNESS};
 
     private float[][] id = {{1.0f, 0.0f, 0.0f},
                             {0.0f, 1.0f, 0.0f},
@@ -173,11 +173,11 @@ public class Sprite {
         return rotatedDeg;
     }
 
-    public Sprite getSubimage(int x, int y, int w, int h) {
+    public Sprite getSubImage(int x, int y, int w, int h) {
         return new Sprite(image.getSubimage(x, y, w, h));
     }
 
-    public Sprite getNewSubimage(int x, int y, int w, int h) {
+    public Sprite getNewSubImage(int x, int y, int w, int h) {
         BufferedImage temp = image.getSubimage(x, y, w, h);
         BufferedImage newImage = new BufferedImage(image.getColorModel(), image.getRaster().createCompatibleWritableRaster(w, h), image.isAlphaPremultiplied(), null);
         temp.copyData(newImage.getRaster());
@@ -185,8 +185,8 @@ public class Sprite {
         return new Sprite(newImage);
     }
 
-    public Sprite getNewSubimage() {
-        return getNewSubimage(0, 0, this.w, this.h);
+    public Sprite getNewSubImage() {
+        return getNewSubImage(0, 0, this.w, this.h);
     }
 
     public void setRotatedImage(double angleDegrees) {
