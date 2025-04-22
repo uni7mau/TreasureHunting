@@ -24,9 +24,11 @@ public class AABB {
     }
 
     // Circle AABB
-    public AABB(Vector2f pos, int r) {
+    public AABB(Vector2f pos, float r) {
         this.pos = pos;
         this.r = r;
+        this.w = r / 2;
+        this.h = r / 2;
 
         type = "Circle";
     }
@@ -57,6 +59,8 @@ public class AABB {
     public void setRadius(float f) {
         pos.x = pos.x + r / 2 - f / 2;
         pos.y = pos.y + r / 2 - f / 2;
+        w = f / 2;
+        h = f / 2;
         r = f;
     }
 
@@ -68,14 +72,14 @@ public class AABB {
        } else if (type.equals("Circle") && bBox.getType().equals("Rectangle")) {
            return colCircleBox(bBox);
        }
-       return collides(0, 0, bBox);
+       return rectCollides(0, 0, bBox);
     }
 
     // rect * mrect
     public boolean checkGoThrough(float dx, float dy, List<GameObject> gos) {
         for (int i = 0; i < gos.size(); i++) {
             GameObject go = gos.get(i);
-            if (go.isPhysicBody() && collides(dx, dy, go.getBounds())) {
+            if (go.isPhysicBody() && rectCollides(dx, dy, go.getBounds())) {
                 return false;
             }
         }
@@ -84,7 +88,7 @@ public class AABB {
     }
 
     // rect x rect
-    public boolean collides(float dx, float dy, AABB bBox) {
+    public boolean rectCollides(float dx, float dy, AABB bBox) {
         float ax = pos.x + xOffset + (this.w / 2) + dx;
         float ay = pos.y + yOffset + (this.h / 2) + dy;
         float bx = bBox.getPos().x + bBox.getXOffset() + (bBox.getWidth() / 2);
@@ -130,8 +134,8 @@ public class AABB {
 
     // circle x rect
     public boolean colCircleBox(AABB aBox) {
-        float dx = Math.max(aBox.getPos().x + aBox.getXOffset(), Math.min(pos.x + (r/2), aBox.getPos().x + aBox.getXOffset() + aBox.getWidth()));
-        float dy = Math.max(aBox.getPos().y + aBox.getYOffset(), Math.min(pos.y + (r/2), aBox.getPos().y + aBox.getYOffset() + aBox.getHeight()));
+        float dx = Math.max(aBox.getPos().x + aBox.getXOffset(), Math.min(pos.x + (r / 2), aBox.getPos().x + aBox.getXOffset() + aBox.getWidth()));
+        float dy = Math.max(aBox.getPos().y + aBox.getYOffset(), Math.min(pos.y + (r / 2), aBox.getPos().y + aBox.getYOffset() + aBox.getHeight()));
 
         dx = pos.x + (r/2) - dx;
         dy = pos.y + (r/2) - dy;

@@ -51,7 +51,7 @@ public abstract class GameObject {
     protected boolean dmgDisplaying = false;
     protected double dmgGainTime;
     protected int dmgDisplayDuration = 1500;
-    protected int invincibleDuration = 300;
+    protected int invincibleDuration = 500;
     protected double invincibleTime = 0;
 
     // Physical things
@@ -174,6 +174,7 @@ public abstract class GameObject {
 
     public void healthDec(int dmgTaken, float force, int direct) {
         if (!INVINCIBLE_STATE) {
+            INVINCIBLE_STATE = true;
             health = Math.max(0, health - dmgTaken);
             this.dmgTaken = dmgTaken;
             dmgDisplaying = true;
@@ -336,9 +337,6 @@ public abstract class GameObject {
                 }
             }
 
-            if (dmgTaken != 0) {
-                INVINCIBLE_STATE = true;
-            }
             if (INVINCIBLE_STATE) {
                 if ((invincibleTime / 1000000) + invincibleDuration < (time / 1000000)) {
                     INVINCIBLE_STATE = false;

@@ -95,7 +95,7 @@ public class Bat extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE && !INVINCIBLE_STATE) {
+        if (sense.collides(playerBounds) && !player.getState("INVINCIBLE") && !WAKEUP_STATE && !INVINCIBLE_STATE) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + 30) {
                 up = true;
                 FLY_STATE = true;
@@ -154,7 +154,7 @@ public class Bat extends Enemy {
         }
 
         if (SLEEP_STATE) {
-            if (sense.colCircleBox(player.getBounds()) && !player.getState("INVINCIBLE") && !PlayScene.tm.checkInFog(bounds)) {
+            if (sense.collides(player.getBounds()) && !player.getState("INVINCIBLE") && !PlayScene.tm.checkInFog(bounds)) {
                 spriteSheets.put(Assets.IDLE, spriteSheets.get(Assets.FLY));
                 SLEEP_STATE = false;
                 WAKEUP_STATE = true;

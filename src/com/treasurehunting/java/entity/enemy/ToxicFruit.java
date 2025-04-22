@@ -76,7 +76,7 @@ public class ToxicFruit extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !SMASH_STATE) {
+        if (sense.collides(playerBounds) && !player.getState("INVINCIBLE") && !SMASH_STATE) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + player.getBounds().getHeight()) {
                 up = true;
                 FLY_STATE = true;

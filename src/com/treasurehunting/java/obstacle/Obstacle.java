@@ -1,6 +1,7 @@
 package com.treasurehunting.java.obstacle;
 
 import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.entity.Player;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.Sprite;
 import com.treasurehunting.java.graphics.SpriteSheet;
@@ -9,6 +10,7 @@ import com.treasurehunting.java.scene.PlayScene;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Obstacle extends GameObject {
 
@@ -49,6 +51,14 @@ public abstract class Obstacle extends GameObject {
                 activeEvent(go);
             }
         }
+
+//        for (Map.Entry<Integer, List<GameObject>> entry : PlayScene.gameObjects.entrySet()) {
+//            for (int i = 0; i < entry.getValue().size(); i++) {
+//                if (bounds.collides(entry.getValue().get(i).getBounds())) {
+//                    activeEvent(entry.getValue().get(i));
+//                }
+//            }
+//        }
     }
 
 }

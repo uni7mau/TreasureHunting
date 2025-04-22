@@ -23,15 +23,15 @@ public class SkillBullet extends Bullet {
 
         if (DIE_STATE) {
             if (!PlayScene.tobeAdded.containsKey(Assets.explodeBombID)) PlayScene.tobeAdded.put(Assets.explodeBombID, new ArrayList<>());
-            PlayScene.tobeAdded.get(Assets.explodeBombID).add(
+            ExplodeBomb newBomb =
                     new ExplodeBomb(
                             owner,
-                            2* Assets.TILE_SIZE, 2* Assets.TILE_SIZE,
-                            new Vector2f(bounds.getPos().x + bounds.getXOffset() + bounds.getWidth() / 2 - 2* Assets.TILE_SIZE, bounds.getPos().y + bounds.getYOffset() + bounds.getHeight() / 2 - 2* Assets.TILE_SIZE),
+                            500,
+                            new Vector2f(bounds.getPos().x + bounds.getXOffset() + bounds.getWidth() / 2 + 125, bounds.getPos().y + bounds.getYOffset() + bounds.getHeight() / 2 + 125),
                             dmg*2,
-                            3000
-                    )
-            );
+                            400
+                    );
+            PlayScene.tobeAdded.get(Assets.explodeBombID).add(newBomb);
         }
     }
 

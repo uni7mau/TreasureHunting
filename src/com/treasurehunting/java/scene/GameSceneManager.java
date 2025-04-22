@@ -16,8 +16,8 @@ public class GameSceneManager {
     public static final int GAMEOVER = 3;
     public static final int WIN = 4;
 
-    public static GameUI view;
-    public static GameUIController controller;
+    private static GameUI view;
+    private static GameUIController controller;
 
     public GameSceneManager() {
         add(HUB);

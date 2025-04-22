@@ -82,7 +82,7 @@ public class Skeleton extends Enemy {
     @Override
     public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        if (sense.colCircleBox(playerBounds) && !player.getState("INVINCIBLE") && !RANGEATTACK_STATE) {
+        if (sense.collides(playerBounds) && !player.getState("INVINCIBLE") && !RANGEATTACK_STATE) {
             if (pos.y + bounds.getYOffset() + (float) bounds.getHeight() / 2 > player.getPos().y + player.getBounds().getYOffset() + (float) player.getBounds().getHeight() / 2 + player.getBounds().getHeight() + bounds.getHeight() / 2) {
                 up = true;
                 MOVE_STATE = true;

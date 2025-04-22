@@ -68,7 +68,7 @@ public abstract class Bullet extends Obstacle {
 
     @Override
     public void activeEvent(GameObject go) {
-        if ( !(go instanceof Bullet || go instanceof Mana || go instanceof Portal || go instanceof Chest || go.getClass() == owner.getClass()) ) {
+        if ( !(go instanceof Bullet | go instanceof Bomb || go instanceof Mana || go instanceof Portal || go instanceof Chest || go.getClass() == owner.getClass()) ) {
             if (bounds.collides(go.getBounds())) {
                 go.healthDec(
                         dmg,
