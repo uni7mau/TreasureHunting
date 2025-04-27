@@ -28,9 +28,6 @@ public class Trap extends Obstacle {
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.setColor(Color.white);
-        g2d.drawRect((int) bounds.getPos().getWorldVar().x, (int) bounds.getPos().getWorldVar().y, bounds.getWidth(), bounds.getHeight());
-
         if (!PlayScene.tm.checkInFog(bounds)) {
             super.render(g2d);
         }

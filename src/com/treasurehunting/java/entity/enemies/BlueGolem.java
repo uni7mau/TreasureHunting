@@ -1,4 +1,4 @@
-package com.treasurehunting.java.entity.enemy;
+package com.treasurehunting.java.entity.enemies;
 
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class BlueGolem extends Enemy {
 
-    public boolean RANGEATTACK_STATE = false;
+    private boolean RANGEATTACK_STATE = false;
 
     // Size: 90 x 64 = <~tilesize>/x
     public BlueGolem(Vector2f pos) {

@@ -1,4 +1,4 @@
-package com.treasurehunting.java.entity.enemy;
+package com.treasurehunting.java.entity.enemies;
 
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
@@ -13,12 +13,12 @@ import java.awt.*;
 
 public class Bat extends Enemy {
 
-    public boolean SLEEP_STATE = true;
-    public boolean WAKEUP_STATE = false;
-    public boolean FLY_STATE = false;
-    public boolean RUN_STATE = false;
-    public boolean RANGEATTACK_STATE = false;
-    public boolean DASH_STATE = false;
+    private boolean SLEEP_STATE = true;
+    private boolean WAKEUP_STATE = false;
+    private boolean FLY_STATE = false;
+    private boolean RUN_STATE = false;
+    private boolean RANGEATTACK_STATE = false;
+    private boolean DASH_STATE = false;
 
     public Bat(Vector2f pos) {
         super(Assets.batSSIdleSleep, pos, Assets.TILE_SIZE, Assets.TILE_SIZE, "BAT");

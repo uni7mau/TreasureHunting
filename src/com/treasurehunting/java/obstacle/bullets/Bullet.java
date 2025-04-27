@@ -130,9 +130,6 @@ public abstract class Bullet extends Obstacle {
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.setColor(Color.red);
-        g2d.drawRect((int) (pos.getWorldVar().x + bounds.getXOffset()), (int) (pos.getWorldVar().y + bounds.getYOffset()), bounds.getWidth(), bounds.getHeight());
-
         //Make a backup so that we can reset our graphics object after using it.
         AffineTransform backup = g2d.getTransform();
         //rx is the x coordinate for rotation, ry is the y coordinate for rotation, and angle

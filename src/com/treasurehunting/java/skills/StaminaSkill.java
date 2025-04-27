@@ -64,10 +64,10 @@ public abstract class StaminaSkill extends Skill {
 
     @Override
     public void render(Graphics2D g2d) {
-        if (activating) {
-            g2d.setColor(Color.red);
-            g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
-        }
+//        if (activating) {
+//            g2d.setColor(Color.red);
+//            g2d.drawRect((int) (hitBound.getPos().getWorldVar().x + hitBound.getXOffset()), (int) (hitBound.getPos().getWorldVar().y + hitBound.getYOffset()), hitBound.getWidth(), hitBound.getHeight());
+//        }
     }
 
 }

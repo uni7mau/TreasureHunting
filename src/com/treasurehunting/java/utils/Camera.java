@@ -203,9 +203,6 @@ public class Camera {
     public void render(Graphics2D g2d) {
         g2d.setColor(Color.blue);
         g2d.drawRect((int) collisionCam.getPos().getWorldVar().x, (int) collisionCam.getPos().getWorldVar().y, collisionCam.getWidth(), collisionCam.getHeight());
-
-        g2d.drawLine(GameSettings.GAME_WIDTH / 2, 0, GameSettings.GAME_WIDTH / 2, GameSettings.GAME_HEIGHT);
-        g2d.drawLine(0, GameSettings.GAME_HEIGHT / 2, GameSettings.GAME_WIDTH,GameSettings.GAME_HEIGHT / 2);
     }
 
 }

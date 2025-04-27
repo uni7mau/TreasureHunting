@@ -16,11 +16,11 @@ import java.util.List;
 
 public class Player extends Entity {
 
-    public boolean DASH_STATE = false;
-    public boolean RUN_STATE = false;
-    public boolean SHOOTING_STATE = false;
-    public boolean THROWBOMB_STATE = false;
-    public boolean CASTMAGIC_STATE = false;
+    private boolean DASH_STATE = false;
+    private boolean RUN_STATE = false;
+    private boolean SHOOTING_STATE = false;
+    private boolean THROWBOMB_STATE = false;
+    private boolean CASTMAGIC_STATE = false;
 
     // 48 x 64
     public Player(Vector2f origin) {

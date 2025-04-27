@@ -87,27 +87,6 @@ public class PlayScene extends GameScene {
 
     @Override
     public void update(double time) {
-        if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE)) {
-            for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
-                for (int i = 0; i < entry.getValue().size(); i++) {
-                    if (entry.getValue().get(i) instanceof Enemy enemy) {
-                        if (!gameObjects.get(Assets.playerTileID).isEmpty()) {
-                            enemy.update(time, (Player) gameObjects.get(Assets.playerTileID).get(currPlayer));
-                        } else {
-                            enemy.update(time);
-                        }
-                    } else if (entry.getValue().get(i) instanceof Obstacle obs) {
-                        obs.update(time);
-                    } else if (entry.getValue().get(i) instanceof Player player) {
-                        player.update(time);
-                        Vector2f.setWorldVar(map.x, map.y);
-                        pui.update(time);
-                        cam.update();
-                    }
-                }
-            }
-        }
-
         boolean hasRemovedSomething;
         do {
             hasRemovedSomething = false;
@@ -150,6 +129,34 @@ public class PlayScene extends GameScene {
             }
         } while (hasRemovedSomething);
 
+        if (!GameSceneManager.isSceneActive(GameSceneManager.PAUSE)) {
+            quadTree.clear();
+            for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    quadTree.insert(entry.getValue().get(i));
+                }
+            }
+
+            for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    if (entry.getValue().get(i) instanceof Enemy enemy) {
+                        if (!gameObjects.get(Assets.playerTileID).isEmpty()) {
+                            enemy.update(time, (Player) gameObjects.get(Assets.playerTileID).get(currPlayer));
+                        } else {
+                            enemy.update(time);
+                        }
+                    } else if (entry.getValue().get(i) instanceof Obstacle obs) {
+                        obs.update(time);
+                    } else if (entry.getValue().get(i) instanceof Player player) {
+                        player.update(time);
+                        Vector2f.setWorldVar(map.x, map.y);
+                        pui.update(time);
+                        cam.update();
+                    }
+                }
+            }
+        }
+
         if (!tobeAdded.isEmpty()) {
             for (Map.Entry<Integer, List<GameObject>> entry : tobeAdded.entrySet()) {
                 for (int i = 0; i < entry.getValue().size(); i++) {
@@ -158,13 +165,6 @@ public class PlayScene extends GameScene {
                 }
             }
             tobeAdded.clear();
-        }
-
-        quadTree.clear();
-        for (Map.Entry<Integer, List<GameObject>> entry : gameObjects.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                quadTree.insert(entry.getValue().get(i));
-            }
         }
     }
 

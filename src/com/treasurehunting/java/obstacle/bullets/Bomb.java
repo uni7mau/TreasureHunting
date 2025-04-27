@@ -46,13 +46,12 @@ public abstract class Bomb extends Obstacle {
     public void activeEvent(GameObject go) {
         if ( !(go instanceof Bullet || go instanceof Bomb || go instanceof Mana || go instanceof Portal || go instanceof Chest || go.getClass() == owner.getClass()) ) {
             if (bounds.collides(go.getBounds())) {
-                if (anim.checkActiveFrame(Assets.IDLE)) {
-                    go.healthDec(
-                            dmg,
-                            force * (1 - go.getRes()),
-                            0
-                    );
-                }
+                System.out.println(go.getClass());
+                go.healthDec(
+                        dmg,
+                        force * (1 - go.getRes()),
+                        0
+                );
             }
         }
     }
@@ -79,12 +78,12 @@ public abstract class Bomb extends Obstacle {
 
         g2d.drawImage(anim.getImage().image, (int) bounds.getPos().getWorldVar().x, (int) bounds.getPos().getWorldVar().y, bounds.getWidth(), bounds.getHeight(), null);
 
-        g2d.drawOval(
-                (int)( bounds.getPos().getWorldVar().x ),
-                (int)( bounds.getPos().getWorldVar().y ),
-                bounds.getWidth(),
-                bounds.getHeight()
-        );
+//        g2d.drawOval(
+//                (int)( bounds.getPos().getWorldVar().x ),
+//                (int)( bounds.getPos().getWorldVar().y ),
+//                bounds.getWidth(),
+//                bounds.getHeight()
+//        );
     }
 
 }

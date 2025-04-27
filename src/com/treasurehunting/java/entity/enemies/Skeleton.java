@@ -1,4 +1,4 @@
-package com.treasurehunting.java.entity.enemy;
+package com.treasurehunting.java.entity.enemies;
 
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
@@ -15,8 +15,8 @@ import java.awt.*;
 
 public class Skeleton extends Enemy {
 
-    public boolean STRAIGHTATTACK_STATE = false;
-    public boolean RANGEATTACK_STATE = false;
+    private boolean STRAIGHTATTACK_STATE = false;
+    private boolean RANGEATTACK_STATE = false;
 
     static float scale = 1.5f;
     

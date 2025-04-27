@@ -1,4 +1,4 @@
-package com.treasurehunting.java.entity.enemy;
+package com.treasurehunting.java.entity.enemies;
 
 import com.treasurehunting.java.entity.Enemy;
 import com.treasurehunting.java.entity.Player;
@@ -12,9 +12,9 @@ import com.treasurehunting.java.skills.StaminaSkill;
 import java.awt.*;
 
 public class ToxicFruit extends Enemy {
-    
-    public boolean FLY_STATE = false;
-    public boolean SMASH_STATE = false;
+
+    private boolean FLY_STATE = false;
+    private boolean SMASH_STATE = false;
 
     public ToxicFruit(Vector2f pos) {
         super(Assets.toxicFruitSSIdle, pos, Assets.TILE_SIZE, Assets.TILE_SIZE, "Toxic Fruit");

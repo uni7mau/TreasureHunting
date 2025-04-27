@@ -2,10 +2,10 @@ package com.treasurehunting.java.bundle;
 
 import com.treasurehunting.java.entity.GameObject;
 import com.treasurehunting.java.entity.Player;
-import com.treasurehunting.java.entity.enemy.Bat;
-import com.treasurehunting.java.entity.enemy.BlueGolem;
-import com.treasurehunting.java.entity.enemy.Skeleton;
-import com.treasurehunting.java.entity.enemy.ToxicFruit;
+import com.treasurehunting.java.entity.enemies.Bat;
+import com.treasurehunting.java.entity.enemies.BlueGolem;
+import com.treasurehunting.java.entity.enemies.Skeleton;
+import com.treasurehunting.java.entity.enemies.ToxicFruit;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
 

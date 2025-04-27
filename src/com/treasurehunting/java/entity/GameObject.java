@@ -369,19 +369,19 @@ public abstract class GameObject {
 //        );
 
         // Range information
-        g2d.setColor(Color.green);
-        g2d.drawRect(
-                (int)( bounds.getPos().getWorldVar().x + bounds.getXOffset() ),
-                (int)( bounds.getPos().getWorldVar().y + bounds.getYOffset() ),
-                bounds.getWidth(),
-                bounds.getHeight()
-        );
-        g2d.drawOval(
-                (int)( sense.getPos().getWorldVar().x ),
-                (int)( sense.getPos().getWorldVar().y ),
-                (int)sense.getRadius(),
-                (int)sense.getRadius()
-        );
+//        g2d.setColor(Color.green);
+//        g2d.drawRect(
+//                (int)( bounds.getPos().getWorldVar().x + bounds.getXOffset() ),
+//                (int)( bounds.getPos().getWorldVar().y + bounds.getYOffset() ),
+//                bounds.getWidth(),
+//                bounds.getHeight()
+//        );
+//        g2d.drawOval(
+//                (int)( sense.getPos().getWorldVar().x ),
+//                (int)( sense.getPos().getWorldVar().y ),
+//                (int)sense.getRadius(),
+//                (int)sense.getRadius()
+//        );
 
 //      // World position
 //        g2d.setColor(Color.WHITE);

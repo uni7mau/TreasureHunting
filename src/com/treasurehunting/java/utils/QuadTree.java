@@ -11,7 +11,6 @@ import java.util.List;
 public class QuadTree {
 
     private static final int MAX_OBJECTS = 4;
-    private static final int MAX_LEVELS = 5;
 
     private int level;
     private List<GameObject> objects;
@@ -51,7 +50,7 @@ public class QuadTree {
 
     // Xác định node con chứa hoàn toàn bounds của GameObject. Trả về -1 nếu không vừa với bất kỳ quadrant nào.
     private int getIndex(GameObject go) {
-        AABB box = go.getBounds();
+        AABB box = new AABB(go.getBounds().getPos(), go.getWidth(), go.getHeight());
         double verticalMid = bounds.getPos().x + bounds.getWidth() / 2;
         double horizontalMid = bounds.getPos().y + bounds.getHeight() / 2;
 
@@ -82,7 +81,7 @@ public class QuadTree {
 
         objects.add(go);
 
-        if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) {
+        if (objects.size() > MAX_OBJECTS) {
             if (nodes[0] == null) split();
 
             Iterator<GameObject> it = objects.iterator();
