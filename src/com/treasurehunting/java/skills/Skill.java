@@ -1,6 +1,6 @@
 package com.treasurehunting.java.skills;
 
-import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.gameobjects.entities.Entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

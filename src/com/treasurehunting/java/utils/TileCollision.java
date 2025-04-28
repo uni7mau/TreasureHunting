@@ -1,6 +1,6 @@
 package com.treasurehunting.java.utils;
 
-import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.gameobjects.GameObject;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.scene.PlayScene;
 import com.treasurehunting.java.tiles.TileMapObj;

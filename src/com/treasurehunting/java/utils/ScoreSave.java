@@ -21,6 +21,13 @@ public class ScoreSave {
             saveHighScore();
         }
     }
+    private static void saveHighScore() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            writer.write(String.valueOf(highScore));
+        } catch (IOException e) {
+            System.err.println("Lỗi khi ghi high score: " + e.getMessage());
+        }
+    }
 
     private static void loadHighScore() {
         File file = new File(FILE_NAME);
@@ -36,14 +43,6 @@ public class ScoreSave {
             }
         } else {
             highScore = 0;
-        }
-    }
-
-    private static void saveHighScore() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            writer.write(String.valueOf(highScore));
-        } catch (IOException e) {
-            System.err.println("Lỗi khi ghi high score: " + e.getMessage());
         }
     }
 

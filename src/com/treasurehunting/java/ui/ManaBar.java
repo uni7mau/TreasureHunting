@@ -1,6 +1,6 @@
 package com.treasurehunting.java.ui;
 
-import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.gameobjects.entities.Entity;
 import com.treasurehunting.java.graphics.Animation;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.graphics.SpriteSheet;

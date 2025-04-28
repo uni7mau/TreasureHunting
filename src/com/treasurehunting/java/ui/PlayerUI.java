@@ -1,8 +1,8 @@
 package com.treasurehunting.java.ui;
 
-import com.treasurehunting.java.entity.Player;
+import com.treasurehunting.java.gameobjects.entities.Player;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.obstacle.Obstacle;
+import com.treasurehunting.java.gameobjects.obstacles.Obstacle;
 import com.treasurehunting.java.skills.AbilityController;
 import com.treasurehunting.java.scene.GameSceneManager;
 import com.treasurehunting.java.utils.GameSettings;

@@ -1,6 +1,6 @@
 package com.treasurehunting.java.math;
 
-import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.gameobjects.GameObject;
 
 import java.util.List;
 
@@ -27,8 +27,6 @@ public class AABB {
     public AABB(Vector2f pos, float r) {
         this.pos = pos;
         this.r = r;
-        this.w = r / 2;
-        this.h = r / 2;
 
         type = "Circle";
     }
@@ -59,8 +57,8 @@ public class AABB {
     public void setRadius(float f) {
         pos.x = pos.x + r / 2 - f / 2;
         pos.y = pos.y + r / 2 - f / 2;
-        w = f / 2;
-        h = f / 2;
+        w = f;
+        h = f;
         r = f;
     }
 

@@ -1,9 +1,9 @@
 package com.treasurehunting.java.bundle;
 
-import com.treasurehunting.java.entity.GameObject;
+import com.treasurehunting.java.gameobjects.GameObject;
+import com.treasurehunting.java.gameobjects.obstacles.affects.*;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.obstacle.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

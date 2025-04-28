@@ -2,15 +2,15 @@ package com.treasurehunting.java.scene;
 
 import com.treasurehunting.java.bundle.EntityBundle;
 import com.treasurehunting.java.bundle.ObstacleBundle;
-import com.treasurehunting.java.entity.Enemy;
-import com.treasurehunting.java.entity.Entity;
-import com.treasurehunting.java.entity.GameObject;
-import com.treasurehunting.java.entity.Player;
+import com.treasurehunting.java.gameobjects.entities.Enemy;
+import com.treasurehunting.java.gameobjects.entities.Entity;
+import com.treasurehunting.java.gameobjects.GameObject;
+import com.treasurehunting.java.gameobjects.entities.Player;
 import com.treasurehunting.java.graphics.Assets;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
-import com.treasurehunting.java.obstacle.Mana;
-import com.treasurehunting.java.obstacle.Obstacle;
+import com.treasurehunting.java.gameobjects.obstacles.affects.Mana;
+import com.treasurehunting.java.gameobjects.obstacles.Obstacle;
 import com.treasurehunting.java.tiles.TileManager;
 import com.treasurehunting.java.ui.PlayerUI;
 import com.treasurehunting.java.utils.*;
@@ -42,11 +42,9 @@ public class PlayScene extends GameScene {
                         GameSettings.GAME_HEIGHT
                 )
         );
-
-        quadTree = new QuadTree(0, new AABB(new Vector2f(map.x, map.y), Camera.widthLimit, Camera.heightLimit));
+        quadTree = new QuadTree(new AABB(new Vector2f(map.x, map.y), Camera.widthLimit, Camera.heightLimit));
         gameObjects = new HashMap<>();
         tobeAdded = new HashMap<>();
-
         gameObjects = EntityBundle.initialize(tm.getMapID());
         Player player = (Player) gameObjects.get(Assets.playerTileID).get(currPlayer);
         pui = new PlayerUI(player);
@@ -61,16 +59,13 @@ public class PlayScene extends GameScene {
             }
         }
         gameObjects.putAll(ObstacleBundle.initialize(tm.getMapID()));
-
         map.setOri(
                 Math.min(Camera.widthLimit - GameSettings.GAME_WIDTH, Math.max(0, player.getPos().x + player.getBounds().getXOffset() + player.getBounds().getWidth() / 2 - GameSettings.GAME_WIDTH / 2)),
                 Math.min(Camera.heightLimit - GameSettings.GAME_HEIGHT, Math.max(0, player.getPos().y + player.getBounds().getYOffset() + player.getBounds().getHeight() / 2 - GameSettings.GAME_HEIGHT / 2))
         );
         cam.getPos().setOri(map.oriX, map.oriY);
-
         map.resetOri();
         cam.getPos().resetOri();
-
         cam.target(player);
         if (Assets.currMapID == 0) { ScoreSave.playTime = System.nanoTime(); }
     }

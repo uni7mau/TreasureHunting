@@ -29,7 +29,8 @@ public class AbilityController {
         for (Map.Entry<Integer, AbilityButton> entry : view.getButtons().entrySet()) {
             entry.getValue().setOnButtonPressedListener( (int key) -> {
                 if (canActive) {
-                    if (model.getAbilities().get(key) != null && model.getAbilities().get(key).getIsCanActive() && model.getAbilities().get(key).createCommand() != null) {
+                    if (model.getAbilities().get(key) != null && model.getAbilities().get(key).getIsCanActive()
+                            && model.getAbilities().get(key).createCommand() != null) {
                         abilityCommandQueue.add(model.getAbilities().get(key).createCommand());
                         view.getButtons().get(key).activeTime = System.nanoTime();
                     }

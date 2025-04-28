@@ -1,6 +1,6 @@
 package com.treasurehunting.java.scene;
 
-import com.treasurehunting.java.ui.GameUIController;
+import com.treasurehunting.java.utils.GameUIController;
 import com.treasurehunting.java.ui.GameUI;
 import com.treasurehunting.java.utils.*;
 
@@ -61,7 +61,6 @@ public class GameSceneManager {
     }
 
     public void update(double time) {
-//        System.out.println(isStateActive(PLAY) + " " + isStateActive(PAUSE) + " " + isStateActive(GAMEOVER) + " " + isStateActive(HUB) + " " + isStateActive(WIN));
         controller.update(time);
 
         for (int i = 0; i < scenes.length; i++) {

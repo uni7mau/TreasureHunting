@@ -1,6 +1,6 @@
 package com.treasurehunting.java.utils;
 
-import com.treasurehunting.java.entity.Entity;
+import com.treasurehunting.java.gameobjects.entities.Entity;
 import com.treasurehunting.java.math.AABB;
 import com.treasurehunting.java.math.Vector2f;
 import com.treasurehunting.java.scene.GameSceneManager;
